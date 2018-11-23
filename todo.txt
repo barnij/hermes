@@ -1,0 +1,36 @@
+﻿☺ program uruchamiający bota
+> bot ○_○
+☺ strona do wrzucania submitów
+☺ edycja profilu użytkownika
+☺ tworzenie contestów [admin]
+> edycja contestów [admin]
+☺ przycisk "cofnij"
+> archiwum contestów
+> ranking contestu
+> +ranking contestu po terminie
+> dodawanie zadania [admin]
+> edycja zadania [admin]
+> dodawanie/usuwanie admina
+☻ historia submitów w conteście
+☻ historia submitów użytkownika
+> zarządzanie użytkownikami [admin]
+☺ wyświetlanie zadań w conteście
+☺ funkcja aktualizująca stan sprawdzonego zadania
+☻ wyświetlanie szczegółów submita
+☺ układ plików na serwerze strony
+> wyswietlanie szczegolow wyslania w ladny sposob
+> zmiana w formatowaniu tekstu w plikach wyjsciowych bota
+> poprawne przyjmowanie plikow do sprawdzenia przez wysylanie pliku
+> poprawne przyjmowanie plikow do sprawdzenia przez wklejenie kodu
+> poprawne wyswietlanie kodu uzytkownika, wraz z wcięciami
+☺ obsługa testowania rozwiązań w C/C++
+> obsługa testowania rozwiązań w Pythonie
+> obsługa testowania rozwiązań w Maszynie RAM
+> obsługa testowania rozwiązań w BAPie
+> kanał aktualności
+
+> szablon w Latexie
+> certyfikat https
+
+> Skonfigurować ponownie zabezpieczenia strony (Apache)
+> Zmienić w pliku konsola.php ścieżki plików

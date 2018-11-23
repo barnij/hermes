@@ -1,0 +1,158 @@
+body{
+	font-family: "Times New Roman", Times, serif;
+	overflow-y: scroll;
+}
+
+body a{
+	color: #5d2d89;
+}
+
+#container{
+	width: 1000px; 
+	margin: auto; 
+	border-color: black;
+	border-style: dotted;
+	margin-bottom: 35px;
+}
+
+#top{
+	/*background-color: lightgray;*/
+	background-image: url("/top.png");
+	height: 90px;
+	font-size: 40px;
+	line-height: 65px;
+	text-align: center;
+}
+
+#top a{
+	text-decoration: none;
+	color: black;
+}
+
+#center{
+	min-height: 500px;
+}
+
+#logowanie{
+	text-align: center;
+}
+
+#footer table{
+	width: 100%;
+}
+
+#footer{
+	margin-top: 15px;
+}
+
+.error{
+    color: red;
+    font-weight: bold;
+}
+
+#menu{
+	margin-top: 25px;
+	float: left;
+	width: 200px;
+	padding-left: 30px;
+	/*background-color: red;  */
+}
+
+#menu ul{
+	margin-top: 0px;
+}
+
+#content{
+	margin-top: 25px;
+	float: left;
+	margin-left: 15px;
+	width: 755px;
+	/*background-color: green;  */
+}
+
+#content h1{
+	margin-top: 0;
+}
+
+#TrescZadania{
+	text-align: justify; 
+	padding-right: 200px;
+}
+
+.brak{
+	color: gray;
+	text-decoration: none;
+}
+
+.grubiejwmenu{
+	margin-top: 2px; 
+	margin-bottom: 5px; 
+	padding-left: 2px; 
+	font-weight: bold;
+}
+
+#topmenu
+{
+	height: 50px;
+	width: 1000px;
+	float: left;
+	background-color: #f2f2f2;
+}
+
+#logged
+{
+	width: 230px;
+	float: left;
+	height: 45px;
+	margin-left: 30px;
+	margin-top: 5px;
+}
+
+#logged p{
+	padding-left: 15px; 
+}
+
+#logged span{
+	padding-left: 15px;
+	height: 5px;
+}
+
+#whatcontest
+{
+	float: left;
+	width: 650px;
+	height: 45px;
+	margin-top: 5px;
+}
+
+#whatcontest p{
+	padding-left: 15px;
+}
+
+#icons_user{
+	float: left;
+	width: 70px;
+	height: 45px;
+	margin-top: 5px;
+	margin-right: 20px;
+	color: black;
+	text-decoration: none;
+}
+
+#archiwum {
+	display: none;
+}
+
+.sztucznylink{
+	font-style: italic;
+}
+
+.sztucznylink:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.nolink {
+	color: black;
+	text-decoration: none;
+}

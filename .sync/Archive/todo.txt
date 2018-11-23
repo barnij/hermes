@@ -1,0 +1,21 @@
+> program uruchamiający bota
+> bot ○_○
+> strona do wrzucania submitów
+> edycja profilu użytkownika
+> tworzenie contestów [admin]
+> edycja contestów [admin]
+> przycisk "cofnij"
+> archiwum contestów
+> ranking contestu
+> +ranking contestu po terminie
+> dodawanie zadania
+> edycja zadania
+> dodawanie/usuwanie admina
+> historia submitów w conteście
+> historia submitów użytkownika
+> zarządzanie użytkownikami [admin]
+> wyświetlanie zadań w conteście
+> funkcja aktualizująca stan sprawdzonego zadania
+> wyświetlanie szczegółów submita
+
+> szablon w Latexie

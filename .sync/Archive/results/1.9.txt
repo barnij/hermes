@@ -1,0 +1,11 @@
+time limit extended
+1770
+error
+621
+error
+28
+correct
+30
+correct
+28
+0

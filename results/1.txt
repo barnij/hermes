@@ -1,0 +1,6 @@
+1. 1sek//1sek 20pkt//20pkt correct
+2. 1sek//1sek 0pkt//20pkt error
+3. 1sek//1sek 0pkt//20pkt error
+4. 1sek//1sek 20pkt//20pkt correct
+5. 1sek//1sek 20pkt//20pkt correct
+0
