@@ -32,7 +32,7 @@
 	<br/><br/>
 
 	<label for="start_new_contest">Podaj czas rozpoczęcia: </label>
-	<input type="text" name="start_new_contest" <?php echo 'value="'.date('Y-m-d H:i:s').'"'; ?> required>
+	<input type="text" name="start_new_contest" placeholder="rrrr-mm-dd hh:ii:ss" <?php echo 'value="'.date('Y-m-d H:i:s').'"'; ?> required>
 
 	<?php
 		if(isset($_SESSION['e_date1']))

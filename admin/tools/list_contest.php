@@ -119,9 +119,59 @@
 		echo "Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>"; 
 		echo '<div class="borderinedit">
 				<form method="post" action="functions/edit_contest.php">
-				<label>Edytuj nazwę zawodów: </label>
-				<input type="text" name="title_contest" value="'.$rezultat["title_contest"].'">
-		
+				<label>Edytuj nazwę zawodów: </label><br/>
+				<input type="text" name="title_contest" style="width: 450px;" value="'.$rezultat["title_contest"].'" required>
+				<br/><br/>
+
+				<label for="start_contest">Podaj czas rozpoczęcia: </label>
+				<input type="text" name="start_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_from"].'" required>
+				<br/><br/>
+
+				<label for="end_contest">Podaj czas zakończenia: </label>
+				<input type="text" name="end_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_to"].'" required>
+				<br/><br/>
+
+				<script>
+					function pokazhaslo() {
+						var x = document.getElementById("edit_password_contest");
+						if (x.type === "password") {
+							x.type = "text";
+						} else {
+							x.type = "password";
+						}
+					} 
+				</script>
+				
+				<table style="width: 680px;">
+					<td style="text-align: left;">
+						<label for="password_contest">Hasło zawodów: </label>
+						<input type="password" name="password_contest" style="width: 200px; margin-left: 10px;" id="edit_password_contest"';
+						if($rezultat["password"]=="") echo 'placeholder="zawody otwarte"';
+						else echo 'value="'.$rezultat["password"].'"';
+						echo '>
+					</td>
+					<td style="text-align: left; width: 300px;">
+						Pokaż hasło: <input type="checkbox" onclick="pokazhaslo()">
+					</td>
+				</table><br/>
+				
+				<table style="width: 680px;">
+					<td style="text-align: left;">
+						<label for="visibility_contest">Widoczność na stronie głównej: </label>
+						<input type="checkbox" name="visibility_contest" ';  
+							if($rezultat["visibility"]) echo 'checked';
+						echo '>
+						
+					</td>
+					<td style="text-align: left;">
+						<label for="timer_contest">Czy pokazywać licznik czasu?</label>
+						<input type="checkbox" name="timer_contest" ';
+							if($rezultat["timer"]) echo 'checked';
+						echo '>
+					</td>
+				</table>
+				<br/>
+				<input type="submit" value="Zapisz zmiany">
 		';
 		echo '</div>';
 
