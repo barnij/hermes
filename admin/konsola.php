@@ -81,7 +81,7 @@
 			<div id="menu">
 
 				<p style="margin-top: 0;"><a href="?tool=create_contest">Utwórz Zawody</a></p>
-				<p><a href="?tool=edit_contest">Edytuj zawody</a></p>
+				<p><a href="?tool=list_contest">Zawody</a></p>
 				<p><a class="brak" href="?brak">Dodaj zadanie</a></p>
 				<p><a class="brak" href="?brak">Edytuj zadanie</a></p>
 				<p><a class="brak" href="?brak">Dodaj admina</a></p>
