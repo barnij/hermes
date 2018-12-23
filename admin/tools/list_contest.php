@@ -117,9 +117,9 @@
 		$rezultat = $zapytanie->fetch_assoc();
 
 		echo "Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>"; 
-		echo '<div class=\"borderinedit\">
+		echo '<div class="borderinedit">
 				<form method="post" action="functions/edit_contest.php">
-				<label></label>
+				<label>Edytuj nazwę zawodów: </label>
 				<input type="text" name="title_contest" value="'.$rezultat["title_contest"].'">
 		
 		';

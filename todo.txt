@@ -5,7 +5,7 @@
 ☺ tworzenie contestów [admin]
 > edycja contestów [admin]
 ☺ przycisk "cofnij"
-> archiwum contestów
+☻ archiwum contestów
 > ranking contestu
 > +ranking contestu po terminie
 > dodawanie zadania [admin]
