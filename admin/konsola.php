@@ -67,7 +67,7 @@
 							$time_from = $rezultat['time_from'];
 							$timer = $rezultat['timer'];
 							$visibility = $rezultat['visibility'];
-							echo "Edytujesz zawody: <br/>";
+							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
 						}else
 					?>

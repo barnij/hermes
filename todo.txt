@@ -28,6 +28,7 @@
 > obsługa testowania rozwiązań w Maszynie RAM
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
+> poziom trudności zadań od 0-10
 
 > szablon w Latexie
 > certyfikat https

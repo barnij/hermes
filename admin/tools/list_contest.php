@@ -118,18 +118,33 @@
 
 		echo "Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>"; 
 		echo '<div class="borderinedit">
-				<form method="post" action="functions/edit_contest.php">
+			<form method="post" action="functions/edit_contest.php">
 				<label>Edytuj nazwę zawodów: </label><br/>
-				<input type="text" name="title_contest" style="width: 450px;" value="'.$rezultat["title_contest"].'" required>
-				<br/><br/>
+				<input type="text" name="title_contest" style="width: 450px;" value="'.$rezultat["title_contest"].'" required>';
+				if(isset($_SESSION['e_title']))
+				{
+					echo '<span class="error" style="padding-left: 10px;">'.$_SESSION['e_title'].'</span>';
+					unset($_SESSION['e_title']);
+				}
+				echo '<br/><br/>
 
 				<label for="start_contest">Podaj czas rozpoczęcia: </label>
-				<input type="text" name="start_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_from"].'" required>
-				<br/><br/>
+				<input type="text" name="start_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_from"].'" required>';
+				if(isset($_SESSION['e_date1']))
+				{
+					echo '<span class="error" style="padding-left: 10px;">'.$_SESSION['e_date1'].'</span>';
+					unset($_SESSION['e_date1']);
+				}
+				echo '<br/><br/>
 
 				<label for="end_contest">Podaj czas zakończenia: </label>
-				<input type="text" name="end_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_to"].'" required>
-				<br/><br/>
+				<input type="text" name="end_contest" placeholder="rrrr-mm-dd hh:ii:ss" value="'.$rezultat["time_to"].'" required>';
+				if(isset($_SESSION['e_date']))
+				{
+					echo '<span class="error" style="padding-left: 10px;">'.$_SESSION['e_date'].'</span>';
+					unset($_SESSION['e_date']);
+				}
+				echo '<br/><br/>
 
 				<script>
 					function pokazhaslo() {
@@ -171,7 +186,14 @@
 					</td>
 				</table>
 				<br/>
-				<input type="submit" value="Zapisz zmiany">
+				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
+				<input type="submit" value="Zapisz zmiany">';
+				if(isset($_SESSION['edit_contest_success']))
+				{
+					echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';
+					unset($_SESSION['edit_contest_success']);
+				}
+			echo '</form>
 		';
 		echo '</div>';
 

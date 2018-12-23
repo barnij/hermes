@@ -8,7 +8,7 @@
 
 <form method="post" action="functions/create_contest.php">
 	<label for="shortcut_new_contest">Podaj identyfikator zawodów:</label>
-	<input type="text" name="shortcut_new_contest" style="width: 60px; margin-left: 10px;" required>
+	<input type="text" name="shortcut_new_contest" style="width: 60px; margin-left: 10px;" autocomplete="off" required>
 
 	<?php
 		if(isset($_SESSION['e_shortcut']))
