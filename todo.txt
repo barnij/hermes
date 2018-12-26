@@ -3,7 +3,7 @@
 ☺ strona do wrzucania submitów
 ☺ edycja profilu użytkownika
 ☺ tworzenie contestów [admin]
-> edycja contestów [admin]
+☻ edycja contestów [admin]
 ☺ przycisk "cofnij"
 ☻ archiwum contestów
 > ranking contestu
@@ -29,6 +29,8 @@
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
 > poziom trudności zadań od 0-10
+> "zobacz kod" po naciśnięciu na datę we "wszystkich wysłaniach"
+> wyświetl treść zadania po naciśnięciu na identyfikator zadania w wysłaniach
 
 > szablon w Latexie
 > certyfikat https

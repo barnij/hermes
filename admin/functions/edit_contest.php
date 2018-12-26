@@ -91,6 +91,20 @@
 
 			if ($DanePoprawne) // Wszystkie dane poprawne HURRA!
 			{
+				$rezultat = $polaczenie->query("SELECT password FROM contests WHERE id_contest='$id_contest'");
+				$rezultat = $rezultat->fetch_assoc();
+
+				if($password!="" && $password!=$rezultat['password'])
+				{
+					if ($polaczenie->query("DELETE FROM permissions WHERE id_contest='$id_contest'")) //usuwanie uprawnień przy zmianie hasła
+					{
+					}
+					else
+					{
+						throw new Exception($polaczenie->error);
+					}
+				}
+
 				if ($polaczenie->query("UPDATE contests SET title_contest = '$title', password='$password', time_from='$start', time_to='$end', timer='$timer', visibility='$visibility'  WHERE id_contest='$id_contest'")) //dodawanie rekordu do users
 				{
 					$_SESSION['edit_contest_success'] = 'Zapisano.';
