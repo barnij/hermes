@@ -29,7 +29,6 @@
 <html lang="pl">
 <?php
 	include_once ('templates/head.php');
-	echo '<script type="text/javascript" src="/scripts/timer.js"></script>';
 ?>
 <body>
 	<div id="container">
@@ -47,7 +46,7 @@
 						if(isset($_GET['id']))
 						{
 							$shortcut_contest = $_GET['id'];
-							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to,timer FROM contests WHERE shortcut_contest='$shortcut_contest'");
+							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to FROM contests WHERE shortcut_contest='$shortcut_contest'");
 							
 							if(mysqli_num_rows($zapytanie)==0)
 							{
@@ -56,9 +55,7 @@
 
 							$rezultat = $zapytanie->fetch_assoc();
 							$id_contest = $rezultat['id_contest'];
-							$password_contest=$rezultat['password'];
-							$timer = $rezultat['timer'];
-
+							$password_contest = $rezultat['password'];
 							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
 						}else
@@ -87,19 +84,9 @@
 						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_from']." </p>";
 						echo "Czas zakończenia: <br/>";
 						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_to']." </p><br/>";
-						if($timer==1)
-						{
-							echo '
-							<script type="text/javascript">
-								var data = "'.$rezultat['time_to'].'";
-								timer(data);
-							</script>
-							<span id="timer"></span><br/><br/>';
-						}
 						echo '[ <a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a> ]<br/><br/>';
 						echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
 					}
-
 				?>
 			</div>
 			<div id="content">
