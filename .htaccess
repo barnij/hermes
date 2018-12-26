@@ -5,7 +5,7 @@ Deny from all
 Options +Indexes
 </FilesMatch>
 
-<Files ~ ".(txt|cpp|bap|py|mrram)$">
+<Files ~ ".(txt|cpp|bap|py|mrram|exe)$">
     Order allow,deny
     Deny from all
 </Files>
