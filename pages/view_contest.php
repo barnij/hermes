@@ -23,7 +23,7 @@
 		echo '</td>
 				</tr>
 			</table><br/><br/>';
-		$zapytanie = $polaczenie->query("SELECT tasks.id_task, tasks.title_task FROM tasks INNER JOIN contest_list ON tasks.id_task=contest_list.id_task WHERE contest_list.id_contest='$id_contest'");
+		$zapytanie = $polaczenie->query("SELECT tasks.id_task, tasks.title_task, tasks.pdf FROM tasks INNER JOIN contest_list ON tasks.id_task=contest_list.id_task WHERE contest_list.id_contest='$id_contest'");
 
 
 		$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
@@ -47,10 +47,15 @@
 		{
 			$id_task = $row[0];
 			$name_task = $row[1];
+			$if_pdf = $row[2];
 
 			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$id_task.'</td>
 			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
-			<td width="'.$sz3.'" align="center" >[ <a href="/task/'.$id_task.'" target="_blank">Otwórz</a> ]</td>
+			<td width="'.$sz3.'" align="center" >[ <a href="';
+			if($if_pdf==1)
+				echo '/task/'.$id_task.'" target="_blank"';
+			else echo $_GET['id'].'/'.$id_task.'"';
+			echo '>Otwórz</a> ]</td>
 			<td width="'.$sz4.'" align="center" >[ <a href="/'.$_GET['id'].'/'.$id_task.'/submit">Otwórz</a> ]</td>
 			<td width="'.$sz5.'" align="center" >';
 			//sprawdzenie statusu:

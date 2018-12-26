@@ -18,6 +18,7 @@ RewriteRule ^signup?$ /functions/signup.php
 RewriteRule ^logout?$ /functions/logout.php
 RewriteRule ^welcome?$ /welcome.php
 RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+)/submit /contest.php?id=$1&task=$2&submit
+RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+) /contest.php?id=$1&task=$2
 RewriteRule ^([A-Z0-9]+)/mysubmits/([0-9]+) /contest.php?id=$1&contestsubmits&my&nr=$2
 RewriteRule ^([A-Z0-9]+)/mysubmits /contest.php?id=$1&contestsubmits&my
 RewriteRule ^([A-Z0-9]+)/submits/([0-9]+) /contest.php?id=$1&contestsubmits&nr=$2

@@ -73,7 +73,7 @@
 				<?php
 					if(isset($_GET['id']) || isset($_GET['account']))
 					{
-						if(isset($_GET['submit']))
+						if(isset($_GET['task']))
 							echo '[ <a href="/'.$_GET['id'].'">POWRÓT</a> ]<br/><br/>';
 						else if(isset($_GET['contestsubmits']))
 							echo '[ <a href="/'.$_GET['id'].'">POWRÓT DO ZADAŃ</a> ]<br/><br/>';
@@ -87,15 +87,15 @@
 						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_from']." </p>";
 						echo "Czas zakończenia: <br/>";
 						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_to']." </p><br/>";
-						if($timer==1)
-						{
-							echo '
-							<script type="text/javascript">
-								var data = "'.$rezultat['time_to'].'";
-								timer(data);
-							</script>
-							<span id="timer"></span><br/><br/>';
-						}
+						// if($timer==1) timer do zrobiena
+						// {
+						// 	echo '
+						// 	<script type="text/javascript">
+						// 		var data = "'.$rezultat['time_to'].'";
+						// 		timer(data);
+						// 	</script>
+						// 	<span id="timer"></span><br/><br/>';
+						// }
 						echo '[ <a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a> ]<br/><br/>';
 						echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
 					}
@@ -142,7 +142,7 @@
 					include_once ('functions/checkaccesstocontest.php'); // $AccessToContest true lub false
 				}
 
-				if(isset($_GET['id']) && (!(isset($_GET['submit']))) && (!(isset($_GET['contestsubmits']))))
+				if( isset($_GET['id']) && (!(isset($_GET['task']))) && (!(isset($_GET['contestsubmits']))) )
 				{
 					include_once ('pages/view_contest.php');
 				}
@@ -155,7 +155,12 @@
 				if(isset($_GET['submit']))
 				{
 					include_once ('pages/submit.php');
+				}elseif(isset($_GET['task']))
+				{
+					include_once ('pages/view_task.php');
 				}
+
+
 				if(isset($_GET['contestsubmits']))
 				{
 					include_once ('pages/submits_contest.php');
