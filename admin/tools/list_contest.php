@@ -119,7 +119,7 @@
 		echo "Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>"; 
 		echo '<div class="borderinedit">
 			<form method="post" action="functions/edit_contest.php">
-				<label>Edytuj nazwę zawodów: </label><br/>
+				<label for="title_contest">Edytuj nazwę zawodów: </label><br/>
 				<input type="text" name="title_contest" style="width: 450px;" value="'.$rezultat["title_contest"].'" required>';
 				if(isset($_SESSION['e_title']))
 				{
