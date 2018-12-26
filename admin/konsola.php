@@ -80,11 +80,14 @@
 			<div style="height: 50px;"></div>
 			<div id="menu">
 
-				<p style="margin-top: 0;"><a href="?tool=create_contest">Utwórz Zawody</a></p>
-				<p><a href="?tool=list_contest">Zawody</a></p>
-				<p><a href="?tool=add_task">Dodaj zadanie</a></p>
-				<p><a class="brak" href="?brak">Edytuj zadanie</a></p>
-				<p><a class="brak" href="?brak">Dodaj admina</a></p>
+				<p style="margin-top: 0;"><a href="?tool=create_contest">Utwórz Zawody</a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="create_contest") echo ' &bull;';?></p>
+				<p><a href="?tool=list_contest">Zawody<?php ?></a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_contest") echo ' &bull;';?></p>
+				<p><a href="?tool=add_task">Dodaj zadanie<?php ?></a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="add_task") echo ' &bull;';?></p>
+				<p><a class="brak" href="?brak">Edytuj zadanie<?php ?></a></p>
+				<p><a class="brak" href="?brak">Dodaj admina<?php ?></a></p>
 
 			</div>
 			<div id="content">
