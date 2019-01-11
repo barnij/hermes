@@ -46,7 +46,7 @@
 			<div id="topmenu">
 				<div id="logged">
 					Zalogowany administrator:<br/>
-					<p class="grubiejwmenu"> > <?php echo $_SESSION['admin_name']; ?> </p>					
+					<p class="grubiejwmenu"> > <?php echo $_SESSION['admin_name']; ?> </p>
 				</div>
 				<div id="whatcontest">
 					<?php
@@ -54,7 +54,7 @@
 						{
 							$id_contest = $_GET['edit_contest'];
 							$zapytanie = $polaczenie->query("SELECT shortcut_contest,title_contest,password, time_from, time_to, timer, visibility FROM contests WHERE id_contest='$id_contest'");
-							
+
 							if(mysqli_num_rows($zapytanie)==0)
 							{
 								header('Location: /admin');
@@ -97,7 +97,7 @@
 					{
 						$tool = 'C:/xampp/htdocs/admin/tools/'.$_GET['tool'].".php";
 						include($tool);
-					
+
 					}elseif(isset($_GET["brak"]))
 					{
 						echo "Ta funkcja jest aktualnie wdrażana.";
@@ -109,7 +109,7 @@
 
 				?>
 			</div>
-			
+
 		</div>
 		<div style="clear: both;"></div>
 		<div id="footer">
