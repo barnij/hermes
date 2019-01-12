@@ -29,8 +29,12 @@
 			<head>
 				<title>'.$id_submit.' - HERMES</title>
 				<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+				<link rel="stylesheet" href="/css/hightlight/default.css">
+				<script src="/scripts/highlight.pack.js"></script>
+				<script>hljs.initHighlightingOnLoad();</script>
 			</head>
 			<body>';
+			echo '<pre><code class="auto">';
 
 		$zapytanie=$polaczenie->query("SELECT id_submit FROM submits WHERE id_submit='$id_submit' AND id_user='$id_user'");
 
@@ -62,10 +66,10 @@
 				for($i=0;$i<$ile;$i++)
 				{
 					$plik[$i] = htmlentities($plik[$i], ENT_QUOTES, "UTF-8");
-					$plik[$i] = preg_replace('#\r\n?#', "\n", $plik[$i]);
-					$plik[$i] = str_replace(' ', '&nbsp;', $plik[$i]);
+					//$plik[$i] = preg_replace('#\r\n?#', "\n", $plik[$i]);
+					//$plik[$i] = str_replace(' ', '&nbsp;', $plik[$i]);
 					echo $plik[$i];
-					echo '<br>';
+					//echo '<br>';
 				}
 			}
 
@@ -75,7 +79,7 @@
 			header('Location: /');
 		}
 
-		echo '</body>
+		echo '</code></pre></body>
 		</html>';
 	}
 

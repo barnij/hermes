@@ -48,7 +48,8 @@
 	<input type="range" id="RangeTrudnosc" name="trudnosc" min="0" max="10" step="1" oninput="document.getElementById('rangeValLabel').innerHTML = this.value;"> <em id="rangeValLabel" style="font-style: normal; font-weight: bold">5</em>
 	<br/><br/>
 
-	Określ limity: <input>s
+	<label for="timelimit">Określ limity: </label><input type="text" name="timelimit" style="margin-left: 10px; width: 40px; text-align: right;"> s
+	<input type="text" name="memorylimit" style="margin-left: 20px; width: 40px; text-align: right;"> MB
 	<br/><br/>
 
 	<input type="submit" value="Wyślij zadanie">

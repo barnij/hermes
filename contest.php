@@ -107,8 +107,12 @@
 				<script type="text/javascript">
 					function myFunction() 
 					{
-				    	var x = document.getElementById("archiwum");
-				    	x.style.display = "block";
+						var x = document.getElementById("archiwum");
+						
+						if(x.style.display == "none")
+							x.style.display = "block";
+						else
+							x.style.display = "none";
 					}
 				</script>
 				
@@ -122,17 +126,17 @@
 
 					while($wiersz = mysqli_fetch_row($zapytanie))
 					{ 
-						echo "&bull; <a style=\"font-weight: bold;\" href=\"/$wiersz[0]\"> $wiersz[0] - $wiersz[1]</a><br/><br/>";
+						echo "&bull; <a style=\"font-weight: bold; text-decoration: none;\" href=\"/$wiersz[0]\"> $wiersz[0] - $wiersz[1]</a><br/><br/>";
 					}
 
 					$zapytanie = $polaczenie->query("SELECT shortcut_contest, title_contest, time_to FROM contests WHERE time_to < CURRENT_TIMESTAMP AND visibility=1 ORDER BY time_to ASC");
 
 					echo '<span class="sztucznylink" onclick="myFunction()">Archiwum:</span><br/><br/>';
 
-					echo '<div id="archiwum">';
+					echo '<div id="archiwum" style="display: none;">';
 					while($wiersz = mysqli_fetch_row($zapytanie))
 					{ 
-						echo "&bull; <a href=\"/$wiersz[0]\"> $wiersz[0] - $wiersz[1]</a><br/><br/>";
+						echo "&bull; <a style=\"text-decoration: none;\" href=\"/$wiersz[0]\"> $wiersz[0] - $wiersz[1]</a><br/><br/>";
 					}
 					echo '</div>';
 				}
