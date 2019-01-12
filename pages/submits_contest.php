@@ -11,6 +11,28 @@
 		header('Location: /'.$shortcut_contest);
 	}else
 	{
+		function updatetaskstatus($polaczenie, $id_submit)
+		{
+			$fileinresults = 'C:/xampp/htdocs/results/'.$id_submit.'.txt';
+			
+			if(file_exists($fileinresults))
+			{
+				$plik = file($fileinresults);
+				$ilewierszy = count($plik)-1;
+					
+				if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
+					if($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'"));
+				elseif($plik[$ilewierszy]=="2") //zaktualizuj na bledna
+					if($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'"));
+				elseif($plik[$ilewierszy]=="3") //zaktualizuj na błąd kompilacji
+					if($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'"));
+				elseif($plik[$ilewierszy]=="4") //zaktualizuj na przekroczenie czasu
+					if($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'"));
+				elseif($plik[$ilewierszy]=="5") //zaktualizuj na naruszenie pamięci
+					if($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'"));
+			}
+		}
+
 		if(!isset($_GET['nr']))
 			$nr_strony=0;
 		else
@@ -25,7 +47,7 @@
 
 			$wszystkierekordy = mysqli_num_rows($zapytanie);
 
-			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user = '$id_user' ORDER BY submits.id_submit DESC LIMIT $pominieterekordy, $rekordownastronie");
+			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit,tasks.pdf FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user = '$id_user' ORDER BY submits.id_submit DESC LIMIT $pominieterekordy, $rekordownastronie");
 
 			$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
 
@@ -78,38 +100,35 @@
 				$time=$row[2];
 				$status=$row[3];
 				$id_submit=$row[4];
+				$if_pdf=$row[5];
 
-				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$id_task.'</td>
+				if($if_pdf==1)
+					$placetask = "task";
+				else
+					$placetask = $_GET['id'];
+
+				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;"><a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'</a></td>
 				<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
 				<td width="'.$sz3.'" align="center" >'.$time.'</td>
 				<td width="'.$sz4.'" align="center" >'.'[ <a href="/submit/'.$id_submit.'" target="_blank">Otwórz</a> ]'.'</td>
 				<td width="'.$sz5.'" align="center" >';
 				//sprawdzenie statusu:
-				if($status==1)
-				{
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
-				}else if($status==-1)
-				{
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
-				}else
+				if($status==0)
 				{
 					echo '<img src="/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 
-					$fileinresults = 'C:/xampp/htdocs/results/'.$id_submit.'.txt';
-					if(file_exists($fileinresults))
-					{
-						$plik = file($fileinresults);
-						$ilewierszy = count($plik)-1;
-						
-						if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
-						{
-							if($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'"));
-						}else //zaktualizuj na bledna
-						{
-							if($polaczenie->query("UPDATE submits SET status = -1 WHERE id_submit='$id_submit'"));
-						}
-					}
+					updatetaskstatus($polaczenie, $id_submit);
 				}
+				else if($status==1)
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+				elseif($status==2)
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+				elseif($status==3)
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+				elseif($status==4)
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+				elseif($status==5)
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
 
 				echo '</td>
 				<tr></tr>';
@@ -146,7 +165,7 @@
 
 			$wszystkierekordy = mysqli_num_rows($zapytanie);
 
-			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
+			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
 
 			$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
 
@@ -201,42 +220,45 @@
 				$id_submit=$row[4];
 				$id_user_submit=$row[5];
 				$name_user=$row[6];
+				$if_pdf = $row[7];
 
-				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$id_task.'</td>
+				if($if_pdf==1)
+					$placetask = "task";
+				else
+					$placetask = $_GET['id'];
+
+				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;"><a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'<a/></td>
 				<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
-				<td width="'.$sz3.'" align="center" >'.$time.'</td>
+				<td width="'.$sz3.'" align="center" >'; 
+				if($id_user==$id_user_submit)
+				{
+					echo '<a class="nolink" href="/submit/'.$id_submit.'" target="_blank">'.$time.'</a>';
+				}else
+					echo $time;
+				echo '</td>
 				<td width="'.$sz4.'" align="center" >'.$name_user.'</td>';
-				
 				echo '<td width="'.$sz5.'" align="center" >';
 				//sprawdzenie statusu:
-				if($status==1)
-				{
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
-				}else if($status==-1)
-				{
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
-				}else
+				if($status==0)
 				{
 					echo '<img src="/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 
 					if($id_user==$id_user_submit) //czy rozpoczynać sprawdzanie zawartosci pliku rezultowego
 					{
-						$fileinresults = 'C:/xampp/htdocs/results/'.$id_submit.'.txt';
-						if(file_exists($fileinresults))
-						{
-							$plik = file($fileinresults);
-							$ilewierszy = count($plik)-1;
-							
-							if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
-							{
-								if($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'"));
-							}else //zaktualizuj na bledna
-							{
-								if($polaczenie->query("UPDATE submits SET status = -1 WHERE id_submit='$id_submit'"));
-							}
-						}
+						updatetaskstatus($polaczenie, $id_submit);
 					}
 				}
+				else if($status==1)
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+				elseif($status==2)
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+				elseif($status==3)
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+				elseif($status==4)
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+				elseif($status==5)
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+
 
 				echo '</td>
 				<tr></tr>';
