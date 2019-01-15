@@ -166,21 +166,21 @@
 						echo '>
 					</td>
 					<td style="text-align: left; width: 300px;">
-						Pokaż hasło: <input type="checkbox" onclick="pokazhaslo()">
+						<label for="showpassword">Pokaż hasło: </label><input type="checkbox" onclick="pokazhaslo()" id="showpassword">
 					</td>
 				</table><br/>
 				
 				<table style="width: 680px;">
 					<td style="text-align: left;">
 						<label for="visibility_contest">Widoczność na stronie głównej: </label>
-						<input type="checkbox" name="visibility_contest" ';  
+						<input type="checkbox" name="visibility_contest" id="visibility_contest" ';  
 							if($rezultat["visibility"]) echo 'checked';
 						echo '>
 						
 					</td>
 					<td style="text-align: left;">
 						<label for="timer_contest">Czy pokazywać licznik czasu?</label>
-						<input type="checkbox" name="timer_contest" ';
+						<input type="checkbox" name="timer_contest" id="timer_contest" ';
 							if($rezultat["timer"]) echo 'checked';
 						echo '>
 					</td>

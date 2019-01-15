@@ -29,7 +29,7 @@
 
 	$title = $_POST['title_new_contest'];
 
-	$font = "C:/xampp/htdocs/font/times.ttf"; //czy pojedyncze słowa w nazwie nie są za długie
+	$font = "C:/xampp/htdocs/font/times.ttf"; //czy nazwa nie jest za długa
 
 	list($left,, $right) = imagettfbbox( 16, 0, $font, $title);
 

@@ -47,13 +47,15 @@
 				}
 				else
 				{
-					$_SESSION['blad'] = '<span class="error" >Nieprawidłowy login lub hasło!</span>';
+					$_SESSION['blad'] = '<span class="error" title="Jeśli nie pamiętasz swoich danych logowania,
+skontaktuj się z administratorem." >Nieprawidłowy login lub hasło! &#9432;</span>';
 					header('Location: /');
 				}
 			}
 			else
 			{
-				$_SESSION['blad'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
+				$_SESSION['blad'] = '<span style="color:red" title="Jeśli nie pamiętasz swoich danych logowania,
+skontaktuj się z administratorem." >Nieprawidłowy login lub hasło! &#9432;</span>';
 				header('Location: /');
 			}
 		}
