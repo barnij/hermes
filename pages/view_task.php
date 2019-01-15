@@ -1,42 +1,48 @@
 <?php
-    if(!isset($AccessToContest))
+    if(!isset($AccessToContest)) //prawdopodobnie niezalogowany użytkownik
 	{
 		header('Location: /');
 		exit();
     }
 
-    if(!$AccessToContest)
+    if(!$AccessToContest) //brak dostępu do zawodów
     {
         $adres = 'Location: /'.$_GET['id'];
         header($adres);
         exit();
     }
 
-    echo '
-    <table style="width: 700px; border-bottom: 1px solid black; padding-bottom: 15px; margin-bottom: 15px;">
-    <tr>
-        <td style="width: 50%; text-align: left;">
-            Identyfikator zadania: <b>'.$_GET['task'].'</b>
-        </td>
-        <td style="width: 50%; text-align: right;">
-            [ <a href="/'.$_GET['id'].'/'.$_GET['task'].'/submit">Wyślij rozwiązanie</a> ]
-        </td>
-    </tr>
-    </table>
-    ';
+    $id_task = $_GET['task'];
+    $zapytanie = $polaczenie->query("SELECT id FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
+
+    if(mysqli_num_rows($zapytanie)==0) //brak tego zadania w danych zawodach
+    {
+        header('Location: /');
+        exit();
+    }
 
     $adres = 'C:\xampp\htdocs\tasks\\'.$_GET['task'].'\\'.$_GET['task'].'.txt';
 
-	$czyistnieje = true;
 
-    if(!file_exists($adres))
+    if(!file_exists($adres)) //czy istnieje plik
     {
-        $czyistnieje=false;
         echo "Błąd otwarcia treści zadania!";
-    }
-
-    if($czyistnieje)
+    }else
     {
+
+        echo '
+        <table style="width: 700px; border-bottom: 1px solid black; padding-bottom: 15px; margin-bottom: 15px;">
+        <tr>
+            <td style="width: 50%; text-align: left;">
+                Identyfikator zadania: <b>'.$_GET['task'].'</b>
+            </td>
+            <td style="width: 50%; text-align: right;">
+                [ <a href="/'.$_GET['id'].'/'.$_GET['task'].'/submit">Wyślij rozwiązanie</a> ]
+            </td>
+        </tr>
+        </table>
+        ';
+    
         $plik = file($adres);
         $ile = count($plik);
         
@@ -50,6 +56,5 @@
             echo '<br>';
         }
     }
-
 
 ?>
