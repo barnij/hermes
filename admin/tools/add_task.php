@@ -18,7 +18,7 @@
 	<table style="width: 700px; height: 60px;">
 	<tr style="vertical-align: top;">
 		<td style="border: 1px solid black; width:50%; padding: 15px;">
-			<input id="recznie" type="radio" name="typeofouts" value="recznie" required><label for="recznie"> Wrzuć testy ręcznie:</label><br/><br/>
+			<input id="recznie" type="radio" name="typeofouts" value="recznie" required checked><label for="recznie"> Wrzuć testy ręcznie:</label><br/><br/>
 			<p style="font-style: italic; text-align: center; margin: 0; padding: 0;">Wszystkie pliki muszą być ponumerowane kolejnymi liczbami naturalnymi.</p><br/>
 			<label for="iny[]">Wybierz "iny":</label><br/>
 			<input type="file" name="iny[]" multiple="multiple"/><br/><br/>
@@ -26,11 +26,11 @@
 			<input type="file" name="outy[]" multiple="multiple"/><br/>
 		</td>
 		<td style="border: 1px solid black; width: 50%; padding: 15px;">
-			<input id="automatycznie" type="radio" name="typeofouts" value="automatycznie"><label for="automatycznie"> Wygeneruj "outy" automatycznie:</label><br/><br/>
+			<!--<input id="automatycznie" type="radio" name="typeofouts" value="automatycznie">--><label for="automatycznie"> Wygeneruj "outy" automatycznie:</label><br/><br/>
 			<label for="iny1[]">Wybierz "iny":</label><br/>
-			<input type="file" name="iny1[]" multiple="multiple"><br/><br/>
+			<!--<input type="file" name="iny1[]" multiple="multiple">--><br/><br/>
 			<label for="wzorcowka">Wybierz plik wykonywalny<br/>programu wzorcowego:</label><br/>
-			<input type="file" name="wzorcowka"><br/>
+			<!--<input type="file" name="wzorcowka">--><br/>
 		</td>
 	</tr>
 	</table><br/>
