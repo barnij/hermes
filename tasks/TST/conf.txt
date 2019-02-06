@@ -1,3 +1,6 @@
-3
-1
-1 / 32
+55 // iloœæ testów
+#1 // nr testu
+0.3333333 // liczba punktów do zdobycia
+0.1 // limit czasu w sekundach
+12 // limit pamiêci w MB
+#2

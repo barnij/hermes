@@ -1,36 +1,46 @@
 ﻿☺ program uruchamiający bota
-> bot ○_○
-☺ strona do wrzucania submitów
 ☺ edycja profilu użytkownika
+☺ strona do wrzucania submitów
 ☺ tworzenie contestów [admin]
-☻ edycja contestów [admin]
 ☺ przycisk "cofnij"
-☻ archiwum contestów
+☺ wyświetlanie zadań w conteście
+☺ funkcja aktualizująca stan sprawdzonego zadania
+☺ układ plików na serwerze strony
+☺ obsługa testowania rozwiązań w C/C++
+☺ archiwum contestów
+☺ historia submitów w conteście
+☺ historia submitów użytkownika
+☺ poziom trudności zadań od 0-10
+☺ "zobacz kod" po naciśnięciu na datę we "wszystkich wysłaniach"
+☺ wyświetl treść zadania po naciśnięciu na identyfikator zadania w wysłaniach
+☺ wyświetlanie szczegółów submita
+☻ edycja contestów [admin]
+> NAPISANIE BOTA
 > ranking contestu
 > +ranking contestu po terminie
 > dodawanie zadania [admin]
 > edycja zadania [admin]
 > dodawanie/usuwanie admina
-☻ historia submitów w conteście
-☻ historia submitów użytkownika
 > zarządzanie użytkownikami [admin]
-☺ wyświetlanie zadań w conteście
-☺ funkcja aktualizująca stan sprawdzonego zadania
-☻ wyświetlanie szczegółów submita
-☺ układ plików na serwerze strony
 > wyswietlanie szczegolow wyslania w ladny sposob
 > zmiana w formatowaniu tekstu w plikach wyjsciowych bota
 > poprawne przyjmowanie plikow do sprawdzenia przez wysylanie pliku
 > poprawne przyjmowanie plikow do sprawdzenia przez wklejenie kodu
 > poprawne wyswietlanie kodu uzytkownika, wraz z wcięciami
-☺ obsługa testowania rozwiązań w C/C++
 > obsługa testowania rozwiązań w Pythonie
 > obsługa testowania rozwiązań w Maszynie RAM
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
-> poziom trudności zadań od 0-10
-> "zobacz kod" po naciśnięciu na datę we "wszystkich wysłaniach"
-> wyświetl treść zadania po naciśnięciu na identyfikator zadania w wysłaniach
+> Moduł "zapomniałem hasła" i możliwość jego odzyskania.
+> Dokończyć moduł generowania outów [admin]
+> Ustalić plik konfiguracyjny do testów w module wrzucania [admin]
+> zakrycie wyników w conteście
+☺ naprawda view_contest.php - wyświetlanie i aktualizowanie statusu
+> zapisywanie konfiguracji w pliku conf.txt w trakcie wrzucania zadania
+> możliwość edycji zadania i edycji pliku conf.txt
+> wyświetlanie wyników w modal boxie
+
+> uporządkowanie repozytorium na githubie
 
 > szablon w Latexie
 > certyfikat https

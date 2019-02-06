@@ -1,0 +1,9 @@
+﻿XXX
+
+<b>Wejście</b>
+X
+
+<b>Wyjście</b>
+X
+
+<i>Limity: Xs, XMB</i>
