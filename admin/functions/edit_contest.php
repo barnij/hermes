@@ -69,9 +69,17 @@
 	}else
 	{
 		$timer = 0;
-    }
+	}
+	
+	if(isset($_POST['showresults']))
+	{
+		$showresults = 1;
+	}else
+	{
+		$showresults = 0;
+	}
     
-    echo $title."<br/>".$password."<br/>".$start."<br/>".$end."<br/>".$visibility."<br/>".$timer."<br/>".$id_contest;
+    //echo $title."<br/>".$password."<br/>".$start."<br/>".$end."<br/>".$visibility."<br/>".$timer."<br/>".$id_contest;
 
 	require_once "../../functions/connect.php";
 	mysqli_report(MYSQLI_REPORT_STRICT);
@@ -105,7 +113,7 @@
 					}
 				}
 
-				if ($polaczenie->query("UPDATE contests SET title_contest = '$title', password='$password', time_from='$start', time_to='$end', timer='$timer', visibility='$visibility'  WHERE id_contest='$id_contest'")) //dodawanie rekordu do users
+				if ($polaczenie->query("UPDATE contests SET title_contest = '$title', password='$password', time_from='$start', time_to='$end', timer='$timer', visibility='$visibility', showresults='$showresults'  WHERE id_contest='$id_contest'")) //dodawanie rekordu do users
 				{
 					$_SESSION['edit_contest_success'] = 'Zapisano.';
 				}

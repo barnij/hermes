@@ -84,6 +84,14 @@
 		$timer = 0;
 	}
 
+	if(isset($_POST['showresults']))
+	{
+		$showresults = 1;
+	}else
+	{
+		$showresults = 0;
+	}
+
 	require_once "../../functions/connect.php";
 	mysqli_report(MYSQLI_REPORT_STRICT);
 
@@ -113,7 +121,7 @@
 			if ($DanePoprawne) // Wszystkie dane poprawne HURRA!
 			{
 				
-				if ($polaczenie->query("INSERT INTO contests VALUES (NULL, '$shortcut', '$title', '$password', '$start', '$end', '$timer', '$visibility')")) //dodawanie rekordu do users
+				if ($polaczenie->query("INSERT INTO contests VALUES (NULL, '$shortcut', '$title', '$password', '$start', '$end', '$timer', '$visibility', '$showresults')")) //dodawanie rekordu do users
 				{
 					$_SESSION['create_contest_success'] = 'Utworzono zawody.';
 				}

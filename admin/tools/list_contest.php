@@ -186,8 +186,12 @@
 					</td>
 				</table>
 				<br/>
+				<label style="margin-left: 2px;" for="showresults">Widoczność wyników:</label>
+				<input type="checkbox" name="showresults" id="showresults" ';
+					if($rezultat['showresults']) echo 'checked';
+				echo '>
 				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
-				<input type="submit" value="Zapisz zmiany">';
+				<input style="margin-left:100px;" type="submit" value="Zapisz zmiany">';
 				if(isset($_SESSION['edit_contest_success']))
 				{
 					echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';

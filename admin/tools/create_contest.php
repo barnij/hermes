@@ -60,7 +60,10 @@
 	<label for="visibility_new_contest">Czy zawody mają być widoczne na stronie głównej?</label>
 	<input type="checkbox" name="visibility_new_contest" id="visibility_new_contest"><br/><br/>
 	<label for="timer_new_contest">Czy pokazywać licznik czasu?</label>
-	<input type="checkbox" name="timer_new_contest" id="timer_new_contest"><br/><br/><br/>
+	<input type="checkbox" name="timer_new_contest" id="timer_new_contest"><br/><br/>
+	<label for="showresults">Czy pokazywać wyniki?</label>
+	<input type="checkbox" name="showresults" id="showresults">
+	<br/><br/><br/>
 
 	<input type="submit" value="Utwórz zawody">
 

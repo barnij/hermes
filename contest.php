@@ -47,7 +47,7 @@
 						if(isset($_GET['id']))
 						{
 							$shortcut_contest = $_GET['id'];
-							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to,timer FROM contests WHERE shortcut_contest='$shortcut_contest'");
+							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to,timer,showresults FROM contests WHERE shortcut_contest='$shortcut_contest'");
 							
 							if(mysqli_num_rows($zapytanie)==0)
 							{
@@ -58,6 +58,7 @@
 							$id_contest = $rezultat['id_contest'];
 							$password_contest=$rezultat['password'];
 							$timer = $rezultat['timer'];
+							$showresults = $rezultat['showresults'];
 
 							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
@@ -75,7 +76,7 @@
 					{
 						if(isset($_GET['task']))
 							echo '[ <a href="/'.$_GET['id'].'">POWRÓT</a> ]<br/><br/>';
-						else if(isset($_GET['contestsubmits']))
+						else if(isset($_GET['contestsubmits']) || isset($_GET['ranking']))
 							echo '[ <a href="/'.$_GET['id'].'">POWRÓT DO ZADAŃ</a> ]<br/><br/>';
 						else
 							echo '[ <a href="/contest">WYBÓR CONTESTU</a> ]<br/><br/>';
@@ -97,9 +98,11 @@
 						// 	<span id="timer"></span><br/><br/>';
 						// }
 						echo '[ <a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a> ]<br/><br/>';
-						echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
+						if($showresults){
+							echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
+							echo '[ <a href="/'.$shortcut_contest.'/ranking">RANKING</a> ]<br/><br/>';
+						}
 					}
-
 				?>
 			</div>
 			<div id="content">
@@ -146,7 +149,7 @@
 					include_once ('functions/checkaccesstocontest.php'); // $AccessToContest true lub false
 				}
 
-				if( isset($_GET['id']) && (!(isset($_GET['task']))) && (!(isset($_GET['contestsubmits']))) )
+				if( isset($_GET['id']) && (!(isset($_GET['task']))) && (!(isset($_GET['contestsubmits']))) && (!(isset($_GET['ranking']))))
 				{
 					include_once ('pages/view_contest.php');
 				}
@@ -164,10 +167,14 @@
 					include_once ('pages/view_task.php');
 				}
 
-
 				if(isset($_GET['contestsubmits']))
 				{
 					include_once ('pages/submits_contest.php');
+				}
+
+				if(isset($_GET['ranking']))
+				{
+					include_once ('pages/ranking.php');
 				}
 
 

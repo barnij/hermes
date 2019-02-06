@@ -8,6 +8,43 @@
 
 	if($AccessToContest)
 	{
+		function updatetaskstatus($polaczenie, $id_submit)
+		{
+			$fileinresults = 'C:/xampp/htdocs/results/'.$id_submit.'.txt';
+			
+			if(file_exists($fileinresults))
+			{
+				$plik = file($fileinresults);
+				$ilewierszy = count($plik)-1;
+					
+				if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
+				{
+					if(!($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
+				elseif($plik[$ilewierszy]=="2") //zaktualizuj na bledna
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
+				elseif($plik[$ilewierszy]=="3") //zaktualizuj na błąd kompilacji
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
+				elseif($plik[$ilewierszy]=="4") //zaktualizuj na przekroczenie czasu
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
+				elseif($plik[$ilewierszy]=="5") //zaktualizuj na naruszenie pamięci
+				{
+					if(!($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
+			}
+		}
+
 		echo '<table width="720" align="left">
 				<tr>
 					<td>Masz dostęp do tego konkursu.</td>
@@ -15,10 +52,16 @@
 
 					$zapytanie = $polaczenie->query("SELECT id_task FROM contest_list WHERE id_contest='$id_contest'");
 					$numoftasks = mysqli_num_rows($zapytanie);
-					$zapytanie = $polaczenie->query("SELECT id_task FROM submits WHERE id_contest='$id_contest' AND id_user='$id_user' AND status=1 GROUP BY id_task");
-					$numofcorrect = mysqli_num_rows($zapytanie);
+					
+					if($showresults)
+					{
+						$zapytanie = $polaczenie->query("SELECT id_task FROM submits WHERE id_contest='$id_contest' AND id_user='$id_user' AND status=1 GROUP BY id_task");
+						$numofcorrect = mysqli_num_rows($zapytanie);
+						echo '<b><span style="color: green;">'.$numofcorrect.'</span>/'.$numoftasks.'</b>';
+					}else
+						echo '<b><span style="color: grey;">?</span>/'.$numoftasks.'</b>';
 
-					echo '<b><span style="color: green;">'.$numofcorrect.'</span>/'.$numoftasks.'</b>';
+					
 
 		echo '</td>
 				</tr>
@@ -75,31 +118,27 @@
 				{
 					$zapytanie1 = $polaczenie->query("SELECT status,id_submit FROM submits WHERE id_task='$id_task' AND id_user='$id_user' AND id_contest='$id_contest' ORDER BY id_submit DESC LIMIT 1");
 					$rezultat = $zapytanie1->fetch_assoc();
+					$status=$rezultat['status'];
+					$id_submit= $rezultat['id_submit'];
 
-					if($rezultat['status']==0) //sprawdzanie zadania trwa
+					if($status==0)
 					{
-						echo '<img src="/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
+						echo '<img src="/images/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 
-						$fileinresults = 'C:/xampp/htdocs/results/'.$rezultat['id_submit'].'.txt';
-						if(file_exists($fileinresults))
-						{
-							$plik = file($fileinresults);
-							$ilewierszy = count($plik)-1;
-							$id_submit = $rezultat['id_submit'];
-							
-							if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
-							{
-								if($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'"));
-							}else //zaktualizuj na bledna
-							{
-								if($polaczenie->query("UPDATE submits SET status = -1 WHERE id_submit='$id_submit'"));
-							}
-						}
-
-					}else //jedyne wyslania byly zle, a to ostatnie z nich
-					{
-						echo '<a href="/results/'.$rezultat['id_submit'].'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+						updatetaskstatus($polaczenie, $id_submit);
 					}
+					elseif(!$showresults)
+					echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
+					elseif($status==1)
+						echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+					elseif($status==2)
+						echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+					elseif($status==3)
+						echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+					elseif($status==4)
+						echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+					elseif($status==5)
+						echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
 				}
 			}
 

@@ -17,7 +17,7 @@ body a{
 
 #top{
 	/*background-color: lightgray;*/
-	background-image: url("/top.png");
+	background-image: url("/images/top.png");
 	height: 90px;
 	font-size: 40px;
 	line-height: 65px;

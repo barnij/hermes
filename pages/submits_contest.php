@@ -21,15 +21,30 @@
 				$ilewierszy = count($plik)-1;
 					
 				if($plik[$ilewierszy]=="1") //zaktualizuj na poprawna
-					if($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'"));
+				{
+					if(!($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
 				elseif($plik[$ilewierszy]=="2") //zaktualizuj na bledna
-					if($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'"));
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
 				elseif($plik[$ilewierszy]=="3") //zaktualizuj na błąd kompilacji
-					if($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'"));
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
 				elseif($plik[$ilewierszy]=="4") //zaktualizuj na przekroczenie czasu
-					if($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'"));
+				{	
+					if(!($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
 				elseif($plik[$ilewierszy]=="5") //zaktualizuj na naruszenie pamięci
-					if($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'"));
+				{
+					if(!($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'")))
+						echo "Error: ".$polaczenie->connect_errno;
+				}
 			}
 		}
 
@@ -115,11 +130,13 @@
 				//sprawdzenie statusu:
 				if($status==0)
 				{
-					echo '<img src="/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
+					echo '<img src="/images/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 
 					updatetaskstatus($polaczenie, $id_submit);
 				}
-				else if($status==1)
+				elseif(!$showresults)
+					echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
+				elseif($status==1)
 					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
 				elseif($status==2)
 					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
@@ -159,7 +176,7 @@
 
 			//-------------------------------------------------
 
-		}else //submity wszystkich
+		}elseif($showresults) //submity wszystkich
 		{
 			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' ORDER BY submits.id_submit DESC");
 
@@ -241,7 +258,7 @@
 				//sprawdzenie statusu:
 				if($status==0)
 				{
-					echo '<img src="/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
+					echo '<img src="/images/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 
 					if($id_user==$id_user_submit) //czy rozpoczynać sprawdzanie zawartosci pliku rezultowego
 					{
@@ -289,6 +306,9 @@
 
 			//----------------------------------------------
 
+		}else
+		{
+			echo 'Wyniki są ukryte.';
 		}
 	}
 ?>
