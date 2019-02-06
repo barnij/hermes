@@ -1,7 +1,0 @@
-time limit extended
-correct
-error
-error
-correct
-correct
-0
