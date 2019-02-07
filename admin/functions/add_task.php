@@ -136,8 +136,14 @@
         }else //wrzucanie inów ręcznie i outów automatycznie
         {
             for($i=0; $i < $iletestow; $i+=1)
-            {
                 move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$i.".in");
+            
+            move_uploaded_file($_FILES['wzorcowka']['tmp_name'], $sciezka."/wzorcowka.exe");
+
+            for($i=0; $i < $iletestow; $i+=1)
+            {
+                $polecenie = 'CD /D C:/xampp/htdocs/tasks/'.$id_task.'/ && wzorcowka.exe < in/'.$i.'.in > out/'.$i.'.out';
+                exec($polecenie);
             }
             
         }
