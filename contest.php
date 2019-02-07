@@ -47,7 +47,7 @@
 						if(isset($_GET['id']))
 						{
 							$shortcut_contest = $_GET['id'];
-							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to,timer,showresults FROM contests WHERE shortcut_contest='$shortcut_contest'");
+							$zapytanie = $polaczenie->query("SELECT id_contest,title_contest,password, time_from, time_to,timer,showresults,submitafterend FROM contests WHERE shortcut_contest='$shortcut_contest'");
 							
 							if(mysqli_num_rows($zapytanie)==0)
 							{
@@ -61,6 +61,7 @@
 							$showresults = $rezultat['showresults'];
 							$start_time_contest = $rezultat['time_from'];
 							$end_time_contest = $rezultat['time_to'];
+							$submitafterend = $rezultat['submitafterend'];
 
 							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
@@ -87,7 +88,7 @@
 						echo "Czas rozpoczęcia: <br/>";
 						echo "<p class=\"grubiejwmenu\"> > ".$start_time_contest." </p>";
 						echo "Czas zakończenia: <br/>";
-						echo "<p class=\"grubiejwmenu\"> > ".$start_time_contest." </p><br/>";
+						echo "<p class=\"grubiejwmenu\"> > ".$end_time_contest." </p><br/>";
 						// if($timer==1) timer do zrobiena
 						// {
 						// 	echo '
@@ -97,10 +98,20 @@
 						// 	</script>
 						// 	<span id="timer"></span><br/><br/>';
 						// }
-						echo '[ <a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a> ]<br/><br/>';
+						if(isset($_GET['contestsubmits']) && !isset($_GET['task']) && isset($_GET['my']))
+							echo '[ [<a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a>] ]<br/><br/>';
+						else
+							echo '[ <a href="/'.$shortcut_contest.'/mysubmits">MOJE WYSŁANIA</a> ]<br/><br/>';
 						if($showresults){
-							echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
-							echo '[ <a href="/'.$shortcut_contest.'/ranking">RANKING</a> ]<br/><br/>';
+							if(isset($_GET['contestsubmits']) && !isset($_GET['task']) && !isset($_GET['my']))
+								echo '[ [<a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a>] ]<br/><br/>';
+							else
+								echo '[ <a href="/'.$shortcut_contest.'/submits">WYSŁANIA</a> ]<br/><br/>';
+							
+							if(isset($_GET['ranking']))
+								echo '[ [<a href="/'.$shortcut_contest.'/ranking">RANKING</a>] ]<br/><br/>';
+							else
+								echo '[ <a href="/'.$shortcut_contest.'/ranking">RANKING</a> ]<br/><br/>';
 						}
 					}
 				?>
