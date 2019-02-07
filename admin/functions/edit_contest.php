@@ -13,6 +13,7 @@
 	header($header);
 
 	$DanePoprawne = true;
+	$_SESSION['edit_contest']=0;
 
 	$title = $_POST['title_contest'];
 

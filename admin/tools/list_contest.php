@@ -116,8 +116,34 @@
 		$zapytanie = $polaczenie -> query($tresc);
 		$rezultat = $zapytanie->fetch_assoc();
 
-		echo "Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>"; 
-		echo '<div class="borderinedit">
+		echo '<script type="text/javascript">
+					function pokazedit() 
+					{
+						var x = document.getElementById("edytujszczegoly");
+						
+						if(x.style.display == "none")
+							x.style.display = "block";
+						else
+							x.style.display = "none";
+					}
+				</script>';
+
+		echo "<table style=\"width: 700px;\">
+			<tr>
+			<td>
+				Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>
+			</td>
+			<td style=\"text-align: right;\">
+				<span class=\"sztucznylink\" onclick=\"pokazedit()\">Edytuj szczegóły</span>
+			</td>
+			</tr>
+		</table>";
+		echo '<div class="borderinedit" ';
+			if(isset($_SESSION['edit_contest']))
+				unset($_SESSION['edit_contest']);
+			else
+				echo 'style="display: none;" ';
+		echo 'id="edytujszczegoly">
 			<form method="post" action="functions/edit_contest.php">
 				<label for="title_contest">Edytuj nazwę zawodów: </label><br/>
 				<input type="text" name="title_contest" style="width: 450px;" value="'.$rezultat["title_contest"].'" required>';
@@ -208,10 +234,152 @@
 					echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';
 					unset($_SESSION['edit_contest_success']);
 				}
-			echo '</form>
-		';
-		echo '</div>';
+			echo '</form>	
+		</div>';
 
+		$sz1 = 100;
+		$sz2 = 300;
+		$sz3 = 100;
+		$sz4 = 100;
+		$sz5 = 100;
+		$tal = 'text-align: left';
+		$tac = 'text-align: center';
+
+		if(!isset($_GET['sort']))
+		{
+			$sort = 0; //sortuj od najnowszych do najstarszych (domyślnie)
+		}else
+		{
+			$sort = $_GET['sort'];
+		}
+
+		if($sort==0 || $sort>5 || $sort<0)
+		{
+			$ws = 'id_task ASC';
+		}else if($sort==1)
+		{
+			$ws = 'id_task DESC';
+		}else if($sort==2)
+		{
+			$ws = 'title_task ASC';
+		}else if($sort==3)
+		{
+			$ws = 'title_task DESC';
+		}else if($sort==4)
+		{
+			$ws = 'difficulty ASC';
+		}else //$sort==5
+		{
+			$ws = 'difficulty DESC';
+		}
+
+		echo '<div class="borderinedit">
+			<table style="width: 700px;">
+				<tr>
+					<th style="width: '.$sz1.'px; '.$tal.'">';
+						if($sort==0)
+							echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=1">ID ↑';
+						elseif($sort==1)
+							echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=0">ID ↓';
+						else
+							echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=0">ID';
+				echo '</a>
+					</th>
+					<th style="width: '.$sz2.'px; '.$tal.'">';
+					if($sort==2)
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=3">Nazwa zadania ↑';
+					elseif($sort==3)
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=2">Nazwa zadania ↓';
+					else
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=2">Nazwa zadania';
+				echo'</a>	
+					</th>
+					<th style="width: '.$sz3.'px; '.$tac.'">';
+					if($sort==4)
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=5">Trudność ↑';
+					elseif($sort==5)
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=4">Trudność ↓';
+					else
+						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=4">Trudność';
+				echo '</a>
+					</th>
+					<th style="width: '.$sz4.'px; '.$tac.'">
+						Zobacz treść
+					</th>
+					<th style="width: '.$sz5.'px; '.$tac.'">
+						Zaznacz
+					</th>
+				</tr>
+			</table>
+			<form method="post" action="functions/edit_contest_list.php">
+			<p style="margin-top: 8px; margin-bottom: 5px;">Dodane zadania:</br></p>
+			<table style="width: 700px; border-spacing:0 15px;">';
+
+		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
+		$zapytanie = $polaczenie->query($tresc);
+
+		while($row = mysqli_fetch_row($zapytanie))
+		{
+			echo '<tr>';
+			echo '<td style="width: '.$sz1.'px;">
+					<label for="'.$row[0].'">'.
+						$row[0]
+				  	.'</label></td>
+					<td style="width: '.$sz2.'px;">
+					<label for="'.$row[0].'">'.
+						$row[1]
+					.'</label></td>
+					<td style="width: '.$sz3.'px; '.$tac.'">'.
+						$row[2]
+					.'</td>
+					<td style="width: '.$sz4.'px; '.$tac.'">
+						---
+					</td>
+					<td style="width: '.$sz5.'px; '.$tac.'">
+						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
+					</td>';
+
+			echo '</tr>';
+		}
+		echo '</table>
+		<p style="margin-top: 5px; margin-bottom: 5px;">Pozostałe zadania:</br></p>
+		<table style="width: 700px; border-spacing:0 15px;">';
+
+		$tresc = "SELECT id_task, title_task, difficulty FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
+		$zapytanie = $polaczenie->query($tresc);
+
+		while($row = mysqli_fetch_row($zapytanie))
+		{
+			echo '<tr>';
+			echo '<td style="width: '.$sz1.'px;">
+					<label for="'.$row[0].'">'.
+						$row[0]
+				  	.'</label></td>
+					<td style="width: '.$sz2.'px;">
+					<label for="'.$row[0].'">'.
+						$row[1]
+					.'</label></td>
+					<td style="width: '.$sz3.'px; '.$tac.'">'.
+						$row[2]
+					.'</td>
+					<td style="width: '.$sz4.'px; '.$tac.'">
+						---
+					</td>
+					<td style="width: '.$sz5.'px; '.$tac.'">
+						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
+					</td>';
+
+			echo '</tr>';
+		}
+		echo '</table>
+		<input type="hidden" name="id_contest" value="'.$id_contest.'">
+		<input type="submit" value="Zapisz zestaw zadań">';
+		if(isset($_SESSION['success_edit_contest_list']))
+		{
+			echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['success_edit_contest_list'].'</span>';
+			unset($_SESSION['success_edit_contest_list']);
+		}
+		echo '</form></div>';
 	}
 
 ?>
