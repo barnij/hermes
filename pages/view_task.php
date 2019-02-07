@@ -33,10 +33,13 @@
         echo '
         <table style="width: 700px; border-bottom: 1px solid black; padding-bottom: 15px; margin-bottom: 15px;">
         <tr>
-            <td style="width: 50%; text-align: left;">
+            <td style="width: 30%; text-align: left;">
                 Identyfikator zadania: <b>'.$_GET['task'].'</b>
             </td>
-            <td style="width: 50%; text-align: right;">
+            <td style="width: 40%; text-align: center;">
+                [ <a href="/'.$_GET['id'].'/'.$_GET['task'].'/submits">Zobacz wysłania</a> ]
+            </td>
+            <td style="width: 30%; text-align: right;">
                 [ <a href="/'.$_GET['id'].'/'.$_GET['task'].'/submit">Wyślij rozwiązanie</a> ]
             </td>
         </tr>
