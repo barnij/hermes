@@ -4,33 +4,48 @@
 		header('Location: /');
 		exit();
     }
+
 ?>
 
 <form method="post" action="functions/add_task.php" enctype="multipart/form-data">
 	<label for="id_task">Podaj identyfikator zadania: </label>
-	<input type="text" name="id_task" style="width: 60px; margin-left: 10px;" required><br/><br/>
+	<input type="text" name="id_task" style="width: 60px; margin-left: 10px;" required>
+	<?php 
+		if(isset($_SESSION['e_id_task']))
+		{
+			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_id_task'].'</span>';
+			unset($_SESSION['e_id_task']);
+		}
+	?><br/><br/>
 	<label for="title_task">Podaj nazwę zadania:</label><br/>
-	<input type="text" name="title_task" style="width: 450px;" required><br/><br/>
+	<input type="text" name="title_task" style="width: 450px;" required>
+	<?php 
+		if(isset($_SESSION['e_title_task']))
+		{
+			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_title_task'].'</span>';
+			unset($_SESSION['e_title_task']);
+		}
+	?><br/><br/>
 	<label for="tresc">Wybierz treść zadania (pdf/txt): </label>
 	<input type="file" name="tresc" required><br/>
-	<a style="font-style: italic; text-decoration: none;" href="files/szablon.tex">Pobierz szablon</a>
+	Pobierz szablon: <a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TEX</a>
+	<a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TXT</a>
 	<br/><br/>
+	<label for="iny[]">Wybierz testy wejściowe: </label>
+	<input type="file" name="iny[]" multiple="multiple"/><br/><br/>
 	<table style="width: 700px; height: 60px;">
 	<tr style="vertical-align: top;">
 		<td style="border: 1px solid black; width:50%; padding: 15px;">
-			<input id="recznie" type="radio" name="typeofouts" value="recznie" required checked><label for="recznie"> Wrzuć testy ręcznie:</label><br/><br/>
-			<p style="font-style: italic; text-align: center; margin: 0; padding: 0;">Wszystkie pliki muszą być ponumerowane kolejnymi liczbami naturalnymi.</p><br/>
-			<label for="iny[]">Wybierz "iny":</label><br/>
-			<input type="file" name="iny[]" multiple="multiple"/><br/><br/>
-			<label for="outy[]">Wybierz "outy":</label><br/>
+			<input id="recznie" type="radio" name="typeofouts" value="recznie" required checked><label for="recznie"> Wrzuć "outy" ręcznie:</label><br/><br/>
+			<p style="font-style: italic; text-align: center; margin: 0; padding: 0;">Wszystkie pliki muszą być ponumerowane<br/>od 0 kolejnymi liczbami naturalnymi.</p><br/>
+			<label for="outy[]">Wybierz wyniki testów:</label><br/>
 			<input type="file" name="outy[]" multiple="multiple"/><br/>
 		</td>
 		<td style="border: 1px solid black; width: 50%; padding: 15px;">
-			<!--<input id="automatycznie" type="radio" name="typeofouts" value="automatycznie">--><label for="automatycznie"> Wygeneruj "outy" automatycznie:</label><br/><br/>
-			<label for="iny1[]">Wybierz "iny":</label><br/>
-			<!--<input type="file" name="iny1[]" multiple="multiple">--><br/><br/>
+			<input id="automatycznie" type="radio" name="typeofouts" value="automatycznie"><label for="automatycznie"> Wygeneruj "outy" automatycznie:</label><br/><br/>
+			<p style="font-style: italic; text-align: center; margin: 0; padding: 0;">Pliki mogą być nazwane dowolnie.</p><br/>		
 			<label for="wzorcowka">Wybierz plik wykonywalny<br/>programu wzorcowego:</label><br/>
-			<!--<input type="file" name="wzorcowka">--><br/>
+			<input type="file" name="wzorcowka"><br/>
 		</td>
 	</tr>
 	</table><br/>
@@ -53,5 +68,12 @@
 	<br/><br/>
 
 	<input type="submit" value="Wyślij zadanie">
+	<?php
+		if(isset($_SESSION['success_add_task']))
+		{
+			echo $_SESSION['success_add_task'];
+			unset($_SESSION['success_add_task']);
+		}
+	?>
 
 </form>

@@ -17,12 +17,15 @@ RewriteRule ^start?$ /index.php
 RewriteRule ^signup?$ /functions/signup.php
 RewriteRule ^logout?$ /functions/logout.php
 RewriteRule ^welcome?$ /pages/welcome.php
+RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+)/submits/([0-9]+) /contest.php?id=$1&contestsubmits&task=$2&nr=$3
+RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+)/submits /contest.php?id=$1&contestsubmits&task=$2
 RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+)/submit /contest.php?id=$1&task=$2&submit
 RewriteRule ^([A-Z0-9]+)/([A-Z0-9]+) /contest.php?id=$1&task=$2
 RewriteRule ^([A-Z0-9]+)/mysubmits/([0-9]+) /contest.php?id=$1&contestsubmits&my&nr=$2
 RewriteRule ^([A-Z0-9]+)/mysubmits /contest.php?id=$1&contestsubmits&my
 RewriteRule ^([A-Z0-9]+)/submits/([0-9]+) /contest.php?id=$1&contestsubmits&nr=$2
 RewriteRule ^([A-Z0-9]+)/submits /contest.php?id=$1&contestsubmits
+RewriteRule ^([A-Z0-9]+)/ranking /contest.php?id=$1&ranking
 RewriteRule ^task/([A-Z0-9]+) /tasks/$1/$1.pdf
 RewriteRule ^([A-Z0-9]+) /contest.php?id=$1
 RewriteRule ^admin?$ /admin/index.php

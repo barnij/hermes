@@ -59,6 +59,8 @@
 							$password_contest=$rezultat['password'];
 							$timer = $rezultat['timer'];
 							$showresults = $rezultat['showresults'];
+							$start_time_contest = $rezultat['time_from'];
+							$end_time_contest = $rezultat['time_to'];
 
 							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
@@ -74,9 +76,7 @@
 				<?php
 					if(isset($_GET['id']) || isset($_GET['account']))
 					{
-						if(isset($_GET['task']))
-							echo '[ <a href="/'.$_GET['id'].'">POWRÓT</a> ]<br/><br/>';
-						else if(isset($_GET['contestsubmits']) || isset($_GET['ranking']))
+						if(isset($_GET['task']) || isset($_GET['contestsubmits']) || isset($_GET['ranking']))
 							echo '[ <a href="/'.$_GET['id'].'">POWRÓT DO ZADAŃ</a> ]<br/><br/>';
 						else
 							echo '[ <a href="/contest">WYBÓR CONTESTU</a> ]<br/><br/>';
@@ -85,9 +85,9 @@
 					if(isset($_GET['id']))
 					{
 						echo "Czas rozpoczęcia: <br/>";
-						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_from']." </p>";
+						echo "<p class=\"grubiejwmenu\"> > ".$start_time_contest." </p>";
 						echo "Czas zakończenia: <br/>";
-						echo "<p class=\"grubiejwmenu\"> > ".$rezultat['time_to']." </p><br/>";
+						echo "<p class=\"grubiejwmenu\"> > ".$start_time_contest." </p><br/>";
 						// if($timer==1) timer do zrobiena
 						// {
 						// 	echo '
@@ -162,15 +162,15 @@
 				if(isset($_GET['submit']))
 				{
 					include_once ('pages/submit.php');
+				}elseif(isset($_GET['contestsubmits']))
+				{
+					include_once ('pages/submits_contest.php');
 				}elseif(isset($_GET['task']))
 				{
 					include_once ('pages/view_task.php');
 				}
 
-				if(isset($_GET['contestsubmits']))
-				{
-					include_once ('pages/submits_contest.php');
-				}
+				
 
 				if(isset($_GET['ranking']))
 				{

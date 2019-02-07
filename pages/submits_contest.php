@@ -45,6 +45,17 @@
 					if(!($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'")))
 						echo "Error: ".$polaczenie->connect_errno;
 				}
+
+				$points = 0;
+
+				for($i=0;$i<$ilewierszy;$i+=1)
+				{
+					if(substr($plik[$i],0,1)=='#')
+						$points += intval($plik[$i+1]);
+				}
+
+				if(!($polaczenie->query("UPDATE submits SET points = '$points' WHERE id_submit='$id_submit'")))
+					echo "Error: ".$polaczenie->connect_errno;
 			}
 		}
 
@@ -178,16 +189,33 @@
 
 		}elseif($showresults) //submity wszystkich
 		{
-			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' ORDER BY submits.id_submit DESC");
+			if(isset($_GET['task']))
+			{
+				$task = $_GET['task'];
+				$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_task='$task' ORDER BY submits.id_submit DESC");
+			}else
+			{
+				$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' ORDER BY submits.id_submit DESC");
+			}
 
 			$wszystkierekordy = mysqli_num_rows($zapytanie);
 
-			$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
-
+			if(isset($_GET['task']))
+			{
+				$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND 	submits.id_user=users.id_user AND submits.id_task='$task' ORDER BY submits.id_submit DESC LIMIT $pominieterekordy, $rekordownastronie");
+			}else
+			{
+				$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND 	submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
+			}
 			$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
 
 			if($wszystkierekordy%$rekordownastronie!=0)
 				$maxstron=$maxstron+1;
+
+			if(isset($_GET['task']))
+				$submitstask = '/'.$_GET['task'];
+			else
+				$submitstask = '';
 
 			//-------------- wybor strony ------------------
 
@@ -196,14 +224,14 @@
 			<th width="40" style="padding-bottom: 10px; text-align: left;">';
 
 			if($nr_strony>0)
-				echo '<a href="/'.$shortcut_contest.'/submits/'.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
+				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
 
 			echo '</th>
 			<th width="640" style="text-align: center;"></th>
 			<th width="40" style="padding-bottom: 10px; text-align: right;">';
 			
 			if($nr_strony<$maxstron)
-				echo '<a href="/'.$shortcut_contest.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
+				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
 			echo '</th>
 			</tr>
@@ -291,14 +319,14 @@
 			<th width="40" style="padding-top: 5px; text-align: left;">';
 
 			if($nr_strony>0)
-				echo '<a href="/'.$shortcut_contest.'/submits/'.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
+				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
 
 			echo '</th>
 			<th width="640" style="text-align: center;"></th>
 			<th width="40" style="padding-top: 5px; text-align: right;">';
 			
 			if($nr_strony<$maxstron)
-				echo '<a href="/'.$shortcut_contest.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
+				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
 			echo '</th>
 			</tr>

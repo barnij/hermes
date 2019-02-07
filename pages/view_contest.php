@@ -42,6 +42,18 @@
 					if(!($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'")))
 						echo "Error: ".$polaczenie->connect_errno;
 				}
+
+				$points = 0;
+
+				for($i=0;$i<$ilewierszy;$i+=1)
+				{
+					if(substr($plik[$i],0,1)=='#')
+						$points += intval($plik[$i+1]);
+				}
+
+				if(!($polaczenie->query("UPDATE submits SET points = '$points' WHERE id_submit='$id_submit'")))
+					echo "Error: ".$polaczenie->connect_errno;
+
 			}
 		}
 
@@ -60,30 +72,30 @@
 						echo '<b><span style="color: green;">'.$numofcorrect.'</span>/'.$numoftasks.'</b>';
 					}else
 						echo '<b><span style="color: grey;">?</span>/'.$numoftasks.'</b>';
-
-					
-
 		echo '</td>
 				</tr>
 			</table><br/><br/>';
-		$zapytanie = $polaczenie->query("SELECT tasks.id_task, tasks.title_task, tasks.pdf FROM tasks INNER JOIN contest_list ON tasks.id_task=contest_list.id_task WHERE contest_list.id_contest='$id_contest'");
+		
+		$zapytanie = $polaczenie->query("SELECT tasks.id_task, tasks.title_task, tasks.pdf FROM tasks INNER JOIN contest_list ON tasks.id_task=contest_list.id_task WHERE contest_list.id_contest='$id_contest' GROUP BY tasks.id_task");
 
 
 		$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
 		$sz1 = 80;
-		$sz2 = 380;
-		$sz3 = 100;
-		$sz4 = 100;
-		$sz5 = 60;
+		$sz2 = 315;
+		$sz3 = 85;
+		$sz4 = 85;
+		$sz5 = 95;
+		$sz6 = 60;
 
 		echo '
 		<table width="720" align="left" border="1" bordercolor="#d5d5d5" cellpadding="0" cellspacing="0">
 		<tr>
 		<td width="'.$sz1.'" '.$atrybutynaglowka.' style="padding-top: 15px; padding-bottom: 15px;">ID</td>
 		<td width="'.$sz2.'" '.$atrybutynaglowka.'>Nazwa zadania</td>
-		<td width="'.$sz3.'" '.$atrybutynaglowka.'>Zobacz<br/>zadanie</td>
-		<td width="'.$sz4.'" '.$atrybutynaglowka.'>Wyślij<br/>rozwiązanie</td>
-		<td width="'.$sz5.'" '.$atrybutynaglowka.'>Status</td>
+		<td width="'.$sz3.'" '.$atrybutynaglowka.'>Zobacz<br/>wysłania</td>
+		<td width="'.$sz4.'" '.$atrybutynaglowka.'>Zobacz<br/>zadanie</td>
+		<td width="'.$sz5.'" '.$atrybutynaglowka.'>Wyślij<br/>rozwiązanie</td>
+		<td width="'.$sz6.'" '.$atrybutynaglowka.'>Status</td>
 		<tr></tr>';
 
 		while($row = mysqli_fetch_row($zapytanie))
@@ -94,13 +106,14 @@
 
 			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$id_task.'</td>
 			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
-			<td width="'.$sz3.'" align="center" >[ <a href="';
+			<td width="'.$sz3.'" align="center">[ <a href="/'.$_GET['id'].'/'.$id_task.'/submits">Otwórz</a> ]</td>
+			<td width="'.$sz4.'" align="center" >[ <a href="';
 			if($if_pdf==1)
 				echo '/task/'.$id_task.'" target="_blank"';
 			else echo $_GET['id'].'/'.$id_task.'"';
 			echo '>Otwórz</a> ]</td>
-			<td width="'.$sz4.'" align="center" >[ <a href="/'.$_GET['id'].'/'.$id_task.'/submit">Otwórz</a> ]</td>
-			<td width="'.$sz5.'" align="center" >';
+			<td width="'.$sz5.'" align="center" >[ <a href="/'.$_GET['id'].'/'.$id_task.'/submit">Otwórz</a> ]</td>
+			<td width="'.$sz6.'" align="center" >';
 			//sprawdzenie statusu:
 			$zapytanie1 = $polaczenie->query("SELECT status FROM submits WHERE id_task='$id_task' AND id_user='$id_user' AND id_contest='$id_contest' ORDER BY id_submit DESC LIMIT 1");
 			
@@ -112,8 +125,12 @@
 				$zapytanie1 = $polaczenie->query("SELECT status,id_submit FROM submits WHERE id_task='$id_task' AND id_user='$id_user' AND id_contest='$id_contest' AND status=1 ORDER BY id_submit DESC LIMIT 1");
 				if(mysqli_num_rows($zapytanie1)!=0) //przynajmniej raz rozwiazano dobrze zadanie
 				{
-					$rezultat = $zapytanie1->fetch_assoc();
-					echo '<a href="/results/'.$rezultat['id_submit'].'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+					if($showresults)
+					{
+						$rezultat = $zapytanie1->fetch_assoc();
+						echo '<a href="/results/'.$rezultat['id_submit'].'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+					}else
+						echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 				}else
 				{
 					$zapytanie1 = $polaczenie->query("SELECT status,id_submit FROM submits WHERE id_task='$id_task' AND id_user='$id_user' AND id_contest='$id_contest' ORDER BY id_submit DESC LIMIT 1");
@@ -128,7 +145,7 @@
 						updatetaskstatus($polaczenie, $id_submit);
 					}
 					elseif(!$showresults)
-					echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
+						echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 					elseif($status==1)
 						echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
 					elseif($status==2)
