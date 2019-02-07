@@ -10,6 +10,15 @@
 			header('Location: /');
 		}
 
+		$id_task = $_GET['task'];
+		$zapytanie = $polaczenie->query("SELECT id_task FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
+
+    	if(mysqli_num_rows($zapytanie)==0) //brak tego zadania w danych zawodach
+    	{
+     		header('Location: /');
+      	  	exit();
+    	}
+
 		$dzis = date("U");
 		$expired = date("U", strtotime($end_time_contest));
 		
@@ -18,8 +27,6 @@
 			echo 'Wysyłanie zadań zostało zakończone.';
 		}else
 		{
-			$id_task = $_GET['task'];
-
 			echo 'Wyślij swoje rozwiązanie zadania: <span style="font-weight: bold;">'.$id_task.'</span><br/><br/>';
 
 			echo '

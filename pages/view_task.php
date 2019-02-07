@@ -13,7 +13,7 @@
     }
 
     $id_task = $_GET['task'];
-    $zapytanie = $polaczenie->query("SELECT id FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
+    $zapytanie = $polaczenie->query("SELECT id_task FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
 
     if(mysqli_num_rows($zapytanie)==0) //brak tego zadania w danych zawodach
     {

@@ -105,9 +105,12 @@
 			$if_pdf = $row[2];
 
 			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$id_task.'</td>
-			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
-			<td width="'.$sz3.'" align="center">[ <a href="/'.$_GET['id'].'/'.$id_task.'/submits">Otwórz</a> ]</td>
-			<td width="'.$sz4.'" align="center" >[ <a href="';
+			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>';
+			if($showresults)
+				echo '<td width="'.$sz3.'" align="center">[ <a href="/'.$_GET['id'].'/'.$id_task.'/submits">Otwórz</a> ]</td>';
+			else
+				echo '<td width="'.$sz3.'" align="center">•</td>';
+			echo '<td width="'.$sz4.'" align="center" >[ <a href="';
 			if($if_pdf==1)
 				echo '/task/'.$id_task.'" target="_blank"';
 			else echo $_GET['id'].'/'.$id_task.'"';

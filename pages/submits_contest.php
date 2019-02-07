@@ -128,12 +128,23 @@
 				$id_submit=$row[4];
 				$if_pdf=$row[5];
 
+				$linkIDzapytanie = $polaczenie->query("SELECT id_task FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
+				if(mysqli_num_rows($linkIDzapytanie)==0)
+					$linkID = 0;
+				else
+					$linkID = 1;
+
 				if($if_pdf==1)
 					$placetask = "task";
 				else
 					$placetask = $_GET['id'];
 
-				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;"><a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'</a></td>
+				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">';
+				if($linkID==0)
+					echo $id_task;
+				else
+					echo '<a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'</a>';
+				echo '</td>
 				<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
 				<td width="'.$sz3.'" align="center" >'.$time.'</td>
 				<td width="'.$sz4.'" align="center" >'.'[ <a href="/submit/'.$id_submit.'" target="_blank">Otwórz</a> ]'.'</td>
@@ -267,12 +278,23 @@
 				$name_user=$row[6];
 				$if_pdf = $row[7];
 
+				$linkIDzapytanie = $polaczenie->query("SELECT id_task FROM contest_list WHERE id_contest='$id_contest' AND id_task='$id_task'");
+				if(mysqli_num_rows($linkIDzapytanie)==0)
+					$linkID = 0;
+				else
+					$linkID = 1;
+
 				if($if_pdf==1)
 					$placetask = "task";
 				else
 					$placetask = $_GET['id'];
 
-				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;"><a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'<a/></td>
+				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">';
+				if($linkID==0)
+					echo $id_task;
+				else
+					echo '<a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'</a>';
+				echo '</td>
 				<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
 				<td width="'.$sz3.'" align="center" >'; 
 				if($id_user==$id_user_submit)
