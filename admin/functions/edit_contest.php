@@ -78,6 +78,14 @@
 	{
 		$showresults = 0;
 	}
+
+	if(isset($_POST['submitafterend']))
+	{
+		$submitafterend = 1;
+	}else
+	{
+		$submitafterend = 0;
+	}
     
     //echo $title."<br/>".$password."<br/>".$start."<br/>".$end."<br/>".$visibility."<br/>".$timer."<br/>".$id_contest;
 
@@ -113,7 +121,7 @@
 					}
 				}
 
-				if ($polaczenie->query("UPDATE contests SET title_contest = '$title', password='$password', time_from='$start', time_to='$end', timer='$timer', visibility='$visibility', showresults='$showresults'  WHERE id_contest='$id_contest'")) //dodawanie rekordu do users
+				if ($polaczenie->query("UPDATE contests SET title_contest = '$title', password='$password', time_from='$start', time_to='$end', timer='$timer', visibility='$visibility', showresults='$showresults', submitafterend='$submitafterend'  WHERE id_contest='$id_contest'")) //dodawanie rekordu do users
 				{
 					$_SESSION['edit_contest_success'] = 'Zapisano.';
 				}

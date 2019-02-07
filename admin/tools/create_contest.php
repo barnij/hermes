@@ -62,7 +62,9 @@
 	<label for="timer_new_contest">Czy pokazywać licznik czasu?</label>
 	<input type="checkbox" name="timer_new_contest" id="timer_new_contest"><br/><br/>
 	<label for="showresults">Czy pokazywać wyniki?</label>
-	<input type="checkbox" name="showresults" id="showresults">
+	<input type="checkbox" name="showresults" id="showresults"><br/><br/>
+	<label for="submitafterend">Czy umożliwić wysyłanie zadań po zakończeniu czasu zawodów?</label>
+	<input type="checkbox" name="submitafterend" id="submitafterend">
 	<br/><br/><br/>
 
 	<input type="submit" value="Utwórz zawody">

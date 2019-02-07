@@ -24,6 +24,9 @@
 		$id_user = $_SESSION['id_user'];
 		$id_submit = $_GET['result'];
 
+		$zapytanie = $polaczenie->query("SELECT contests.showresults AS showresults FROM contests,submits WHERE submits.id_contest=contests.id_contest AND submits.id_submit='$id_submit'");
+		$rezultat = $zapytanie->fetch_assoc();
+
 		echo '<!DOCTYPE html>
 		<html>
 			<head>
@@ -32,16 +35,21 @@
 			</head>
 			<body>';
 
-
-		$adres = 'C:\xampp\htdocs\results\\'.$id_submit.'.txt';
-		$plik = file($adres);
-		$ile = count($plik);
-		$plik = preg_replace('#\r\n?#', "\n", $plik);
-		for($i=0;$i<$ile;$i++)
+		if($rezultat['showresults']=='1')
 		{
-			$plik[$i] = str_replace(' ', '&nbsp;', $plik[$i]);
-			echo $plik[$i];
-			echo '<br>';
+			$adres = 'C:\xampp\htdocs\results\\'.$id_submit.'.txt';
+			$plik = file($adres);
+			$ile = count($plik);
+			$plik = preg_replace('#\r\n?#', "\n", $plik);
+			for($i=0;$i<$ile;$i++)
+			{
+				$plik[$i] = str_replace(' ', '&nbsp;', $plik[$i]);
+				echo $plik[$i];
+				echo '<br>';
+			}
+		}else
+		{
+			echo "Wyniki są ukryte.";
 		}
 
 		echo '</body>

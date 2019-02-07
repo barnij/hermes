@@ -184,14 +184,25 @@
 							if($rezultat["timer"]) echo 'checked';
 						echo '>
 					</td>
-				</table>
-				<br/>
-				<label style="margin-left: 2px;" for="showresults">Widoczność wyników:</label>
-				<input type="checkbox" name="showresults" id="showresults" ';
-					if($rezultat['showresults']) echo 'checked';
-				echo '>
+				</table><br/>
+
+				<table style="width: 680px;">
+					<td style="text-align: left;">
+						<label for="showresults">Widoczność wyników:</label>
+						<input type="checkbox" name="showresults" id="showresults" ';
+							if($rezultat['showresults']) echo 'checked';
+						echo '>	
+					</td>
+					<td style="text-align: left;">
+						<label for="submitafterend">Wysyłanie rozwiązań po zakończeniu:</label>
+						<input type="checkbox" name="submitafterend" id="submitafterend" ';
+							if($rezultat["submitafterend"]) echo 'checked';
+						echo '>
+					</td>
+				</table><br/>
+				
 				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
-				<input style="margin-left:100px;" type="submit" value="Zapisz zmiany">';
+				<input style="margin-left:5px;" type="submit" value="Zapisz zmiany">';
 				if(isset($_SESSION['edit_contest_success']))
 				{
 					echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';
