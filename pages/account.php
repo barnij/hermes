@@ -12,10 +12,10 @@
 
 		$nazwakonta = $_POST['nazwakonta'];
 
-		if ((strlen($nazwakonta)<1) || (strlen($nazwakonta)>30)) //długość nazwy konta od 1 do 30 znaków
+		if ((strlen($nazwakonta)<1) || (strlen($nazwakonta)>40)) //długość nazwy konta od 1 do 40 znaków
 		{
 			$DanePoprawne1=false;
-			$_SESSION['e_nazwakonta']='<span class="error">Nazwa musi mieć od 1 do 30 znaków!</span><br/><br/>';
+			$_SESSION['e_nazwakonta']='<span class="error">Nazwa musi mieć od 1 do 40 znaków!</span><br/><br/>';
 		}
 
 		$font = "C:/xampp/htdocs/font/times.ttf";

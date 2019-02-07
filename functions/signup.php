@@ -24,10 +24,10 @@
 
 		$nazwa = $_POST['nazwa'];
 
-		if ((strlen($nazwa)<1) || (strlen($nazwa)>30)) //długość nazwy konta od 1 do 30 znaków
+		if ((strlen($nazwa)<1) || (strlen($nazwa)>40)) //długość nazwy konta od 1 do 40 znaków
 		{
 			$DanePoprawne=false;
-			$_SESSION['e_nazwa']='Nazwa musi mieć od 1 do 30 znaków!<br/>';
+			$_SESSION['e_nazwa']='Nazwa musi mieć od 1 do 40 znaków!<br/>';
 		}
 
 		$font = "C:/xampp/htdocs/font/times.ttf"; //czy pojedyncze słowa w nazwie nie są za długie
