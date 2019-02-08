@@ -228,13 +228,25 @@
 				</table><br/>
 				
 				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
-				<input style="margin-left:5px;" type="submit" value="Zapisz zmiany">';
-				if(isset($_SESSION['edit_contest_success']))
-				{
-					echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';
-					unset($_SESSION['edit_contest_success']);
-				}
-			echo '</form>	
+				<table style="width: 670px; margin-top: 0;">
+					<tr>
+					<td style="text-align: left; width: 50%;">
+						<input style="margin-left:5px;" type="submit" value="Zapisz zmiany">';
+						if(isset($_SESSION['edit_contest_success']))
+						{
+							echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['edit_contest_success'].'</span>';
+							unset($_SESSION['edit_contest_success']);
+						}
+						echo '</form>
+					</td>
+					<td style="text-align: right; width: 50%;">
+						<form method="post" action="functions/delete_contest.php">
+							<input type="hidden" name="id_contest" value="'.$id_contest.'">
+							<input style="background-color: red;" type="submit" name="TAKusuncontest" value="Usuń Zawody" onclick="'."return confirm('Czy na pewno chcesz to zrobić? Zostaną usunięte nadesłane rozwiązania i cała historia zawodów!');\"".'>
+						</form>
+					</td>
+					</tr>
+				</table>	
 		</div>';
 
 		$sz1 = 100;
@@ -313,15 +325,15 @@
 			</table>
 			<form method="post" action="functions/edit_contest_list.php">
 			<p style="margin-top: 8px; margin-bottom: 5px;">Dodane zadania:</br></p>
-			<table style="width: 700px; border-spacing:0 15px;">';
+			<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
+		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty, tasks.pdf FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
 			echo '<tr>';
-			echo '<td style="width: '.$sz1.'px;">
+			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
 					<label for="'.$row[0].'">'.
 						$row[0]
 				  	.'</label></td>
@@ -329,11 +341,15 @@
 					<label for="'.$row[0].'">'.
 						$row[1]
 					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">'.
+					<td style="width: '.$sz3.'px; '.$tac.'">
+					<label for="'.$row[0].'">'.
 						$row[2]
-					.'</td>
+					.'</label></td>
 					<td style="width: '.$sz4.'px; '.$tac.'">
-						---
+						[ <a href="'; 
+						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+						else echo '/admin/functions/view_task.php?task='.$row[0];
+						echo'" target="_blank">Otwórz</a> ]
 					</td>
 					<td style="width: '.$sz5.'px; '.$tac.'">
 						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
@@ -343,15 +359,15 @@
 		}
 		echo '</table>
 		<p style="margin-top: 5px; margin-bottom: 5px;">Pozostałe zadania:</br></p>
-		<table style="width: 700px; border-spacing:0 15px;">';
+		<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT id_task, title_task, difficulty FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
+		$tresc = "SELECT id_task, title_task, difficulty, pdf FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
 			echo '<tr>';
-			echo '<td style="width: '.$sz1.'px;">
+			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
 					<label for="'.$row[0].'">'.
 						$row[0]
 				  	.'</label></td>
@@ -359,11 +375,15 @@
 					<label for="'.$row[0].'">'.
 						$row[1]
 					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">'.
+					<td style="width: '.$sz3.'px; '.$tac.'">
+					<label for="'.$row[0].'">'.
 						$row[2]
-					.'</td>
+					.'</label></td>
 					<td style="width: '.$sz4.'px; '.$tac.'">
-						---
+						[ <a href="'; 
+						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+						else echo '/admin/functions/view_task.php?task='.$row[0];
+						echo'" target="_blank">Otwórz</a> ]
 					</td>
 					<td style="width: '.$sz5.'px; '.$tac.'">
 						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
