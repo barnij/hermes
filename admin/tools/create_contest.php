@@ -4,6 +4,13 @@
 		header('Location: /');
 		exit();
 	}
+
+	if(isset($_SESSION['create_contest_success_edit']))
+	{
+		$adres = 'Location: /admin/konsola.php?tool=list_contest&edit_contest='.$_SESSION['create_contest_success_edit'];
+		unset($_SESSION['create_contest_success_edit']);
+		header($adres);
+	}
 ?>
 
 <form method="post" action="functions/create_contest.php">
@@ -64,8 +71,10 @@
 	<label for="showresults">Czy pokazywać wyniki?</label>
 	<input type="checkbox" name="showresults" id="showresults"><br/><br/>
 	<label for="submitafterend">Czy umożliwić wysyłanie zadań po zakończeniu czasu zawodów?</label>
-	<input type="checkbox" name="submitafterend" id="submitafterend">
-	<br/><br/><br/>
+	<input type="checkbox" name="submitafterend" id="submitafterend"><br/><br/>
+	<label for="editafteradd">Edytuj listę zadań po utworzeniu zawodów</label>
+	<input type="checkbox" name="editafteradd" id="editafteradd">
+	<br/><br/>
 
 	<input type="submit" value="Utwórz zawody">
 

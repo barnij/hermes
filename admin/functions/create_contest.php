@@ -108,6 +108,7 @@
 			$polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
 			if($polaczenie->connect_errno!=0) //połączenie z DB nienawiązane
 			{
+				$DanePoprawne=false;
 				throw new Exception(mysqli_connect_errno());
 			}
 			else //połączenie nawiązane!
@@ -129,9 +130,15 @@
 			if ($DanePoprawne) // Wszystkie dane poprawne HURRA!
 			{
 				
-				if ($polaczenie->query("INSERT INTO contests VALUES (NULL, '$shortcut', '$title', '$password', '$start', '$end', '$timer', '$visibility', '$showresults', '$submitafterend')")) //dodawanie rekordu do users
+				if ($polaczenie->query("INSERT INTO contests VALUES (NULL, '$shortcut', '$title', '$password', '$start', '$end', '$timer', '$visibility', '$showresults', '$submitafterend')")) //dodawanie rekordu do contests
 				{
-					$_SESSION['create_contest_success'] = 'Utworzono zawody.';
+					if(isset($_POST['editafteradd']))
+					{
+						$zapytanie = $polaczenie->query("SELECT id_contest FROM contests ORDER BY id_contest DESC LIMIT 1");
+						$rezultat = $zapytanie->fetch_assoc();
+						$_SESSION['create_contest_success_edit'] = $rezultat['id_contest'];
+					}else
+						$_SESSION['create_contest_success'] = 'Utworzono zawody.';
 				}
 				else
 				{

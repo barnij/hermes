@@ -143,7 +143,7 @@
 						echo "&bull; <a style=\"font-weight: bold; text-decoration: none;\" href=\"/$wiersz[0]\"> $wiersz[0] - $wiersz[1]</a><br/><br/>";
 					}
 
-					$zapytanie = $polaczenie->query("SELECT shortcut_contest, title_contest, time_to FROM contests WHERE time_to < CURRENT_TIMESTAMP AND visibility=1 ORDER BY time_to ASC");
+					$zapytanie = $polaczenie->query("SELECT shortcut_contest, title_contest, time_to FROM contests WHERE time_to < CURRENT_TIMESTAMP AND visibility=1 ORDER BY time_to DESC");
 
 					echo '<span class="sztucznylink" onclick="myFunction()">Archiwum:</span><br/><br/>';
 
