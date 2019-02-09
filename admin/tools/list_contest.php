@@ -110,7 +110,7 @@
 
 		echo '</table>';
 
-	}else //edycja i szczegóły wybranego contestu
+	}elseif((!isset($_GET['submits'])) && (!isset($_GET['ranking']))) //edycja i szczegóły wybranego contestu
 	{
 		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
 		$zapytanie = $polaczenie -> query($tresc);
@@ -130,10 +130,16 @@
 
 		echo "<table style=\"width: 700px;\">
 			<tr>
-			<td>
+			<td style=\"width: 50%;\">
 				Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>
 			</td>
-			<td style=\"text-align: right;\">
+			<td style=\"width: 15%; text-align: center\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&submits\">Wysłania</a> ]
+			</td>
+			<td style=\"width: 15%; text-align: center\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&ranking\">Ranking</a> ]
+			</td>
+			<td style=\"width:20%; text-align: right;\">
 				<span class=\"sztucznylink\" onclick=\"pokazedit()\">Edytuj szczegóły</span>
 			</td>
 			</tr>
@@ -228,7 +234,7 @@
 				</table><br/>
 				
 				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
-				<table style="width: 670px; margin-top: 0;">
+				<table style="width: 680px; margin-top: 0;">
 					<tr>
 					<td style="text-align: left; width: 50%;">
 						<input style="margin-left:5px;" type="submit" value="Zapisz zmiany">';
@@ -242,7 +248,7 @@
 					<td style="text-align: right; width: 50%;">
 						<form method="post" action="functions/delete_contest.php">
 							<input type="hidden" name="id_contest" value="'.$id_contest.'">
-							<input style="background-color: red;" type="submit" name="TAKusuncontest" value="Usuń Zawody" onclick="'."return confirm('Czy na pewno chcesz to zrobić? Zostaną usunięte nadesłane rozwiązania i cała historia zawodów!');\"".'>
+							<input style="background-color: #ef6262;" type="submit" name="TAKusuncontest" value="Usuń Zawody" onclick="'."return confirm('Czy na pewno chcesz to zrobić? Zostaną usunięte nadesłane rozwiązania i cała historia zawodów!');\"".'>
 						</form>
 					</td>
 					</tr>
@@ -400,6 +406,245 @@
 			unset($_SESSION['success_edit_contest_list']);
 		}
 		echo '</form></div>';
+	
+	}elseif(isset($_GET['submits'])) //lista wysłań
+	{
+		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
+		$zapytanie = $polaczenie -> query($tresc);
+		$rezultat = $zapytanie->fetch_assoc();
+
+		echo "<table style=\"width: 700px;\">
+			<tr>
+			<td style=\"width: 50%;\">
+				Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>
+			</td>
+			<td style=\"width: 15%; text-align: center\">
+				[ [<a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&submits\">Wysłania</a>] ]
+			</td>
+			<td style=\"width: 15%; text-align: center\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&ranking\">Ranking</a> ]
+			</td>
+			<td style=\"width:20%; text-align: right;\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."\">Wróć do edycji</a> ]
+			</td>
+			</tr>
+		</table>";
+
+		if(!isset($_GET['nr']))
+			$nr_strony=0;
+		else
+			$nr_strony=$_GET['nr'];
+
+		$rekordownastronie = 30;
+		$pominieterekordy = $nr_strony*$rekordownastronie;
+
+
+		$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user FROM tasks, submits WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' ORDER BY submits.id_submit DESC");
+
+
+		$wszystkierekordy = mysqli_num_rows($zapytanie);
+
+		$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND 	submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
+		
+		$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
+
+		if($wszystkierekordy%$rekordownastronie!=0)
+			$maxstron=$maxstron+1;
+
+		//-------------- wybor strony ------------------
+
+		echo '<table width="720"">
+		<tr>
+		<th width="40" style="padding-bottom: 10px; text-align: left;">';
+
+		if($nr_strony>0)
+			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
+
+		echo '</th>
+		<th width="640" style="text-align: center;"></th>
+		<th width="40" style="padding-bottom: 10px; text-align: right;">';
+		
+		if($nr_strony<$maxstron)
+			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
+
+		echo '</th>
+		</tr>
+		</table>';
+
+		//----------------------------------------------
+
+		$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
+		$sz1 = 80;
+		$sz2 = 250;
+		$sz3 = 170;
+		$sz4 = 160;
+		$sz5 = 60;
+
+		echo '
+		<table width="720" align="left" border="1" bordercolor="#d5d5d5" cellpadding="0" cellspacing="0">
+		<tr>
+		<td width="'.$sz1.'" '.$atrybutynaglowka.' style="padding-top: 5px; padding-bottom: 5px;">ID</td>
+		<td width="'.$sz2.'" '.$atrybutynaglowka.'>Nazwa zadania</td>
+		<td width="'.$sz3.'" '.$atrybutynaglowka.'>Czas wysłania</td>
+		<td width="'.$sz4.'" '.$atrybutynaglowka.'>Użytkownik</td>
+		<td width="'.$sz5.'" '.$atrybutynaglowka.'>Status</td>
+		<tr></tr>';
+
+		while($row = mysqli_fetch_row($zapytanie))
+		{
+			$id_task = $row[0];
+			$name_task = $row[1];
+			$time=$row[2];
+			$status=$row[3];
+			$id_submit=$row[4];
+			$id_user_submit=$row[5];
+			$name_user=$row[6];
+			$if_pdf = $row[7];
+
+			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">';
+			if($if_pdf==1)
+				echo '<a class="nolink" href="/tasks/'.$id_task.'/'.$id_task.'.pdf" target="_blank">'.$id_task.'</a>';
+			else
+				echo '<a class="nolink" href="/admin/functions/view_task.php?task='.$id_task.'" target="_blank">'.$id_task.'</a>';
+			echo '</td>
+			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
+			<td width="'.$sz3.'" align="center" >
+				<a class="nolink" href="/admin/functions/showusercode.php?submit='.$id_submit.'" target="_blank">'.$time.'</a>
+			</td>
+			<td width="'.$sz4.'" align="center" >'.$name_user.'</td>';
+			echo '<td width="'.$sz5.'" align="center" >';
+			//sprawdzenie statusu:
+			if($status==0)
+				echo '<img src="/images/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
+			else if($status==1)
+				echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+			elseif($status==2)
+				echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+			elseif($status==3)
+				echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+			elseif($status==4)
+				echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+			elseif($status==5)
+				echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+
+			echo '</td>
+			<tr></tr>';
+		}
+
+		echo '</tr>
+		</table>';
+
+		//-------------- wybor strony ------------------
+
+		echo '<table width="720"">
+		<tr>
+		<th width="40" style="padding-top: 5px; text-align: left;">';
+
+		if($nr_strony>0)
+			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony-1).'" style="text-decoration: none; color: black; font-weight: bold;">←</a>';
+
+		echo '</th>
+		<th width="640" style="text-align: center;"></th>
+		<th width="40" style="padding-top: 5px; text-align: right;">';
+		
+		if($nr_strony<$maxstron)
+			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
+
+		echo '</th>
+		</tr>
+		</table>';
+
+		//----------------------------------------------
+
+	}elseif(isset($_GET['ranking']))
+	{
+		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
+		$zapytanie = $polaczenie -> query($tresc);
+		$rezultat = $zapytanie->fetch_assoc();
+		$start_time_contest = $rezultat['time_from'];
+		$end_time_contest = $rezultat['time_to'];
+
+		echo "<table style=\"width: 700px;\">
+			<tr>
+			<td style=\"width: 50%;\">
+				Identyfikator wybranych zawodów: <b>".$rezultat["shortcut_contest"]."</b>
+			</td>
+			<td style=\"width: 15%; text-align: center\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&submits\">Wysłania</a> ]
+			</td>
+			<td style=\"width: 15%; text-align: center\">
+				[ [<a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."&ranking\">Ranking</a>] ]
+			</td>
+			<td style=\"width:20%; text-align: right;\">
+				[ <a href=\"/admin/konsola.php?tool=list_contest&edit_contest=".$id_contest."\">Wróć do edycji</a> ]
+			</td>
+			</tr>
+		</table>";
+
+		$zapytanie = $polaczenie->query("SELECT users.name, SUM(submits.points) AS sumapunktow, SUM(CASE submits.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE submits.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(submits.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(submits.time, '$start_time_contest')) END) AS czas FROM submits, users WHERE users.id_user=submits.id_user AND submits.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',submits.time)>0 GROUP BY submits.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+
+		$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
+		$sz1 = 50;
+		$sz2 = 360;
+		$sz3 = 90;
+		$sz4 = 70;
+		$sz5 = 150;
+
+		echo '
+		<table width="720" align="left" border="1" bordercolor="#d5d5d5" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+		<tr>
+		<td width="'.$sz1.'" '.$atrybutynaglowka.' style="padding-top: 15px; padding-bottom: 15px;">lp.</td>
+		<td width="'.$sz2.'" '.$atrybutynaglowka.'>Nazwa użytkownika</td>
+		<td width="'.$sz3.'" '.$atrybutynaglowka.'>Suma<br/>punktów</td>
+		<td width="'.$sz4.'" '.$atrybutynaglowka.'>Suma<br/>OK</td>
+		<td width="'.$sz5.'" '.$atrybutynaglowka.'>Łączny<br/>Czas (m)</td>
+		<tr></tr>';
+
+		$lp = 1;
+
+		while($row = mysqli_fetch_row($zapytanie))
+		{
+			echo '<tr '; 
+			if($lp==1) echo 'style="background-color: #52ea54;"';
+			else if($lp==2) echo 'style="background-color: #93ed94"';
+			else if($lp==3) echo 'style="background-color: #c1f4c1"';
+			echo'>
+			<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
+			<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
+			<td width="'.$sz3.'" align="center" style="font-weight: bold;">'.$row[1].'</td>
+			<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
+			<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
+			</tr>';
+			$lp+=1;
+		}
+		echo '</tr>
+		</table><div style="clear: both;"></div><br/>';
+
+		$zapytanie = $polaczenie->query("SELECT users.name, SUM(submits.points) AS sumapunktow, SUM(CASE submits.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE submits.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(submits.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(submits.time, '$start_time_contest')) END) AS czas FROM submits, users WHERE users.id_user=submits.id_user AND submits.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',submits.time)<=0 GROUP BY submits.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+		
+		if(mysqli_num_rows($zapytanie)>0)
+		{
+		echo 'Po zakończeniu zawodów:
+
+			<table width="720" align="left" border="1" bordercolor="#d5d5d5" cellpadding="0" cellspacing="0" style="margin-top: 10px; color: gray;">
+			<tr>';
+
+			$lp = 1;
+
+			while($row = mysqli_fetch_row($zapytanie))
+			{
+				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
+				<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
+				<td width="'.$sz3.'" align="center">'.$row[1].'</td>
+				<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
+				<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
+				<tr></tr>';
+				$lp+=1;
+			}
+
+			echo '</tr>
+			</table>';
+		}
 	}
 
 ?>

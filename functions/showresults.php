@@ -1,7 +1,7 @@
 <?php
 	session_start();
 
-	if((!(isset($_GET['result']))) || ($_GET['result']==0) || (!(isset($_SESSION['zalogowany'])))  || (isset($_SESSION['zalogowany'])==false))
+	if((!(isset($_GET['result']))) || ($_GET['result']==0) || ((!(isset($_SESSION['zalogowany'])))  || (isset($_SESSION['zalogowany'])==false)) && (!isset($_SESSION['zalogowanyadmin'])) )
 	{
 		header('Location: /');
 
@@ -21,7 +21,6 @@
 		mysqli_set_charset($polaczenie,"utf8");
 		$polaczenie->query('SET NAMES utf8');
 
-		$id_user = $_SESSION['id_user'];
 		$id_submit = $_GET['result'];
 
 		$zapytanie = $polaczenie->query("SELECT contests.showresults AS showresults FROM contests,submits WHERE submits.id_contest=contests.id_contest AND submits.id_submit='$id_submit'");
