@@ -87,8 +87,9 @@
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_contest") echo ' &bull;';?></p>
 				<p><a href="?tool=add_task">Dodaj zadanie<?php ?></a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="add_task") echo ' &bull;';?></p>
-				<p><a class="brak" href="?brak">Edytuj zadanie<?php ?></a></p>
-				<p><a class="brak" href="?brak">Dodaj admina<?php ?></a></p>
+				<p><a class="brak" href="?brak">Zadania<?php ?></a></p>
+				<p><a class="brak" href="?brak">Użytkownicy<?php ?></a></p>
+				<p><a class="brak" href="?brak">Dodaj administratora<?php ?></a></p>
 
 			</div>
 			<div id="content">
