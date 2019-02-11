@@ -64,7 +64,7 @@
                     echo "Error: ".$polaczenie->connect_errno;
                 }
 
-                $polecenie = 'CD /D C:/xampp/htdocs/ && Start.exe '.$nr.$rozszerzenie.' '.$id_task;
+                $polecenie = '/var/www/html/Start.exe '.$nr.$rozszerzenie.' '.$id_task;
 
                 shell_exec($polecenie);
             }

@@ -21,7 +21,7 @@
         exit();
     }
 
-    $adres = 'C:\xampp\htdocs\tasks\\'.$_GET['task'].'\\'.$_GET['task'].'.txt';
+    $adres = '/var/www/html/tasks/'.$_GET['task'].'/'.$_GET['task'].'.txt';
 
 
     if(!file_exists($adres)) //czy istnieje plik

@@ -10,7 +10,7 @@
 	{
 		function updatetaskstatus($polaczenie, $id_submit)
 		{
-			$fileinresults = 'C:/xampp/htdocs/results/'.$id_submit.'.txt';
+			$fileinresults = '/var/www/html/results/'.$id_submit.'.txt';
 			
 			if(file_exists($fileinresults))
 			{

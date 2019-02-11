@@ -96,7 +96,7 @@
 
 					if(isset($_GET['tool']))
 					{
-						$tool = 'C:/xampp/htdocs/admin/tools/'.$_GET['tool'].".php";
+						$tool = '/var/www/html/admin/tools/'.$_GET['tool'].".php";
 						include($tool);
 
 					}elseif(isset($_GET["brak"]))

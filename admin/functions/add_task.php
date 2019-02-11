@@ -32,7 +32,7 @@
 
     $title_task = $_POST['title_task'];
 
-    $font = "C:/xampp/htdocs/font/times.ttf";
+    $font = "/var/www/html/font/times.ttf";
 
     $words = explode(" ", $title_task);
 
@@ -81,28 +81,22 @@
             $_SESSION['e_iny']='Błąd przesyłu plików!';       
     }
     
-    if($_POST['typeofouts']=='recznie') //Wrzucanie testów ręcznie
-    {
-        if (is_uploaded_file($_FILES['outy']['tmp_name'][0])) //outy
-        {
-            if(count($_FILES['iny']['tmp_name']) != count($_FILES['outy']['tmp_name']))
-            {
-                $DanePoprawne=false;
-                $_SESSION['e_outy']='Nierówna liczba testów wejściowych i plików wynikowych!';
-            }
-        }else
-        {
-            $DanePoprawne=false;
-            $_SESSION['e_outy']='Błąd przesyłu plików!';
-        }
 
-    }else //Wrzucanie testów automatycznie
+    if (is_uploaded_file($_FILES['outy']['tmp_name'][0])) //outy
     {
-        if (!is_uploaded_file($_FILES['wzorcowka']['tmp_name'])){
+        if(count($_FILES['iny']['tmp_name']) != count($_FILES['outy']['tmp_name']))
+        {
+            echo count($_FILES['iny']['tmp_name']).' '.count($_FILES['outy']['tmp_name']);
             $DanePoprawne=false;
-            $_SESSION['e_wzorcowka_task']='Błąd przesyłu pliku!';
+            $_SESSION['e_outy']='Nierówna liczba testów wejściowych i plików wynikowych!';
         }
+    }else
+    {
+        $DanePoprawne=false;
+        $_SESSION['e_outy']='Błąd przesyłu plików!';
     }
+
+    
 
     // Trudnosc
 
@@ -124,29 +118,14 @@
 
         $iletestow = count($_FILES['iny']['tmp_name']);
 
-        if($_POST['typeofouts']=='recznie') //wrzucanie inów i outów ręcznie
+        for($i=0; $i < $iletestow; $i+=1)
         {
-            for($i=0; $i < $iletestow; $i+=1)
-            {
-                $filenamein = pathinfo($_FILES['iny']['name'][$i], PATHINFO_FILENAME);
-                $filenameout = pathinfo($_FILES['outy']['name'][$i], PATHINFO_FILENAME);
-                move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
-                move_uploaded_file($_FILES['outy']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
-            }
-        }else //wrzucanie inów ręcznie i outów automatycznie
-        {
-            for($i=0; $i < $iletestow; $i+=1)
-                move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$i.".in");
-            
-            move_uploaded_file($_FILES['wzorcowka']['tmp_name'], $sciezka."/wzorcowka.exe");
-
-            for($i=0; $i < $iletestow; $i+=1)
-            {
-                $polecenie = 'CD /D C:/xampp/htdocs/tasks/'.$id_task.'/ && wzorcowka.exe < in/'.$i.'.in > out/'.$i.'.out';
-                exec($polecenie);
-            }
-            
+            $filenamein = pathinfo($_FILES['iny']['name'][$i], PATHINFO_FILENAME);
+            $filenameout = pathinfo($_FILES['outy']['name'][$i], PATHINFO_FILENAME);
+            move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
+            move_uploaded_file($_FILES['outy']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
         }
+        
 
         $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
         fwrite($conf, $iletestow."\n");

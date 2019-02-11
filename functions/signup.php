@@ -30,7 +30,7 @@
 			$_SESSION['e_nazwa']='Nazwa musi mieć od 1 do 40 znaków!<br/>';
 		}
 
-		$font = "C:/xampp/htdocs/font/times.ttf"; //czy pojedyncze słowa w nazwie nie są za długie
+		$font = "/var/www/html/font/times.ttf"; //czy pojedyncze słowa w nazwie nie są za długie
 
 		$words = explode(" ", $nazwa);
 
