@@ -37,7 +37,7 @@
 			$ws = 'title_contest DESC';
 		}
 
-		$tresc = "SELECT id_contest, shortcut_contest, title_contest FROM contests GROUP BY ".$ws;
+		$tresc = "SELECT id_contest, shortcut_contest, title_contest FROM contests ORDER BY ".$ws;
 
 		$zapytanie = $polaczenie->query($tresc);
 

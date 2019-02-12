@@ -70,7 +70,24 @@
 							$visibility = $rezultat['visibility'];
 							echo "Wybrane zawody: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$rezultat['title_contest']."</p>";
-						}else
+						}elseif(isset($_GET['edit_task']))
+						{
+							$id_task = $_GET['edit_task'];
+
+							$zapytanie = $polaczenie->query("SELECT * FROM tasks WHERE id_task='$id_task'");
+
+							if(mysqli_num_rows($zapytanie)==0)
+							{
+								header('Location: /admin');
+							}
+							
+							$rezultat = $zapytanie->fetch_assoc();
+							$title_task = $rezultat['title_task'];
+							$difficulty = $rezultat['difficulty'];
+							$if_pdf = $rezultat['pdf'];
+							echo "ID wybranego zadania: <br/>";
+							echo "<p class=\"grubiejwmenu\"> > ".$id_task."</p>";
+						}
 					?>
 				</div>
 				<div style="float: right; width: 40px; height: 45px; margin-top: 5px; margin-right: 20px; color: black; text-decoration: none;">
@@ -83,13 +100,14 @@
 
 				<p style="margin-top: 0;"><a href="?tool=create_contest">Utwórz Zawody</a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="create_contest") echo ' &bull;';?></p>
-				<p><a href="?tool=list_contest">Zawody<?php ?></a>
+				<p><a href="?tool=list_contest">Zawody</a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_contest") echo ' &bull;';?></p>
-				<p><a href="?tool=add_task">Dodaj zadanie<?php ?></a>
+				<p><a href="?tool=add_task">Dodaj zadanie</a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="add_task") echo ' &bull;';?></p>
-				<p><a class="brak" href="?brak">Zadania<?php ?></a></p>
-				<p><a class="brak" href="?brak">Użytkownicy<?php ?></a></p>
-				<p><a class="brak" href="?brak">Dodaj administratora<?php ?></a></p>
+				<p><a href="?tool=list_task">Zadania</a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_task") echo ' &bull;';?></p>
+				<p><a class="brak" href="?brak">Użytkownicy</a></p>
+				<p><a class="brak" href="?brak">Dodaj administratora</a></p>
 
 			</div>
 			<div id="content">
