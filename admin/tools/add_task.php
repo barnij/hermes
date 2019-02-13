@@ -65,21 +65,13 @@
 	</tr>
 	</table><br/>
 	<label for="trudnosc">Wybierz trudność zadania:</label>
-
-	<script>
-		//$('#rangeText').text($('#RangeTrudnosc').val());
-		document.onload = trudnosc();
-
-		function trudnosc(){
-			document.getElementById("rangeText").innerHTML = "75";
-		}
-	</script>
-
 	<input type="range" id="RangeTrudnosc" name="trudnosc" min="0" max="10" step="1" oninput="document.getElementById('rangeValLabel').innerHTML = this.value;"> <em id="rangeValLabel" style="font-style: normal; font-weight: bold">5</em>
 	<br/><br/>
 
 	<label for="timelimit">Określ limity: </label><input type="text" name="timelimit" style="margin-left: 10px; width: 40px; text-align: right;" required> s
-	<input type="text" name="memorylimit" style="margin-left: 20px; width: 40px; text-align: right;" required> MB
+	<input type="text" name="memorylimit" style="margin-left: 20px; width: 40px; text-align: right;" required> MB<br/><br/>
+	<label for="startpoints">Wpisz ilość punktów za zadanie:</label>
+	<input type="text" name="startpoints" style="margin-left: 5px; width: 40px; margin-right: 10px;"> Zalecana wartość 100. 1 oznacza zadanie oceniane binarnie.
 	<br/><br/>
 
 	<input type="submit" value="Wyślij zadanie">

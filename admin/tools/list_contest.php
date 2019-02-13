@@ -556,7 +556,7 @@
 
 		//----------------------------------------------
 
-	}elseif(isset($_GET['ranking']))
+	}elseif(isset($_GET['ranking'])) //ranking
 	{
 		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
 		$zapytanie = $polaczenie -> query($tresc);
@@ -611,7 +611,7 @@
 			echo'>
 			<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
 			<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
-			<td width="'.$sz3.'" align="center" style="font-weight: bold;">'.$row[1].'</td>
+			<td width="'.$sz3.'" align="center" style="font-weight: bold;"><span title="'.$row[1].'">'.intval($row[1]).'</span></td>
 			<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
 			<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
 			</tr>';
@@ -635,7 +635,7 @@
 			{
 				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
 				<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
-				<td width="'.$sz3.'" align="center">'.$row[1].'</td>
+				<td width="'.$sz3.'" align="center"><span title="'.$row[1].'">'.intval($row[1]).'</span></td>
 				<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
 				<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
 				<tr></tr>';

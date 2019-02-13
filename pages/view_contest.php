@@ -48,8 +48,10 @@
 				for($i=0;$i<$ilewierszy;$i+=1)
 				{
 					if(substr($plik[$i],0,1)=='#')
-						$points += intval($plik[$i+1]);
+						$points += doubleval($plik[$i+1]);
 				}
+
+				if($points<1) $points=0;
 
 				if(!($polaczenie->query("UPDATE submits SET points = '$points' WHERE id_submit='$id_submit'")))
 					echo "Error: ".$polaczenie->connect_errno;
