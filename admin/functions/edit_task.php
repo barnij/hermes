@@ -6,4 +6,15 @@
         header('Location: /admin');
 		exit();
     }
+
+    if(isset($_POST['title_task']))
+    {
+        $DanePoprawne = true;
+        
+
+    }elseif(isset($_POST['l']))
+    {
+
+    }
+
 ?>

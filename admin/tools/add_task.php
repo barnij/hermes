@@ -69,9 +69,26 @@
 	<br/><br/>
 
 	<label for="timelimit">Określ limity: </label><input type="text" name="timelimit" style="margin-left: 10px; width: 40px; text-align: right;" required> s
-	<input type="text" name="memorylimit" style="margin-left: 20px; width: 40px; text-align: right;" required> MB<br/><br/>
+	<input type="text" name="memorylimit" style="margin-left: 20px; width: 40px; text-align: right;" required> MB
+	<?php
+		if(isset($_SESSION['e_limit']))
+		{
+			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_limit'].'</span>';
+			unset($_SESSION['e_limit']);
+		}
+	?>
+	<br/><br/>
 	<label for="startpoints">Wpisz ilość punktów za zadanie:</label>
-	<input type="text" name="startpoints" style="margin-left: 5px; width: 40px; margin-right: 10px;"> Zalecana wartość 100. 1 oznacza zadanie oceniane binarnie.
+	<input type="text" name="startpoints" style="margin-left: 5px; width: 40px;" required>
+	<?php
+		if(isset($_SESSION['e_startpoints']))
+		{
+			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_startpoints'].'</span>';
+			unset($_SESSION['e_startpoints']);
+		}
+	?>
+	<br/>
+	<span style="font-style: italic;">Zalecana wartość 100. 1 oznacza zadanie oceniane binarnie.</span>
 	<br/><br/>
 
 	<input type="submit" value="Wyślij zadanie">

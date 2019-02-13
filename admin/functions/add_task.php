@@ -106,6 +106,22 @@
     $timelimit = $_POST['timelimit'];
     $memorylimit = $_POST['memorylimit'];
 
+    if($timelimit <= 0 || $memorylimit <= 0)
+    {
+        $DanePoprawne = false;
+        $_SESSION['e_limit']='Obie wartości muszą być dodatnie!';
+    }
+
+    //Startowa liczba punktów
+
+    $startpoints = $_POST['startpoints'];
+
+    if($startpoints < 1)
+    {
+        $DanePoprawne = false;
+        $_SESSION['e_startpoints'] = 'Minimalna wartość to 1!';
+    }
+
     if($DanePoprawne)
     {
 
@@ -130,7 +146,7 @@
         $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
         fwrite($conf, $iletestow."\n");
 
-        $punktynatest = 100/$iletestow;
+        $punktynatest = $startpoints/$iletestow;
 
         for($i=0; $i<$iletestow; $i+=1)
         {

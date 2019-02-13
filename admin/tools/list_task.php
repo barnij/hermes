@@ -112,21 +112,64 @@
     
     }else
     {
-        echo '<p style="margin-top: 0px; margin-bottom: 5px;">Edytuj podstawowe informacje:</br></p>
+        echo '<p style="margin-top: 0px; margin-bottom: 3px;">Edytuj podstawowe informacje:</p>
         <div class="borderinedit">
         <form method="POST" action="functions/edit_task.php">
             <label for="title_task">Nazwa zadania:</label><br/>
             <input style="width: 500px;" type="text" name="title_task" value="'.$title_task.'" required/><br/><br/>
             <label for="tresc">Treść zadania: </label>
             <input type="file" name="tresc"><br/>
-            <span style="font-style: italic;">Nie wybierając pliku, treść nie zostanie zastąpiona.</span><br/><br/>
+            <span style="font-style: italic;">Nie wybierając pliku, treść nie zostanie zastąpiona.</span>
+            <span style="padding-left: 20px;">[ <a href="';
+            if($if_pdf)
+                echo '/tasks/'.$id_task.'/'.$id_task.'.pdf';
+            else
+                echo '/admin/functions/view_task.php?task='.$id_task;
+            echo '" target="_blank">Otwórz aktualną treść</a> ]</span><br/><br/>
             <label for="trudnosc">Trudność:</label>
 	        <input type="range" id="RangeTrudnosc" name="trudnosc" min="0" max="10" step="1" oninput="document.getElementById(\'rangeValLabel\').innerHTML = this.value;" value="'.$difficulty.'"> <em id="rangeValLabel" style="font-style: normal; font-weight: bold">'.$difficulty.'</em>
             <br/><br/>
             <input type="submit" value="Zapisz">
         </form>
-        </div><br/><br/>
-        <p style="margin-top: 0px; margin-bottom: 5px;">Edytuj podstawowe informacje:</br></p>';
+        </div>
+        <p style="margin-top: 20px; margin-bottom: 3px;">Edytuj testy:</p>
+        <div class="borderinedit">
+        <form>';
+        
+        $conffile = '/var/www/html/tasks/'.$id_task.'/conf.txt';
+
+        if(file_exists($conffile))
+        {
+            $plik = file($conffile);
+            $iletestow = intval($plik[0]);
+            $lp=0;
+            $ilewierszy = count($plik)-1;
+            $sumapunkow = 0;
+            for($i=0;$i<$ilewierszy;$i+=1)
+            {
+                if(substr($plik[$i],0,1)=='#')
+                {
+                    echo '<span style="font-weight: bold;">Test '.$lp.'</span>';
+                    echo '
+                    <label style="margin-left: 30px; padding-right: 10px;">Liczba punktów za test:</label>
+                    <input type="text" style="width: 140px;" value="'.doubleval($plik[$i+1]).'"><br/>
+                    <label style="margin-left: 74px; padding-right: 10px;">Limit czasu:</label>
+                    <input type="text" style="width: 100px; text-align: right;" value="'.doubleval($plik[$i+2]).'"> s
+                    <label style="margin-left: 30px; padding-right: 10px;">Limit pamięci:</label>
+                    <input type="text" style="width: 100px; text-align: right;" value="'.doubleval($plik[$i+3]).'"> MB<br/>';
+                    $lp+=1;
+
+                    if($lp!=$iletestow)
+                        echo '<br/>';
+                }
+            }
+        }else
+        {
+            echo "Błąd otwarcia pliku konfiguracyjnego!";
+        }
+
+        echo '</form>
+        </div>';
     }
 
 ?>
