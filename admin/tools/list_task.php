@@ -132,10 +132,17 @@
             <input type="submit" value="Zapisz">
         </form>
         </div>
-        <p style="margin-top: 20px; margin-bottom: 3px;">Edytuj testy:</p>
+
+        <p style="margin-top: 20px; margin-bottom: 3px;">Wybierz nowe pliki testów:</p>
         <div class="borderinedit">
-        <form>';
+
+
+        </div>
+
         
+        <p style="margin-top: 20px; margin-bottom: 3px;">Edytuj testy:</p>
+        <div class="borderinedit">';
+
         $conffile = '/var/www/html/tasks/'.$id_task.'/conf.txt';
 
         if(file_exists($conffile))
@@ -145,24 +152,82 @@
             $lp=0;
             $ilewierszy = count($plik)-1;
             $sumapunkow = 0;
+
+            for($i=0;$i<$ilewierszy;$i+=1)
+            {
+                if(substr($plik[$i],0,1)=='#')
+                    $points += doubleval($plik[$i+1]);
+            }
+
+            $points = round($points, 8);
+
+            echo '<div style="width: 100%; border-bottom: 3px black dotted; margin-bottom: 10px; padding-bottom: 10px;">
+                <form method="POST" action="functions/edit_task.php">
+                    <p style="margin: 0 0 8px 0;"><span style="font-weight: bold;">Edytuj dla wszystkich testów:</span>
+                        <label style="margin-left: 40px; padding-right: 10px;" for="timelimitFORALL">Limit czasu:</label>
+                        <input type="text" name="timelimitFORALL" style="width: 100px; text-align: right;"> s
+                    </p>
+                    <p style="margin: 0 0 8px 0;">
+                        <label style="padding-right: 10px;" for="memorylimitFORALL">Limit pamięci:</label>
+                        <input type="text" name="memorylimitFORALL" style="width: 100px; text-align: right;"> MB
+                        <label style="margin-left: 40px; padding-right: 10px;" for="sumofpoints">Suma punktów:</label>
+                        <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" value="'.$points.'">
+                    </p>
+                    <input type="submit" value="Zatwierdź">
+                </form>
+            </div>';
+
+            $sz1 = 60;
+            $sz2 = 210;
+            $sz3 = 210;
+            $sz4 = 230;
+            $tal = 'text-align: left;';
+            $tac = 'text-align: center;';
+
+            echo '<table style="width: 700px;">
+                  <tr>
+                  <th style="width: '.$sz1.'px;">
+                    Nr<br/>testu
+                  </th>
+                  <th style="width: '.$sz2.'px;">
+                    Limit czasu
+                  </th>
+                  <th style="width: '.$sz3.'px;">
+                    Limit pamięci
+                  </th>
+                  <th style="width: '.$sz4.'px;">
+                    Liczba punktów<br/>za test
+                  </th>
+                  </tr>
+                  </table>
+                  
+                  <form method="POST" action="functions/edit_task.php">
+                  <table style="width: 700px; border-spacing: 0 15px;">';
+
             for($i=0;$i<$ilewierszy;$i+=1)
             {
                 if(substr($plik[$i],0,1)=='#')
                 {
-                    echo '<span style="font-weight: bold;">Test '.$lp.'</span>';
-                    echo '
-                    <label style="margin-left: 30px; padding-right: 10px;">Liczba punktów za test:</label>
-                    <input type="text" style="width: 140px;" value="'.doubleval($plik[$i+1]).'"><br/>
-                    <label style="margin-left: 74px; padding-right: 10px;">Limit czasu:</label>
-                    <input type="text" style="width: 100px; text-align: right;" value="'.doubleval($plik[$i+2]).'"> s
-                    <label style="margin-left: 30px; padding-right: 10px;">Limit pamięci:</label>
-                    <input type="text" style="width: 100px; text-align: right;" value="'.doubleval($plik[$i+3]).'"> MB<br/>';
+                    echo '<tr>
+                    <td style="width: '.$sz1.'px; '.$tac.'">
+                        '.$lp.'
+                    </td>
+                    <td style="width: '.$sz2.'px; '.$tac.'">
+                        <input type="text" style="width: 100px; text-align: right;" name="timelimit'.$lp.'" value="'.doubleval($plik[$i+2]).'" required> s
+                    </td>
+                    <td style="width: '.$sz3.'px; '.$tac.'">
+                        <input type="text" style="width: 100px; text-align: right;" name="memorylimit'.$lp.'" value="'.doubleval($plik[$i+3]).'" required> MB
+                    </td>
+                    <td style="width: '.$sz4.'px; '.$tac.'">
+                    <input type="text" style="width: 160px; text-align: center;" name="points'.$lp.'" value="'.doubleval($plik[$i+1]).'" required>
+                    </td>';
+                    echo '</tr>';
                     $lp+=1;
-
-                    if($lp!=$iletestow)
-                        echo '<br/>';
                 }
             }
+            echo '</table>
+            <input type="submit" value="Zapisz">
+            </form>';
         }else
         {
             echo "Błąd otwarcia pliku konfiguracyjnego!";

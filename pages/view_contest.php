@@ -52,6 +52,8 @@
 				}
 
 				if($points<1) $points=0;
+				else
+				$points = round($points, 8);
 
 				if(!($polaczenie->query("UPDATE submits SET points = '$points' WHERE id_submit='$id_submit'")))
 					echo "Error: ".$polaczenie->connect_errno;
