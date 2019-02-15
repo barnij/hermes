@@ -115,7 +115,7 @@
 
 					if(isset($_GET['tool']))
 					{
-						$tool = '/var/www/html/admin/tools/'.$_GET['tool'].".php";
+						$tool = $_SERVER['DOCUMENT_ROOT'].'/admin/tools/'.$_GET['tool'].".php";
 						include($tool);
 
 					}elseif(isset($_GET["brak"]))

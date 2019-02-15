@@ -35,7 +35,7 @@
 			<body>';
 			echo '<pre><code class="auto">';
 
-			$adres = '/var/www/html/submits/'.$id_submit;
+			$adres = $_SERVER['DOCUMENT_ROOT'].'/submits/'.$id_submit;
 
 			$czyistnieje = true;
 

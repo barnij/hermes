@@ -32,7 +32,7 @@
 
     $title_task = $_POST['title_task'];
 
-    $font = "/var/www/html/font/times.ttf";
+    $font = $_SERVER['DOCUMENT_ROOT']."/font/times.ttf";
 
     $words = explode(" ", $title_task);
 
@@ -94,7 +94,6 @@
     {
         if(count($_FILES['iny']['tmp_name']) != count($_FILES['outy']['tmp_name']))
         {
-            echo count($_FILES['iny']['tmp_name']).' '.count($_FILES['outy']['tmp_name']);
             $DanePoprawne=false;
             $_SESSION['e_outy']='Nierówna liczba testów wejściowych i plików wynikowych!';
         }

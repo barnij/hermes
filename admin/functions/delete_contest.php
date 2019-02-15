@@ -32,12 +32,12 @@
 
         while($row = mysqli_fetch_row($zapytanie))
         {
-            $resultadres = '/var/www/html/results/'.$row[0].'.txt';
+            $resultadres = $_SERVER['DOCUMENT_ROOT'].'/results/'.$row[0].'.txt';
 
             if(file_exists($resultadres))
               unlink($resultadres);
 
-            $submitadres = '/var/www/html/submits/'.$row[0].'.';
+            $submitadres = $_SERVER['DOCUMENT_ROOT'].'/submits/'.$row[0].'.';
 
             if(file_exists($submitadres.'cpp'))
               unlink($submitadres.'cpp');

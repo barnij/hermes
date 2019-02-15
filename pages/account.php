@@ -18,7 +18,7 @@
 			$_SESSION['e_nazwakonta']='<span class="error">Nazwa musi mieć od 1 do 40 znaków!</span><br/><br/>';
 		}
 
-		$font = "/var/www/html/font/times.ttf";
+		$font = $_SERVER['DOCUMENT_ROOT']."/font/times.ttf";
 
 		$words = explode(" ", $nazwakonta);
 

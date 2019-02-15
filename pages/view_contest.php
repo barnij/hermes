@@ -10,7 +10,7 @@
 	{
 		function updatetaskstatus($polaczenie, $id_submit)
 		{
-			$fileinresults = '/var/www/html/results/'.$id_submit.'.txt';
+			$fileinresults = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
 			
 			if(file_exists($fileinresults))
 			{
