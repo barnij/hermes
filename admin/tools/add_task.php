@@ -52,7 +52,7 @@
 			}
 		?>
 		<input type="file" name="iny[]" multiple="multiple" required/><br/><br/>
-		<label for="outy[]">Wybierz wyniki testów:</label>
+		<label for="outy[]">Wybierz pliki wynikowe:</label>
 		<input type="file" name="outy[]" multiple="multiple" required/><br/>
 		<?php
 			if(isset($_SESSION['e_outy']))

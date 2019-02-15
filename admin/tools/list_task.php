@@ -129,14 +129,33 @@
             <label for="trudnosc">Trudność:</label>
 	        <input type="range" id="RangeTrudnosc" name="trudnosc" min="0" max="10" step="1" oninput="document.getElementById(\'rangeValLabel\').innerHTML = this.value;" value="'.$difficulty.'"> <em id="rangeValLabel" style="font-style: normal; font-weight: bold">'.$difficulty.'</em>
             <br/><br/>
-            <input type="submit" value="Zapisz">
-        </form>
+
+            <table style="width: 680px;">
+            <tr>
+                <td style="width: 50%; text-align: left;">
+                    <input type="submit" value="Zapisz">
+                    </form>
+                </td>
+                <td style="width: 50%; text-align: right;">
+                    <form>
+                        <input type="submit" value="Usuń zadanie">
+                    </form>
+                </td>
+            </tr>
+            </table>
         </div>
 
         <p style="margin-top: 20px; margin-bottom: 3px;">Wybierz nowe pliki testów:</p>
         <div class="borderinedit">
+        <form method="POST" action="functions/edit_task.php" enctype="multipart/form-data">
+            <label for="newiny[]">Wybierz nowe testy wejściowe:</label>
+            <input type="file" name="newiny[]" multiple="multiple" required><br/><br/>
+            
+            <label for="newouty[]">Wybierz nowe pliki wynikowe:</label>
+            <input type="file" name="newouty[]" multiple="multiple" required><br/><br/>
 
-
+            <input type="submit" value="Zapisz">
+        </form>
         </div>
 
         
@@ -171,7 +190,7 @@
                         <label style="padding-right: 10px;" for="memorylimitFORALL">Limit pamięci:</label>
                         <input type="text" name="memorylimitFORALL" style="width: 100px; text-align: right;"> MB
                         <label style="margin-left: 40px; padding-right: 10px;" for="sumofpoints">Suma punktów:</label>
-                        <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" value="'.$points.'">
+                        <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" placeholder="'.$points.'">
                     </p>
                     <input type="submit" value="Zatwierdź">
                 </form>

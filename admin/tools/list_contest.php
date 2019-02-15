@@ -338,28 +338,49 @@
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
+			$sciezka = '/var/www/html/tasks/'.$row[0].'/conf.txt';
+
 			echo '<tr>';
-			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
-					<label for="'.$row[0].'">'.
-						$row[0]
-				  	.'</label></td>
-					<td style="width: '.$sz2.'px;">
-					<label for="'.$row[0].'">'.
-						$row[1]
-					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">
-					<label for="'.$row[0].'">'.
-						$row[2]
-					.'</label></td>
-					<td style="width: '.$sz4.'px; '.$tac.'">
-						[ <a href="'; 
-						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
-						else echo '/admin/functions/view_task.php?task='.$row[0];
-						echo'" target="_blank">Otwórz</a> ]
-					</td>
-					<td style="width: '.$sz5.'px; '.$tac.'">
-						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
-					</td>';
+
+			if(file_exists($sciezka))
+			{
+				$plik = file($sciezka);
+				$ilewierszy = count($plik)-1;
+				$points = 0;
+
+				for($i=0;$i<$ilewierszy;$i+=1)
+				{
+					if(substr($plik[$i],0,1)=='#')
+						$points += doubleval($plik[$i+1]);
+				}
+
+				$points = round($points, 8);
+
+				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
+						<label for="'.$row[0].'">'.
+							$row[0]
+						.'</label></td>
+						<td style="width: '.$sz2.'px;">
+						<label for="'.$row[0].'">'.
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$points.')</span>'
+						.'</label></td>
+						<td style="width: '.$sz3.'px; '.$tac.'">
+						<label for="'.$row[0].'">'.
+							$row[2]
+						.'</label></td>
+						<td style="width: '.$sz4.'px; '.$tac.'">
+							[ <a href="'; 
+							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+							else echo '/admin/functions/view_task.php?task='.$row[0];
+							echo'" target="_blank">Otwórz</a> ]
+						</td>
+						<td style="width: '.$sz5.'px; '.$tac.'">
+							<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
+						</td>';
+			}else
+			{
+				echo '<td style="width: 700px; color: red;">Brak pliku konfiguracyjnego zadania <b>'.$row[0].'</b>!</td>';
+			}
 
 			echo '</tr>';
 		}
@@ -372,28 +393,51 @@
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
+			$sciezka = '/var/www/html/tasks/'.$row[0].'/conf.txt';
+
 			echo '<tr>';
-			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
-					<label for="'.$row[0].'">'.
-						$row[0]
-				  	.'</label></td>
-					<td style="width: '.$sz2.'px;">
-					<label for="'.$row[0].'">'.
-						$row[1]
-					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">
-					<label for="'.$row[0].'">'.
-						$row[2]
-					.'</label></td>
-					<td style="width: '.$sz4.'px; '.$tac.'">
-						[ <a href="'; 
-						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
-						else echo '/admin/functions/view_task.php?task='.$row[0];
-						echo'" target="_blank">Otwórz</a> ]
-					</td>
-					<td style="width: '.$sz5.'px; '.$tac.'">
-						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
-					</td>';
+
+			if(file_exists($sciezka))
+			{
+				$plik = file($sciezka);
+				$ilewierszy = count($plik)-1;
+				$points = 0;
+
+				for($i=0;$i<$ilewierszy;$i+=1)
+				{
+					if(substr($plik[$i],0,1)=='#')
+						$points += doubleval($plik[$i+1]);
+				}
+
+				$points = round($points, 8);
+
+
+				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
+						<label for="'.$row[0].'">'.
+							$row[0]
+						.'</label></td>
+						<td style="width: '.$sz2.'px;">
+						<label for="'.$row[0].'">'.
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$points.')</span>'
+						.'</label></td>
+						<td style="width: '.$sz3.'px; '.$tac.'">
+						<label for="'.$row[0].'">'.
+							$row[2]
+						.'</label></td>
+						<td style="width: '.$sz4.'px; '.$tac.'">
+							[ <a href="'; 
+							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+							else echo '/admin/functions/view_task.php?task='.$row[0];
+							echo'" target="_blank">Otwórz</a> ]
+						</td>
+						<td style="width: '.$sz5.'px; '.$tac.'">
+							<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
+						</td>';
+
+			}else
+			{
+				echo '<td style="width: 700px; color: red;">Brak pliku konfiguracyjnego zadania <b>'.$row[0].'</b>!</td>';
+			}
 
 			echo '</tr>';
 		}
