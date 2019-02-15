@@ -50,22 +50,30 @@
     //---------- Treść zadania ---------------
 
     $max_rozmiar = 102400; //max 100kB
-    $id_admin = $_SESSION['id_admin'];
 
     if (is_uploaded_file($_FILES['tresc']['tmp_name'])){
+    
+        if ($_FILES['tresc']['size'] > $max_rozmiar) 
+        {
+            $DanePoprawne = false;
+            $_SESSION['e_text_task']='Plik jest za duży!';
+        }
+        else
+        {
+       
+            $filename = $_FILES['tresc']['name'];
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-       $filename = $_FILES['tresc']['name'];
-       $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-       if($ext == 'txt')
-            $pdf = 0;
-       else if($ext == 'pdf')
-            $pdf = 1;
-       else
-       {
-           $DanePoprawne=false;
-           $_SESSION['e_text_task']='Niedozwolone rozszerzenie pliku!';
-       }
+            if($ext == 'txt')
+                    $pdf = 0;
+            else if($ext == 'pdf')
+                    $pdf = 1;
+            else
+            {
+                $DanePoprawne=false;
+                $_SESSION['e_text_task']='Niedozwolone rozszerzenie pliku!';
+            }
+        }
 
     }else
     {

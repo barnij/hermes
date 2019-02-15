@@ -110,15 +110,27 @@
         }
         echo '</table>';
     
-    }else
+    }else //Edycja zadania
     {
         echo '<p style="margin-top: 0px; margin-bottom: 3px;">Edytuj podstawowe informacje:</p>
         <div class="borderinedit">
-        <form method="POST" action="functions/edit_task.php">
+        <form method="POST" action="functions/edit_task.php" enctype="multipart/form-data">
             <label for="title_task">Nazwa zadania:</label><br/>
-            <input style="width: 500px;" type="text" name="title_task" value="'.$title_task.'" required/><br/><br/>
+            <input style="width: 500px;" type="text" name="title_task" value="'.$title_task.'" required/><br/>';
+            if(isset($_SESSION['e_title_task']))
+            {
+                echo '<span class="error">'.$_SESSION['e_title_task'].'</span><br/>';
+                unset($_SESSION['e_title_task']);
+            }
+            echo '<br/>
             <label for="tresc">Treść zadania: </label>
-            <input type="file" name="tresc"><br/>
+            <input type="file" name="tresc" accept=".txt,.pdf">';
+            if(isset($_SESSION['e_text_task']))
+            {
+                echo '<span class="error">'.$_SESSION['e_text_task'].'</span>';
+                unset($_SESSION['e_text_task']);
+            }
+            echo '<br/>
             <span style="font-style: italic;">Nie wybierając pliku, treść nie zostanie zastąpiona.</span>
             <span style="padding-left: 20px;">[ <a href="';
             if($if_pdf)
@@ -133,12 +145,19 @@
             <table style="width: 680px;">
             <tr>
                 <td style="width: 50%; text-align: left;">
-                    <input type="submit" value="Zapisz">
-                    </form>
+                    <input type="hidden" name="id_task" value="'.$id_task.'">
+                    <input type="submit" value="Zapisz">';
+                    if(isset($_SESSION['success_edit_task_info']))
+                    {
+                        echo $_SESSION['success_edit_task_info'];
+                        unset($_SESSION['success_edit_task_info']);
+                    }
+                    echo '</form>
                 </td>
                 <td style="width: 50%; text-align: right;">
-                    <form>
-                        <input type="submit" value="Usuń zadanie">
+                    <form method="POST" action="functions/delete_task.php">
+                        <input type="hidden" name="id_task" value="'.$id_task.'">
+                        <input style="background-color: #ef6262;" type="submit" value="Usuń zadanie" onclick="'."return confirm('Czy na pewno chcesz to zrobić? Zostaną usunięte wszystkie pliki związane z tym zadaniem!');\"".'>
                     </form>
                 </td>
             </tr>
