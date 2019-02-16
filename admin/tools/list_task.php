@@ -157,6 +157,7 @@
                 <td style="width: 50%; text-align: right;">
                     <form method="POST" action="functions/delete_task.php">
                         <input type="hidden" name="id_task" value="'.$id_task.'">
+                        <input type="hidden" name="TAKusuntask" value="1">
                         <input style="background-color: #ef6262;" type="submit" value="Usuń zadanie" onclick="'."return confirm('Czy na pewno chcesz to zrobić? Zostaną usunięte wszystkie pliki związane z tym zadaniem!');\"".'>
                     </form>
                 </td>
