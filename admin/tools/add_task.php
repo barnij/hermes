@@ -29,7 +29,7 @@
 	<label for="tresc">Wybierz treść zadania (pdf/txt): </label>
 	<input type="file" name="tresc" accept=".txt,.pdf" required><br/>
 	Pobierz szablon: <a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TEX</a>
-	<a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TXT</a>
+	<a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.txt" download>TXT</a>
 	<?php
 		if(isset($_SESSION['e_text_task']))
 		{

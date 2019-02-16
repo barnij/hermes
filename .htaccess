@@ -10,6 +10,11 @@ Options +Indexes
     Deny from all
 </Files>
 
+<FilesMatch "szablon.txt">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
 RewriteEngine on
 
 RewriteRule ^contest?$ /contest.php
