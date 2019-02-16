@@ -292,6 +292,14 @@
 		}
 
 		echo '<div class="borderinedit">
+		<form method="post" action="functions/edit_contest_list.php">
+		
+		<p style="margin: 0 0 8px 0;">
+		<input type="submit" value="Zapisz zestaw zadań">';
+		if(isset($_SESSION['success_edit_contest_list']))
+			echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['success_edit_contest_list'].'</span>';
+		echo '</p>
+
 			<table style="width: 700px;">
 				<tr>
 					<th style="width: '.$sz1.'px; '.$tal.'">';
@@ -329,7 +337,6 @@
 					</th>
 				</tr>
 			</table>
-			<form method="post" action="functions/edit_contest_list.php">
 			<p style="margin-top: 8px; margin-bottom: 5px;">Dodane zadania:</br></p>
 			<table style="width: 700px; border-spacing:0 10px;">';
 
@@ -338,7 +345,7 @@
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
-			$sciezka = '/var/www/html/tasks/'.$row[0].'/conf.txt';
+			$sciezka = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$row[0].'/conf.txt';
 
 			echo '<tr>';
 
@@ -393,7 +400,7 @@
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
-			$sciezka = '/var/www/html/tasks/'.$row[0].'/conf.txt';
+			$sciezka = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$row[0].'/conf.txt';
 
 			echo '<tr>';
 

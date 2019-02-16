@@ -168,20 +168,56 @@
         <div class="borderinedit">
         <form method="POST" action="functions/edit_task.php" enctype="multipart/form-data">
             <label for="newiny[]">Wybierz nowe testy wejściowe:</label>
-            <input type="file" name="newiny[]" multiple="multiple" required><br/><br/>
+            <input type="file" name="newiny[]" multiple="multiple" required><br/>';
+            if(isset($_SESSION['e_iny']))
+            {
+                echo '<span class="error">'.$_SESSION['e_iny'].'</span><br/>';
+                unset($_SESSION['e_iny']);
+            }
+            echo '<br/>
             
             <label for="newouty[]">Wybierz nowe pliki wynikowe:</label>
-            <input type="file" name="newouty[]" multiple="multiple" required><br/><br/>
+            <input type="file" name="newouty[]" multiple="multiple" required><br/>';
+            if(isset($_SESSION['e_outy']))
+            {
+                echo '<span class="error">'.$_SESSION['e_outy'].'</span><br/>';
+                unset($_SESSION['e_outy']);
+            }
+            echo '<br/>
 
-            <input type="submit" value="Zapisz">
-        </form>
+            <span>Limity:</span>
+            <input type="text" name="timelimit" style="width: 50px; text-align: right; margin-left: 15px;" required> s
+            <input type="text" name="memorylimit" style="width: 50px; text-align: right; margin-left: 15px;" required> MB
+            <label for="startpoints" style="margin-left: 35px; padding-right: 10px;">Suma punktów:</label>
+            <input type="text" name="startpoints" style="width: 50px; margin-right: 50px;" required>
+            <input type="hidden" name="id_task" value="'.$id_task.'">
+            <input type="hidden" name="newtests" value="1">
+            <input type="submit" value="Zapisz">';
+            if(isset($_SESSION['e_limit']) || isset($_SESSION['e_startpoints']))
+                echo '<br/><br/>';
+            if(isset($_SESSION['e_limit']))
+            {
+                echo '<span class="error" style="margin-right: 40px;">'.$_SESSION['e_limit'].'</span>';
+                unset($_SESSION['e_limit']);
+            }
+            if(isset($_SESSION['e_startpoints']))
+            {
+                echo '<span class="error">'.$_SESSION['e_startpoints'].'</span>';
+                unset($_SESSION['e_startpoints']);
+            }
+            if(isset($_SESSION['success_edit_task_tests']))
+            {
+                echo $_SESSION['success_edit_task_tests'];
+                unset($_SESSION['success_edit_task_tests']);
+            }
+        echo '</form>
         </div>
 
         
         <p style="margin-top: 20px; margin-bottom: 3px;">Edytuj testy:</p>
         <div class="borderinedit">';
 
-        $conffile = '/var/www/html/tasks/'.$id_task.'/conf.txt';
+        $conffile = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$id_task.'/conf.txt';
 
         if(file_exists($conffile))
         {
@@ -211,8 +247,27 @@
                         <label style="margin-left: 40px; padding-right: 10px;" for="sumofpoints">Suma punktów:</label>
                         <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" placeholder="'.$points.'">
                     </p>
-                    <input type="submit" value="Zatwierdź">
-                </form>
+                    <input type="hidden" name="id_task" value="'.$id_task.'">
+                    <input type="hidden" name="setFORALL" value="1">
+                    <input type="submit" value="Zatwierdź">';
+                    if(isset($_SESSION['success_edit_task_setFORALL']))
+                    {
+                        echo $_SESSION['success_edit_task_setFORALL'];
+                        unset($_SESSION['success_edit_task_setFORALL']);
+                    }
+                    if(isset($_SESSION['e_limitFORALL']) || isset($_SESSION['e_pointsFORALL']))
+                        echo '<br/><br/>';
+                    if(isset($_SESSION['e_limitFORALL']))
+                    {
+                        echo '<span class="error" style="margin-right: 40px;">'.$_SESSION['e_limitFORALL'].'</span>';
+                        unset($_SESSION['e_limitFORALL']);
+                    }
+                    if(isset($_SESSION['e_pointsFORALL']))
+                    {
+                        echo '<span class="error">'.$_SESSION['e_pointsFORALL'].'</span>';
+                        unset($_SESSION['e_pointsFORALL']);
+                    }
+                echo '</form>
             </div>';
 
             $sz1 = 60;

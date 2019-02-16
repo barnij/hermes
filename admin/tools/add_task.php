@@ -27,7 +27,7 @@
 		}
 	?><br/><br/>
 	<label for="tresc">Wybierz treść zadania (pdf/txt): </label>
-	<input type="file" name="tresc" required><br/>
+	<input type="file" name="tresc" accept=".txt,.pdf" required><br/>
 	Pobierz szablon: <a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TEX</a>
 	<a style="padding-left: 10px; font-style: italic; text-decoration: none;" href="files/szablon.tex">TXT</a>
 	<?php
