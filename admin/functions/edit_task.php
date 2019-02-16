@@ -1,7 +1,7 @@
 <?php
     session_start();
 
-    if( ((!isset($_POST['setFORALL'])) && (!isset($_POST['newtests'])) && (!isset($_POST['title_task'])) ) || (!isset($_POST['id_task'])) || (!isset($_SESSION['zalogowanyadmin'])) )
+    if( ((!isset($_POST['seteverytest'])) && (!isset($_POST['setFORALL'])) && (!isset($_POST['newtests'])) && (!isset($_POST['title_task'])) ) || (!isset($_POST['id_task'])) || (!isset($_SESSION['zalogowanyadmin'])) )
     {
         header('Location: /admin');
 		exit();
@@ -356,6 +356,75 @@
             }
         }
 
+    }elseif(isset($_POST['seteverytest']))
+    {
+        $sciezka = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$id_task.'/conf.txt';
+        
+        if(file_exists($sciezka))
+        {
+            $plik = file($sciezka);
+            $iletestow = intval($plik[0]);
+
+            $DanePoprawne=true;
+
+            for($i=0;$i<$iletestow;$i+=1)
+            {
+                if($_POST['timelimit'.$i]<=0 || $_POST['memorylimit'.$i]<=0 || $_POST['points'.$i]<0 )
+                {
+                    $DanePoprawne = false;
+                    $_SESSION['e_seteverytest'] = 'Błąd! Sprawdź poprawność wprowadzonych danych!<br/>
+                    Pamiętaj, że limity muszą być > 0, a punkty za test >= 0.';
+                    break;
+                }
+            }
+
+            if($DanePoprawne)
+            {
+                $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+
+                if($polaczenie->connect_errno!=0)
+                {
+                    echo "Error: ".$polaczenie->connect_errno;
+                }
+                else
+                {
+                    unlink($sciezka);
+
+                    $conf = fopen($sciezka,"w") or die("Nie można utworzyć pliku konfiguracyjnego!");
+                    $suma = 0;
+
+                    fwrite($conf, $iletestow."\n"); //pierwsza linia
+
+                    for($i=0;$i<$iletestow;$i+=1)
+                    {
+                        fwrite($conf, "#".$i."\n");
+                        fwrite($conf, $_POST['points'.$i]."\n");
+                        fwrite($conf, $_POST['timelimit'.$i]."\n");
+                        fwrite($conf, $_POST['memorylimit'.$i]."\n");
+                        $suma+=$_POST['points'.$i];
+                    }
+
+                    $suma = round($suma, 8);
+
+                    fclose($conf);
+
+                    if($polaczenie->query("UPDATE tasks SET sum='$suma' WHERE id_task='$id_task'"))
+                    {
+                        $_SESSION['success_edit_task_everytest'] = '<span style="color: green; padding-left: 10px;">Zapisano.</span>';
+                    }else
+                    {
+                        echo "Error: ".$polaczenie->connect_errno;
+                        $_SESSION['e_seteverytest'] = 'Błąd w aktualizacji bazy danych!';
+                    }
+
+                    $polaczenie->close();
+                }
+            }
+
+        }else
+        {
+            echo 'Błąd otwarcia pliku konfiguracyjnego!';
+        }
     }
 
 ?>

@@ -309,8 +309,20 @@
                 }
             }
             echo '</table>
-            <input type="submit" value="Zapisz">
-            </form>';
+            <input type="hidden" name="id_task" value="'.$id_task.'">
+            <input type="hidden" name="seteverytest" value="1">
+            <input type="submit" value="Zapisz">';
+            if(isset($_SESSION['success_edit_task_everytest']))
+            {
+                echo $_SESSION['success_edit_task_everytest'];
+                unset($_SESSION['success_edit_task_everytest']);
+            }
+            if(isset($_SESSION['e_seteverytest']))
+            {
+                echo '<span class="error" style="margin-left: 20px;">'.$_SESSION['e_seteverytest'].'</span>';
+                unset($_SESSION['e_seteverytest']);
+            }
+            echo '</form>';
         }else
         {
             echo "Błąd otwarcia pliku konfiguracyjnego!";
