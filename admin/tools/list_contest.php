@@ -37,7 +37,7 @@
 			$ws = 'title_contest DESC';
 		}
 
-		$tresc = "SELECT id_contest, shortcut_contest, title_contest FROM contests GROUP BY ".$ws;
+		$tresc = "SELECT id_contest, shortcut_contest, title_contest FROM contests ORDER BY ".$ws;
 
 		$zapytanie = $polaczenie->query($tresc);
 
@@ -292,6 +292,14 @@
 		}
 
 		echo '<div class="borderinedit">
+		<form method="post" action="functions/edit_contest_list.php">
+		
+		<p style="margin: 0 0 8px 0;">
+		<input type="submit" value="Zapisz zestaw zadań">';
+		if(isset($_SESSION['success_edit_contest_list']))
+			echo '<span style="padding-left: 10px; color: green;">'.$_SESSION['success_edit_contest_list'].'</span>';
+		echo '</p>
+
 			<table style="width: 700px;">
 				<tr>
 					<th style="width: '.$sz1.'px; '.$tal.'">';
@@ -329,37 +337,45 @@
 					</th>
 				</tr>
 			</table>
-			<form method="post" action="functions/edit_contest_list.php">
 			<p style="margin-top: 8px; margin-bottom: 5px;">Dodane zadania:</br></p>
 			<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty, tasks.pdf FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
+		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty, tasks.pdf, tasks.sum FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
+			$sciezka = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$row[0].'/conf.txt';
+
 			echo '<tr>';
-			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
-					<label for="'.$row[0].'">'.
-						$row[0]
-				  	.'</label></td>
-					<td style="width: '.$sz2.'px;">
-					<label for="'.$row[0].'">'.
-						$row[1]
-					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">
-					<label for="'.$row[0].'">'.
-						$row[2]
-					.'</label></td>
-					<td style="width: '.$sz4.'px; '.$tac.'">
-						[ <a href="'; 
-						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
-						else echo '/admin/functions/view_task.php?task='.$row[0];
-						echo'" target="_blank">Otwórz</a> ]
-					</td>
-					<td style="width: '.$sz5.'px; '.$tac.'">
-						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
-					</td>';
+
+			if(file_exists($sciezka))
+			{
+				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
+						<label for="'.$row[0].'">'.
+							$row[0]
+						.'</label></td>
+						<td style="width: '.$sz2.'px;">
+						<label for="'.$row[0].'">'.
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$row['4'].')</span>'
+						.'</label></td>
+						<td style="width: '.$sz3.'px; '.$tac.'">
+						<label for="'.$row[0].'">'.
+							$row[2]
+						.'</label></td>
+						<td style="width: '.$sz4.'px; '.$tac.'">
+							[ <a href="'; 
+							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+							else echo '/admin/functions/view_task.php?task='.$row[0];
+							echo'" target="_blank">Otwórz</a> ]
+						</td>
+						<td style="width: '.$sz5.'px; '.$tac.'">
+							<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'" checked>
+						</td>';
+			}else
+			{
+				echo '<td style="width: 700px; color: red;">Brak pliku konfiguracyjnego zadania <b>'.$row[0].'</b>!</td>';
+			}
 
 			echo '</tr>';
 		}
@@ -367,33 +383,43 @@
 		<p style="margin-top: 5px; margin-bottom: 5px;">Pozostałe zadania:</br></p>
 		<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT id_task, title_task, difficulty, pdf FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
+		$tresc = "SELECT id_task, title_task, difficulty, pdf, sum FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
+			$sciezka = $_SERVER['DOCUMENT_ROOT'].'/tasks/'.$row[0].'/conf.txt';
+
 			echo '<tr>';
-			echo '<td style="font-weight: bold; width: '.$sz1.'px;">
-					<label for="'.$row[0].'">'.
-						$row[0]
-				  	.'</label></td>
-					<td style="width: '.$sz2.'px;">
-					<label for="'.$row[0].'">'.
-						$row[1]
-					.'</label></td>
-					<td style="width: '.$sz3.'px; '.$tac.'">
-					<label for="'.$row[0].'">'.
-						$row[2]
-					.'</label></td>
-					<td style="width: '.$sz4.'px; '.$tac.'">
-						[ <a href="'; 
-						if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
-						else echo '/admin/functions/view_task.php?task='.$row[0];
-						echo'" target="_blank">Otwórz</a> ]
-					</td>
-					<td style="width: '.$sz5.'px; '.$tac.'">
-						<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
-					</td>';
+
+			if(file_exists($sciezka))
+			{
+				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
+						<label for="'.$row[0].'">'.
+							$row[0]
+						.'</label></td>
+						<td style="width: '.$sz2.'px;">
+						<label for="'.$row[0].'">'.
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$row['4'].')</span>'
+						.'</label></td>
+						<td style="width: '.$sz3.'px; '.$tac.'">
+						<label for="'.$row[0].'">'.
+							$row[2]
+						.'</label></td>
+						<td style="width: '.$sz4.'px; '.$tac.'">
+							[ <a href="'; 
+							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
+							else echo '/admin/functions/view_task.php?task='.$row[0];
+							echo'" target="_blank">Otwórz</a> ]
+						</td>
+						<td style="width: '.$sz5.'px; '.$tac.'">
+							<input type="checkbox" name="listoftasks[]" id="'.$row[0].'" value="'.$row[0].'">
+						</td>';
+
+			}else
+			{
+				echo '<td style="width: 700px; color: red;">Brak pliku konfiguracyjnego zadania <b>'.$row[0].'</b>!</td>';
+			}
 
 			echo '</tr>';
 		}
@@ -556,7 +582,7 @@
 
 		//----------------------------------------------
 
-	}elseif(isset($_GET['ranking']))
+	}elseif(isset($_GET['ranking'])) //ranking
 	{
 		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
 		$zapytanie = $polaczenie -> query($tresc);
@@ -611,7 +637,7 @@
 			echo'>
 			<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
 			<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
-			<td width="'.$sz3.'" align="center" style="font-weight: bold;">'.$row[1].'</td>
+			<td width="'.$sz3.'" align="center" style="font-weight: bold;"><span title="'.$row[1].'">'.intval($row[1]).'</span></td>
 			<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
 			<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
 			</tr>';
@@ -635,7 +661,7 @@
 			{
 				echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">'.$lp.'</td>
 				<td width="'.$sz2.'" align="center" >'.$row[0].'</td>
-				<td width="'.$sz3.'" align="center">'.$row[1].'</td>
+				<td width="'.$sz3.'" align="center"><span title="'.$row[1].'">'.intval($row[1]).'</span></td>
 				<td width="'.$sz4.'" align="center" >'.$row[2].'</td>
 				<td width="'.$sz5.'" align="center" >'.$row[3].'</td>
 				<tr></tr>';

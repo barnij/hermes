@@ -36,7 +36,7 @@
 
 		if($rezultat['showresults']=='1')
 		{
-			$adres = 'C:\xampp\htdocs\results\\'.$id_submit.'.txt';
+			$adres = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
 			$plik = file($adres);
 			$ile = count($plik);
 			$plik = preg_replace('#\r\n?#', "\n", $plik);

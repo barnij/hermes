@@ -8,7 +8,7 @@
 	}
 	else
 	{
-		//unset($_SESSION['udanarejestracja']);
+		unset($_SESSION['udanarejestracja']);
 	}
 
 	//Usuwanie błędów rejestracji

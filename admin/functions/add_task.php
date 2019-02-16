@@ -32,7 +32,7 @@
 
     $title_task = $_POST['title_task'];
 
-    $font = "C:/xampp/htdocs/font/times.ttf";
+    $font = $_SERVER['DOCUMENT_ROOT']."/font/times.ttf";
 
     $words = explode(" ", $title_task);
 
@@ -50,22 +50,30 @@
     //---------- Treść zadania ---------------
 
     $max_rozmiar = 102400; //max 100kB
-    $id_admin = $_SESSION['id_admin'];
 
     if (is_uploaded_file($_FILES['tresc']['tmp_name'])){
+    
+        if ($_FILES['tresc']['size'] > $max_rozmiar) 
+        {
+            $DanePoprawne = false;
+            $_SESSION['e_text_task']='Plik jest za duży!';
+        }
+        else
+        {
+       
+            $filename = $_FILES['tresc']['name'];
+            $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-       $filename = $_FILES['tresc']['name'];
-       $ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-       if($ext == 'txt')
-            $pdf = 0;
-       else if($ext == 'pdf')
-            $pdf = 1;
-       else
-       {
-           $DanePoprawne=false;
-           $_SESSION['e_text_task']='Niedozwolone rozszerzenie pliku!';
-       }
+            if($ext == 'txt')
+                    $pdf = 0;
+            else if($ext == 'pdf')
+                    $pdf = 1;
+            else
+            {
+                $DanePoprawne=false;
+                $_SESSION['e_text_task']='Niedozwolone rozszerzenie pliku!';
+            }
+        }
 
     }else
     {
@@ -81,28 +89,21 @@
             $_SESSION['e_iny']='Błąd przesyłu plików!';       
     }
     
-    if($_POST['typeofouts']=='recznie') //Wrzucanie testów ręcznie
-    {
-        if (is_uploaded_file($_FILES['outy']['tmp_name'][0])) //outy
-        {
-            if(count($_FILES['iny']['tmp_name']) != count($_FILES['outy']['tmp_name']))
-            {
-                $DanePoprawne=false;
-                $_SESSION['e_outy']='Nierówna liczba testów wejściowych i plików wynikowych!';
-            }
-        }else
-        {
-            $DanePoprawne=false;
-            $_SESSION['e_outy']='Błąd przesyłu plików!';
-        }
 
-    }else //Wrzucanie testów automatycznie
+    if (is_uploaded_file($_FILES['outy']['tmp_name'][0])) //outy
     {
-        if (!is_uploaded_file($_FILES['wzorcowka']['tmp_name'])){
+        if(count($_FILES['iny']['tmp_name']) != count($_FILES['outy']['tmp_name']))
+        {
             $DanePoprawne=false;
-            $_SESSION['e_wzorcowka_task']='Błąd przesyłu pliku!';
+            $_SESSION['e_outy']='Nierówna liczba testów wejściowych i plików wynikowych!';
         }
+    }else
+    {
+        $DanePoprawne=false;
+        $_SESSION['e_outy']='Błąd przesyłu plików!';
     }
+
+    
 
     // Trudnosc
 
@@ -111,6 +112,22 @@
     // Limity
     $timelimit = $_POST['timelimit'];
     $memorylimit = $_POST['memorylimit'];
+
+    if($timelimit <= 0 || $memorylimit <= 0)
+    {
+        $DanePoprawne = false;
+        $_SESSION['e_limit']='Obie wartości muszą być dodatnie!';
+    }
+
+    //Startowa liczba punktów
+
+    $startpoints = $_POST['startpoints'];
+
+    if($startpoints < 1)
+    {
+        $DanePoprawne = false;
+        $_SESSION['e_startpoints'] = 'Minimalna wartość to 1!';
+    }
 
     if($DanePoprawne)
     {
@@ -124,34 +141,19 @@
 
         $iletestow = count($_FILES['iny']['tmp_name']);
 
-        if($_POST['typeofouts']=='recznie') //wrzucanie inów i outów ręcznie
+        for($i=0; $i < $iletestow; $i+=1)
         {
-            for($i=0; $i < $iletestow; $i+=1)
-            {
-                $filenamein = pathinfo($_FILES['iny']['name'][$i], PATHINFO_FILENAME);
-                $filenameout = pathinfo($_FILES['outy']['name'][$i], PATHINFO_FILENAME);
-                move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
-                move_uploaded_file($_FILES['outy']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
-            }
-        }else //wrzucanie inów ręcznie i outów automatycznie
-        {
-            for($i=0; $i < $iletestow; $i+=1)
-                move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$i.".in");
-            
-            move_uploaded_file($_FILES['wzorcowka']['tmp_name'], $sciezka."/wzorcowka.exe");
-
-            for($i=0; $i < $iletestow; $i+=1)
-            {
-                $polecenie = 'CD /D C:/xampp/htdocs/tasks/'.$id_task.'/ && wzorcowka.exe < in/'.$i.'.in > out/'.$i.'.out';
-                exec($polecenie);
-            }
-            
+            $filenamein = pathinfo($_FILES['iny']['name'][$i], PATHINFO_FILENAME);
+            $filenameout = pathinfo($_FILES['outy']['name'][$i], PATHINFO_FILENAME);
+            move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
+            move_uploaded_file($_FILES['outy']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
         }
+        
 
         $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
         fwrite($conf, $iletestow."\n");
 
-        $punktynatest = 100/$iletestow;
+        $punktynatest = $startpoints/$iletestow;
 
         for($i=0; $i<$iletestow; $i+=1)
         {
@@ -176,7 +178,7 @@
             mysqli_set_charset($polaczenie,"utf8");
             $polaczenie->query('SET NAMES utf8');
 
-            if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf) VALUES ('$id_task','$title_task','$difficulty','$pdf')"))
+            if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf,sum) VALUES ('$id_task','$title_task','$difficulty','$pdf','$startpoints')"))
             {
                 $_SESSION['success_add_task'] = '<span style="color: green; padding-left: 10px;">Dodano zadanie.</span>';
             }else
