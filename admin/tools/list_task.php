@@ -222,18 +222,8 @@
         if(file_exists($conffile))
         {
             $plik = file($conffile);
-            $iletestow = intval($plik[0]);
             $lp=0;
             $ilewierszy = count($plik)-1;
-            $sumapunkow = 0;
-
-            for($i=0;$i<$ilewierszy;$i+=1)
-            {
-                if(substr($plik[$i],0,1)=='#')
-                    $points += doubleval($plik[$i+1]);
-            }
-
-            $points = round($points, 8);
 
             echo '<div style="width: 100%; border-bottom: 3px black dotted; margin-bottom: 10px; padding-bottom: 10px;">
                 <form method="POST" action="functions/edit_task.php">
@@ -245,7 +235,7 @@
                         <label style="padding-right: 10px;" for="memorylimitFORALL">Limit pamięci:</label>
                         <input type="text" name="memorylimitFORALL" style="width: 100px; text-align: right;"> MB
                         <label style="margin-left: 40px; padding-right: 10px;" for="sumofpoints">Suma punktów:</label>
-                        <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" placeholder="'.$points.'">
+                        <input type="text" name="sumofpoints" style="width: 160px; text-align: center;" placeholder="'.$sum_of_points.'">
                     </p>
                     <input type="hidden" name="id_task" value="'.$id_task.'">
                     <input type="hidden" name="setFORALL" value="1">

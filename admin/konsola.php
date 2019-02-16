@@ -85,6 +85,7 @@
 							$title_task = $rezultat['title_task'];
 							$difficulty = $rezultat['difficulty'];
 							$if_pdf = $rezultat['pdf'];
+							$sum_of_points = $rezultat['sum'];
 							echo "ID wybranego zadania: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$id_task."</p>";
 						}

@@ -340,7 +340,7 @@
 			<p style="margin-top: 8px; margin-bottom: 5px;">Dodane zadania:</br></p>
 			<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty, tasks.pdf FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
+		$tresc = "SELECT contest_list.id_task AS id_task, tasks.title_task AS title_task, tasks.difficulty AS difficulty, tasks.pdf, tasks.sum FROM tasks, contest_list WHERE contest_list.id_contest='$id_contest' AND contest_list.id_task=tasks.id_task GROUP BY contest_list.id_task ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
@@ -351,25 +351,13 @@
 
 			if(file_exists($sciezka))
 			{
-				$plik = file($sciezka);
-				$ilewierszy = count($plik)-1;
-				$points = 0;
-
-				for($i=0;$i<$ilewierszy;$i+=1)
-				{
-					if(substr($plik[$i],0,1)=='#')
-						$points += doubleval($plik[$i+1]);
-				}
-
-				$points = round($points, 8);
-
 				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
 						<label for="'.$row[0].'">'.
 							$row[0]
 						.'</label></td>
 						<td style="width: '.$sz2.'px;">
 						<label for="'.$row[0].'">'.
-							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$points.')</span>'
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$row['4'].')</span>'
 						.'</label></td>
 						<td style="width: '.$sz3.'px; '.$tac.'">
 						<label for="'.$row[0].'">'.
@@ -395,7 +383,7 @@
 		<p style="margin-top: 5px; margin-bottom: 5px;">Pozostałe zadania:</br></p>
 		<table style="width: 700px; border-spacing:0 10px;">';
 
-		$tresc = "SELECT id_task, title_task, difficulty, pdf FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
+		$tresc = "SELECT id_task, title_task, difficulty, pdf, sum FROM tasks WHERE NOT EXISTS (SELECT NULL FROM contest_list WHERE contest_list.id_task = tasks.id_task AND id_contest = '$id_contest') ORDER BY ".$ws;
 		$zapytanie = $polaczenie->query($tresc);
 
 		while($row = mysqli_fetch_row($zapytanie))
@@ -406,26 +394,13 @@
 
 			if(file_exists($sciezka))
 			{
-				$plik = file($sciezka);
-				$ilewierszy = count($plik)-1;
-				$points = 0;
-
-				for($i=0;$i<$ilewierszy;$i+=1)
-				{
-					if(substr($plik[$i],0,1)=='#')
-						$points += doubleval($plik[$i+1]);
-				}
-
-				$points = round($points, 8);
-
-
 				echo '<td style="font-weight: bold; width: '.$sz1.'px;">
 						<label for="'.$row[0].'">'.
 							$row[0]
 						.'</label></td>
 						<td style="width: '.$sz2.'px;">
 						<label for="'.$row[0].'">'.
-							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$points.')</span>'
+							$row[1].' <span style="font-style: italic; padding-left: 5px;" title="Suma punktów">('.$row['4'].')</span>'
 						.'</label></td>
 						<td style="width: '.$sz3.'px; '.$tac.'">
 						<label for="'.$row[0].'">'.

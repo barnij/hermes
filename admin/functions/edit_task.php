@@ -184,44 +184,62 @@
 
         if($DanePoprawne)
         {
-            //usuwanie starych testow:
-            for($i=0; $i<$nrofoldtests; $i+=1)
+            $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+
+            if($polaczenie->connect_errno!=0)
             {
-                if(file_exists($sciezka.'/in/'.$i.'.in'))
-                    unlink($sciezka.'/in/'.$i.'.in');
+                echo "Error: ".$polaczenie->connect_errno;
+            }
+            else
+            {
+                //usuwanie starych testow:
+                for($i=0; $i<$nrofoldtests; $i+=1)
+                {
+                    if(file_exists($sciezka.'/in/'.$i.'.in'))
+                        unlink($sciezka.'/in/'.$i.'.in');
+                    
+                    if(file_exists($sciezka.'/out/'.$i.'.out'))
+                        unlink($sciezka.'/out/'.$i.'.out');
+                }
                 
-                if(file_exists($sciezka.'/out/'.$i.'.out'))
-                    unlink($sciezka.'/out/'.$i.'.out');
+                //wrzucanie nowych
+                $iletestow = count($_FILES['newiny']['tmp_name']);
+
+                for($i=0; $i < $iletestow; $i+=1)
+                {
+                    $filenamein = pathinfo($_FILES['newiny']['name'][$i], PATHINFO_FILENAME);
+                    $filenameout = pathinfo($_FILES['newouty']['name'][$i], PATHINFO_FILENAME);
+                    move_uploaded_file($_FILES['newiny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
+                    move_uploaded_file($_FILES['newouty']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
+                }
+                
+
+                $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
+                fwrite($conf, $iletestow."\n");
+
+                $punktynatest = $startpoints/$iletestow;
+
+                for($i=0; $i<$iletestow; $i+=1)
+                {
+                    fwrite($conf, "#".$i."\n");
+                    fwrite($conf, $punktynatest."\n");
+                    fwrite($conf, $timelimit."\n");
+                    fwrite($conf, $memorylimit."\n");
+                }
+
+                fclose($conf);
+
+                if($polaczenie->query("UPDATE tasks SET sum='$startpoints' WHERE id_task='$id_task'"))
+                {
+                    $_SESSION['success_edit_task_tests'] = '<span style="color: green; padding-left: 10px;">Zapisano.</span>';
+                }else
+                {
+                    echo "Error: ".$polaczenie->connect_errno;
+                }
+
+                $polaczenie->close();
+
             }
-            
-            //wrzucanie nowych
-            $iletestow = count($_FILES['newiny']['tmp_name']);
-
-            for($i=0; $i < $iletestow; $i+=1)
-            {
-                $filenamein = pathinfo($_FILES['newiny']['name'][$i], PATHINFO_FILENAME);
-                $filenameout = pathinfo($_FILES['newouty']['name'][$i], PATHINFO_FILENAME);
-                move_uploaded_file($_FILES['newiny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
-                move_uploaded_file($_FILES['newouty']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
-            }
-            
-
-            $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
-            fwrite($conf, $iletestow."\n");
-
-            $punktynatest = $startpoints/$iletestow;
-
-            for($i=0; $i<$iletestow; $i+=1)
-            {
-                fwrite($conf, "#".$i."\n");
-                fwrite($conf, $punktynatest."\n");
-                fwrite($conf, $timelimit."\n");
-                fwrite($conf, $memorylimit."\n");
-            }
-
-            fclose($conf);
-
-            $_SESSION['success_edit_task_tests'] = '<span style="color: green; padding-left: 10px;">Zapisano.</span>';
         }
 
     }elseif(isset($_POST['setFORALL']))
@@ -274,44 +292,63 @@
 
             if(file_exists($sciezka))
             {   
-                rename($sciezka,$sciezka1);
-                $oldconf = file($sciezka1);
-
-                $punktynatest = ($startpoints/intval($oldconf[0]));
-
-                $ilewierszy = count($oldconf)-1;
-                $conf = fopen($sciezka,"w") or die("Nie można utworzyć pliku konfiguracyjnego!");
-
-                fwrite($conf, $oldconf[0]); //pierwsza linia
                 
+                $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
 
-                for($i=1; $i<$ilewierszy; $i+=1)
+                if($polaczenie->connect_errno!=0)
                 {
-                    if(substr($oldconf[$i],0,1)=='#')
-                    {
-                        fwrite($conf, $oldconf[$i]);
-
-                        if($ifpoints)
-                            fwrite($conf, $punktynatest."\n");
-                        else
-                            fwrite($conf, $oldconf[$i+1]);
-
-                        if($iftime)
-                            fwrite($conf, $timelimit."\n");
-                        else
-                            fwrite($conf, $oldconf[$i+2]);
-
-                        if($ifmemory)
-                            fwrite($conf, $memorylimit."\n");
-                        else
-                            fwrite($conf, $oldconf[$i+3]);
-                    }
+                    echo "Error: ".$polaczenie->connect_errno;
                 }
+                else
+                {
+                    rename($sciezka,$sciezka1);
+                    $oldconf = file($sciezka1);
 
-                fclose($conf);
-                unlink($sciezka1);
+                    $punktynatest = ($startpoints/intval($oldconf[0]));
 
-                $_SESSION['success_edit_task_setFORALL'] = '<span style="color: green; padding-left: 10px;">Zapisano.</span>';
+                    $ilewierszy = count($oldconf)-1;
+                    $conf = fopen($sciezka,"w") or die("Nie można utworzyć pliku konfiguracyjnego!");
+
+                    fwrite($conf, $oldconf[0]); //pierwsza linia
+                    
+
+                    for($i=1; $i<$ilewierszy; $i+=1)
+                    {
+                        if(substr($oldconf[$i],0,1)=='#')
+                        {
+                            fwrite($conf, $oldconf[$i]);
+
+                            if($ifpoints)
+                                fwrite($conf, $punktynatest."\n");
+                            else
+                                fwrite($conf, $oldconf[$i+1]);
+
+                            if($iftime)
+                                fwrite($conf, $timelimit."\n");
+                            else
+                                fwrite($conf, $oldconf[$i+2]);
+
+                            if($ifmemory)
+                                fwrite($conf, $memorylimit."\n");
+                            else
+                                fwrite($conf, $oldconf[$i+3]);
+                        }
+                    }
+
+                    fclose($conf);
+                    unlink($sciezka1);
+
+                    if($polaczenie->query("UPDATE tasks SET sum='$startpoints' WHERE id_task='$id_task'"))
+                    {
+                        $_SESSION['success_edit_task_setFORALL'] = '<span style="color: green; padding-left: 10px;">Zapisano.</span>';
+                    }else
+                    {
+                        echo "Error: ".$polaczenie->connect_errno;
+                    }
+
+                    $polaczenie->close();
+
+                }
 
             }else
             {

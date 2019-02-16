@@ -178,7 +178,7 @@
             mysqli_set_charset($polaczenie,"utf8");
             $polaczenie->query('SET NAMES utf8');
 
-            if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf) VALUES ('$id_task','$title_task','$difficulty','$pdf')"))
+            if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf,sum) VALUES ('$id_task','$title_task','$difficulty','$pdf','$startpoints')"))
             {
                 $_SESSION['success_add_task'] = '<span style="color: green; padding-left: 10px;">Dodano zadanie.</span>';
             }else
