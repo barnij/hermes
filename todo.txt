@@ -14,12 +14,21 @@
 ☺ "zobacz kod" po naciśnięciu na datę we "wszystkich wysłaniach"
 ☺ wyświetl treść zadania po naciśnięciu na identyfikator zadania w wysłaniach
 ☺ wyświetlanie szczegółów submita
-☻ edycja contestów [admin]
+☺ edycja contestów [admin]
+☺ Ustalić plik konfiguracyjny do testów w module wrzucania [admin]
+☺ zakrycie wyników w conteście
+☺ naprawda view_contest.php - wyświetlanie i aktualizowanie statusu
+☺ zapisywanie konfiguracji w pliku conf.txt w trakcie wrzucania zadania
+☺ ranking contestu
+☺ +ranking contestu po terminie
+☺ dodawanie zadania [admin]
+☻ edycja zadania [admin]
+☺ sumowanie punktów w rankingu - co z liczbami po przecinku?
+    - wyświetlanie w polu tylko liczby całkowite, a pełne w dymku po najechaniu
+☺ danie adminowi wybór ilości początkowych punktów do rozdysponowania między testami?
+☺ wyniki z testów poniżej 1 dają 0, dzięki temu można robić zadania zero-jedynkowe.
+☺ sprawdzanie czy admin nie podał błędnych wartości limitów i punktów startowych
 > NAPISANIE BOTA
-> ranking contestu
-> +ranking contestu po terminie
-> dodawanie zadania [admin]
-> edycja zadania [admin]
 > dodawanie/usuwanie admina
 > zarządzanie użytkownikami [admin]
 > wyswietlanie szczegolow wyslania w ladny sposob
@@ -32,18 +41,17 @@
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
 > Moduł "zapomniałem hasła" i możliwość jego odzyskania.
-> Dokończyć moduł generowania outów [admin]
-> Ustalić plik konfiguracyjny do testów w module wrzucania [admin]
-> zakrycie wyników w conteście
-☺ naprawda view_contest.php - wyświetlanie i aktualizowanie statusu
-> zapisywanie konfiguracji w pliku conf.txt w trakcie wrzucania zadania
+> trzymanie łącznej sumy za zadnie w bazie
+
 > możliwość edycji zadania i edycji pliku conf.txt
 > wyświetlanie wyników w modal boxie
 
-> uporządkowanie repozytorium na githubie
 
 > szablon w Latexie
 > certyfikat https
 
-> Skonfigurować ponownie zabezpieczenia strony (Apache)
+> Skonfigurować ponownie zabezpieczenia strony (Apache.conf):
+    - wyłączenie indeksowania folderów
+> Skonfigurować ponownie php.ini:
+    - zwiększyć limit liczby przesyłanych plików i ich rozmiaru
 > Zmienić w pliku konsola.php ścieżki plików
