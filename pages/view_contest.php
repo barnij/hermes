@@ -8,6 +8,24 @@
 
 	if($AccessToContest)
 	{
+		echo '
+		<div id="myModal" class="modal">
+		<div class="modal-content">
+			<div id="modal-header">
+			<span class="close">&times;</span>
+			<h2>Wyniki sprawdzenia</h2>
+			</div>
+			<div class="modal-body">
+				<iframe name="iframemodal" style="width:100%; height: 400px;" frameborder="0"></iframe>
+			</div>
+			<div class="modal-footer">
+			<h3>Wynik</h3>
+			</div>
+		</div>
+		</div>
+		<a class="myBtn" onclick="openmodal(1)" href="/results/33" target="iframemodal">Open Modal</a>
+		<a class="myBtn" onclick="openmodal(2)" href="/results/32" target="iframemodal">Open Modal</a>';
+
 		function updatetaskstatus($polaczenie, $id_submit)
 		{
 			$fileinresults = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
@@ -135,7 +153,8 @@
 					if($showresults)
 					{
 						$rezultat = $zapytanie1->fetch_assoc();
-						echo '<a href="/results/'.$rezultat['id_submit'].'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+						echo '<a href="/results/'.$rezultat['id_submit'].'" style="color: green; font-weight: bold; text-decoration: none;" 
+						target="iframemodal" onclick="openmodal(1)">OK</a>';
 					}else
 						echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 				}else
@@ -154,15 +173,20 @@
 					elseif(!$showresults)
 						echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 					elseif($status==1)
-						echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+						echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;"
+						target="iframemodal" onclick="openmodal(1)">OK</a>';
 					elseif($status==2)
-						echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+						echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" 
+						target="iframemodal" onclick="openmodal(2)">ERR</a>';
 					elseif($status==3)
-						echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+						echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" 
+						target="iframemodal" onclick="openmodal(3)">CPE</a>';
 					elseif($status==4)
-						echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+						echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" 
+						target="iframemodal" onclick="openmodal(4)">TLE</a>';
 					elseif($status==5)
-						echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+						echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" 
+						target="iframemodal" onclick="openmodal(5)">SEG</a>';
 				}
 			}
 
@@ -173,6 +197,7 @@
 		echo '</tr>
 		</table>';
 
+		echo '<script type="text/javascript" src="/scripts/modal.js"></script>';
 	}
 	else
 	{

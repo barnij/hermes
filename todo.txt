@@ -28,6 +28,7 @@
 ☺ danie adminowi wybór ilości początkowych punktów do rozdysponowania między testami?
 ☺ wyniki z testów poniżej 1 dają 0, dzięki temu można robić zadania zero-jedynkowe.
 ☺ sprawdzanie czy admin nie podał błędnych wartości limitów i punktów startowych
+☺ trzymanie łącznej sumy za zadanie w bazie
 > NAPISANIE BOTA
 > dodawanie/usuwanie admina
 > zarządzanie użytkownikami [admin]
@@ -41,7 +42,7 @@
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
 > Moduł "zapomniałem hasła" i możliwość jego odzyskania.
-> trzymanie łącznej sumy za zadnie w bazie
+> wyświetlanie w statusie rozwiązania w jakim języku rozwiązano zadanie
 
 > możliwość edycji zadania i edycji pliku conf.txt
 > wyświetlanie wyników w modal boxie

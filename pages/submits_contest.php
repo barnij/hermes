@@ -163,15 +163,20 @@
 				elseif(!$showresults)
 					echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 				elseif($status==1)
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(1)">OK</a>';
 				elseif($status==2)
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(2)">ERR</a>';
 				elseif($status==3)
-					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(3)">CPE</a>';
 				elseif($status==4)
-					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" 
+					target="iframemodal" onclick="openmodal(4)">TLE</a>';
 				elseif($status==5)
-					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(5)">SEG</a>';
 
 				echo '</td>
 				<tr></tr>';
@@ -201,6 +206,8 @@
 			</table>';
 
 			//-------------------------------------------------
+
+			echo '<script type="text/javascript" src="/scripts/modal.js"></script>';
 
 		}elseif($showresults) //submity wszystkich
 		{
@@ -320,15 +327,20 @@
 					}
 				}
 				else if($status==1)
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(1)">OK</a>';
 				elseif($status==2)
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(2)">ERR</a>';
 				elseif($status==3)
-					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(3)">CPE</a>';
 				elseif($status==4)
-					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" 
+					target="iframemodal" onclick="openmodal(4)">TLE</a>';
 				elseif($status==5)
-					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" 
+					target="iframemodal" onclick="openmodal(5)">SEG</a>';
 
 
 				echo '</td>
@@ -359,6 +371,8 @@
 			</table>';
 
 			//----------------------------------------------
+
+			echo '<script type="text/javascript" src="/scripts/modal.js"></script>';
 
 		}else
 		{
