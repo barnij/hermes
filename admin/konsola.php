@@ -108,7 +108,7 @@
 				<p><a href="?tool=list_task">Zadania</a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_task") echo ' &bull;';?></p>
 				<p><a class="brak" href="?brak">Użytkownicy</a></p>
-				<p><a class="brak" href="?brak">Dodaj administratora</a></p>
+				<p><a href="?tool=manage_admin">Administatorzy</a></p>
 
 			</div>
 			<div id="content">
