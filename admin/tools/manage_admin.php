@@ -116,22 +116,23 @@ Dodaj administratora:<br/>
 		<?php 
 			if(isset($_SESSION['e_na_login']))
 			{
-				echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_na_login'].'</span>';
+				echo ' <br/><span class="error">'.$_SESSION['e_na_login'].'</span>';
 				unset($_SESSION['e_na_login']);
 			}
 		?><br/><br/>
 		<label for="na_pass">Podaj nowe hasło: </label>
-		<input type="password" name="na_pass" style="width: 150px; margin-left: 10px;" autocomplete="new-password" required><br/><br/>
+		<input type="password" name="na_pass" style="width: 150px; margin-left: 10px;" autocomplete="new-password" required>
 		<?php 
 			if(isset($_SESSION['e_na_pass']))
 			{
 				echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_na_pass'].'</span>';
 				unset($_SESSION['e_na_pass']);
 			}
-		?>
+		?><br/><br/>
 		<label for="na_pass_repeat">Powtórz hasło: </label>
 		<input type="password" name="na_pass_repeat" style="width: 150px; margin-left: 10px;" autocomplete="new-password" required>
 		<br/><br/>
+		<input type="hidden" name="parent" value="<?php echo $id_admin; ?>" required>
 		
 		<input type="submit" value="Zapisz">
 		<?php
@@ -149,7 +150,7 @@ Usuń administatora:<br/>
 	<?php
 		if(isset($_SESSION['success_remove_admin']))
 		{
-			echo $_SESSION['success_remove_admin'];
+			echo '<br/><span style="color: green; margin-left: 30px;">'.$_SESSION['success_remove_admin'].'</span>';
 			unset($_SESSION['success_remove_admin']);
 		}
 	?>
