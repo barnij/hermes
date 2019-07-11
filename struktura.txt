@@ -1,7 +1,7 @@
 conf.txt:
 2  - liczba testów
 #0 - nr testu
-0.5 - punkty za testu
+0.5 - punkty za test
 1 - limit czasu w sekundach
 250 - limit pamięci w MB
 #1
@@ -12,7 +12,7 @@ conf.txt:
 
 result:
 #0 - nr testu
-0 - punkty zdobyte za testu
+0 - punkty zdobyte za test
 0.37287888 - czas działania programu w sekundach
 11.22 - zużyta pamięć przez program
 2 - status testu
