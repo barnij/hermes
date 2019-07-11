@@ -88,6 +88,23 @@
 							$sum_of_points = $rezultat['sum'];
 							echo "ID wybranego zadania: <br/>";
 							echo "<p class=\"grubiejwmenu\"> > ".$id_task."</p>";
+						}elseif(isset($_GET['user']))
+						{
+							$id_user = $_GET['user'];
+
+							$zapytanie = $polaczenie->query("SELECT login, name, email FROM users WHERE id_user='$id_user'");
+
+							if(mysqli_num_rows($zapytanie)==0)
+							{
+								header('Location: /admin');
+							}
+							
+							$rezultat = $zapytanie->fetch_assoc();
+							$login_user = $rezultat['login'];
+							$name_user = $rezultat['name'];
+							$email_user = $rezultat['email'];
+							echo "Login wybranego użytkownika: <br/>";
+							echo "<p class=\"grubiejwmenu\"> > ".$login_user."</p>";
 						}
 					?>
 				</div>
@@ -107,8 +124,10 @@
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="add_task") echo ' &bull;';?></p>
 				<p><a href="?tool=list_task">Zadania</a>
 					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_task") echo ' &bull;';?></p>
-				<p><a class="brak" href="?brak">Użytkownicy</a></p>
-				<p><a href="?tool=manage_admin">Administatorzy</a></p>
+				<p><a href="?tool=list_users">Użytkownicy</a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="list_users") echo ' &bull;';?></p>
+				<p><a href="?tool=manage_admin">Administatorzy</a>
+					<?php if(isset($_GET['tool']) && $_GET['tool']=="manage_admin") echo ' &bull;';?></p>
 
 			</div>
 			<div id="content">

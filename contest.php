@@ -29,7 +29,6 @@
 <html lang="pl">
 <?php
 	include_once ('templates/head.php');
-	echo '<script type="text/javascript" src="/scripts/timer.js"></script>';
 ?>
 <body>
 	<div id="container">
