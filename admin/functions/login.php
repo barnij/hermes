@@ -24,21 +24,29 @@
 		$haslo = $_POST['adminpassword'];
 		
 		if($rezultat = @$polaczenie->query(
-		sprintf("SELECT * FROM admins WHERE login='%s' AND password='%s'",
+		sprintf("SELECT * FROM admins WHERE login='%s'",
 		mysqli_real_escape_string($polaczenie, $login),mysqli_real_escape_string($polaczenie, $haslo))))
 		{
 			if($rezultat->num_rows>0) //czy znaleziono w bazie
 			{
 				$wiersz = $rezultat->fetch_assoc();
-				
-				$_SESSION['zalogowanyadmin'] = true;
-				$_SESSION['admin_name'] = $wiersz['name'];
-				$_SESSION['id_admin'] = $wiersz['id_admin'];
-				
-				unset($_SESSION['blad']);
-				$rezultat->free();
-				header('Location: /admin/konsola.php');
 
+				if(password_verify($haslo,$wiersz['password']))
+				{
+					$_SESSION['zalogowanyadmin'] = true;
+					$_SESSION['admin_name'] = $wiersz['name'];
+					$_SESSION['id_admin'] = $wiersz['id_admin'];
+
+					unset($_SESSION['blad']);
+					$rezultat->free();
+					header('Location: /admin/konsola.php');
+				}
+				else
+				{
+					$_SESSION['blad'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
+					header('Location: /admin');
+				}				
+				
 			}
 			else
 			{

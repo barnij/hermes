@@ -8,76 +8,9 @@
 
 	if($AccessToContest)
 	{
-		echo '
-		<div id="myModal" class="modal">
-		<div class="modal-content">
-			<div id="modal-header">
-			<span class="close">&times;</span>
-			<h2>Wyniki sprawdzenia</h2>
-			</div>
-			<div class="modal-body">
-				<iframe name="iframemodal" style="width:100%; height: 400px;" frameborder="0"></iframe>
-			</div>
-			<div class="modal-footer">
-			<h3>Wynik</h3>
-			</div>
-		</div>
-		</div>
-		<a class="myBtn" onclick="openmodal(1)" href="/results/33" target="iframemodal">Open Modal</a>
-		<a class="myBtn" onclick="openmodal(2)" href="/results/32" target="iframemodal">Open Modal</a>';
+		require_once($_SERVER['DOCUMENT_ROOT'].'/functions/echomodal.php');
 
-		function updatetaskstatus($polaczenie, $id_submit)
-		{
-			$fileinresults = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
-			
-			if(file_exists($fileinresults))
-			{
-				$plik = file($fileinresults);
-				$ilewierszy = count($plik)-1;
-					
-				if(intval($plik[$ilewierszy])==1) //zaktualizuj na poprawna
-				{
-					if(!($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'")))
-						echo "Error: ".$polaczenie->connect_errno;
-				}
-				elseif(intval($plik[$ilewierszy])==2) //zaktualizuj na bledna
-				{	
-					if(!($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'")))
-						echo "Error: ".$polaczenie->connect_errno;
-				}
-				elseif(intval($plik[$ilewierszy])==3) //zaktualizuj na błąd kompilacji
-				{	
-					if(!($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'")))
-						echo "Error: ".$polaczenie->connect_errno;
-				}
-				elseif(intval($plik[$ilewierszy])==4) //zaktualizuj na przekroczenie czasu
-				{	
-					if(!($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'")))
-						echo "Error: ".$polaczenie->connect_errno;
-				}
-				elseif(intval($plik[$ilewierszy])==5) //zaktualizuj na naruszenie pamięci
-				{
-					if(!($polaczenie->query("UPDATE submits SET status = 5 WHERE id_submit='$id_submit'")))
-						echo "Error: ".$polaczenie->connect_errno;
-				}
-
-				$points = 0;
-
-				for($i=0;$i<$ilewierszy;$i+=1)
-				{
-					if(substr($plik[$i],0,1)=='#')
-						$points += doubleval($plik[$i+1]);
-				}
-
-				if($points<1) $points=0;
-				else
-				$points = round($points, 8);
-
-				if(!($polaczenie->query("UPDATE submits SET points = '$points' WHERE id_submit='$id_submit'")))
-					echo "Error: ".$polaczenie->connect_errno;
-
-			}
-		}
+		require_once($_SERVER['DOCUMENT_ROOT'].'/functions/updatetaskstatus.php');
 
 		echo '<table width="720" align="left">
 				<tr>
@@ -197,7 +130,7 @@
 		echo '</tr>
 		</table>';
 
-		echo '<script type="text/javascript" src="/scripts/modal.js"></script>';
+		
 	}
 	else
 	{

@@ -103,8 +103,9 @@
 					throw new Exception($polaczenie->error);
 				}
 
-				$polaczenie->close();
 			}
+
+			$polaczenie->close();
 		}
 
 		catch(Exception $e) //wyświetlanie błędu
@@ -129,13 +130,6 @@
 			<div style="height: 100px;"></div>
 			<div style="width: 50%; text-align: left; margin: auto;">
 				<form method="post">
-				
-					Podaj login: <br /><input type="text" name="login" required><br/>
-					<?php //błąd nazwy
-						if (isset($_SESSION['e_login'])) 
-							{echo '  <span class="error">'.$_SESSION['e_login'].'</span>';
-							unset($_SESSION['e_login']);}
-					?><br/>
 					
 					Podaj nazwę: <span style="font-style: italic;">(Zalecamy własne imię i nazwisko)</span><br />
 					<input type="text" name="nazwa" required><br/>
@@ -144,9 +138,16 @@
 							{echo '  <span class="error">'.$_SESSION['e_nazwa'].'</span>';
 							unset($_SESSION['e_nazwa']);}
 					?><br/>
+
+					Podaj login: <br /><input type="text" name="login" autocomplete="username" required><br/>
+					<?php //błąd nazwy
+						if (isset($_SESSION['e_login'])) 
+							{echo '  <span class="error">'.$_SESSION['e_login'].'</span>';
+							unset($_SESSION['e_login']);}
+					?><br/>
 					
 					Podaj hasło: <br />
-					<input type="password" name="haslo1" required><br/>
+					<input type="password" name="haslo1" autocomplete="new-password" required><br/>
 					<?php //błąd nazwy
 						if (isset($_SESSION['e_haslo'])) 
 							{echo '  <span class="error">'.$_SESSION['e_haslo'].'</span>';
@@ -154,7 +155,7 @@
 					?><br/>
 
 					Powtórz hasło: <br />
-					<input type="password" name="haslo2" required><br/>
+					<input type="password" name="haslo2" autocomplete="new-password" required><br/>
 					<?php //błąd nazwy
 						if (isset($_SESSION['e_haslo2'])) 
 							{echo '  <span class="error">'.$_SESSION['e_haslo2'].'</span>';

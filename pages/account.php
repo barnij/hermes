@@ -29,7 +29,7 @@
 			if(($right - $left)>160)
 	  		{
 	  			$DanePoprawne1=false;
-				$_SESSION['e_nazwakonta']='<span class="error">Pojedyńcze słowa są za długie!</span><br/><br/>';
+				$_SESSION['e_nazwakonta']='<span class="error">Pojedyncze słowa są za długie!</span><br/><br/>';
 	  		}
 		}
 		
