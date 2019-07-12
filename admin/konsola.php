@@ -35,6 +35,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
 	<link rel="shortcut icon" type="image/png" href="/favicon.png">
 	<link rel="stylesheet" type="text/css" href="/css/fontello.css">
+	<link rel="stylesheet" type="text/css" href="/css/modal.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body>

@@ -435,6 +435,8 @@
 	
 	}elseif(isset($_GET['submits'])) //lista wysłań
 	{
+		require_once($_SERVER['DOCUMENT_ROOT'].'/functions/echomodal.php');
+
 		$tresc="SELECT * from contests WHERE id_contest=".$_GET['edit_contest'];
 		$zapytanie = $polaczenie -> query($tresc);
 		$rezultat = $zapytanie->fetch_assoc();
@@ -470,7 +472,7 @@
 
 		$wszystkierekordy = mysqli_num_rows($zapytanie);
 
-		$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND 	submits.id_user=users.id_user ORDER BY submits.id_submit  DESC LIMIT $pominieterekordy, $rekordownastronie");
+		$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user=users.id_user ORDER BY submits.id_submit DESC LIMIT $pominieterekordy, $rekordownastronie");
 		
 		$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
 
@@ -527,31 +529,34 @@
 			$name_user=$row[6];
 			$if_pdf = $row[7];
 
-			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">';
+			echo '	<td width="'.$sz1.'" align="center" style="line-height: 32px;">
+				<a class="nolink" href="/admin/konsola.php?tool=list_task&edit_task='.$id_task.'" >'.$id_task.'</a>
+			</td>
+			<td width="'.$sz2.'" align="center" >';
 			if($if_pdf==1)
-				echo '<a class="nolink" href="/tasks/'.$id_task.'/'.$id_task.'.pdf" target="_blank">'.$id_task.'</a>';
+				echo '<a class="nolink" href="/tasks/'.$id_task.'/'.$id_task.'.pdf" target="_blank">'.$name_task.'</a>';
 			else
-				echo '<a class="nolink" href="/admin/functions/view_task.php?task='.$id_task.'" target="_blank">'.$id_task.'</a>';
+				echo '<a class="nolink" href="/admin/functions/view_task.php?task='.$id_task.'" target="_blank">'.$name_task.'</a>';
 			echo '</td>
-			<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
 			<td width="'.$sz3.'" align="center" >
 				<a class="nolink" href="/admin/functions/showusercode.php?submit='.$id_submit.'" target="_blank">'.$time.'</a>
 			</td>
-			<td width="'.$sz4.'" align="center" >'.$name_user.'</td>';
-			echo '<td width="'.$sz5.'" align="center" >';
+			<td width="'.$sz4.'" align="center" >
+				<a class="nolink" href="/admin/konsola.php?tool=list_users&user='.$id_user_submit.'">'.$name_user.'</td>
+			<td width="'.$sz5.'" align="center" >';
 			//sprawdzenie statusu:
 			if($status==0)
 				echo '<img src="/images/loading.gif" width="20px" height="20px" style="padding-top: 5px;">';
 			else if($status==1)
-				echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" target="_blank">OK</a>';
+				echo '<a href="/results/'.$id_submit.'" onclick="openmodal(1);" style="color: green; font-weight: bold; text-decoration: none;" target="iframemodal">OK</a>';
 			elseif($status==2)
-				echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" target="_blank">ERR</a>';
+				echo '<a href="/results/'.$id_submit.'" onclick="openmodal(2);" style="color: red; font-weight: bold; text-decoration: none;" target="iframemodal">ERR</a>';
 			elseif($status==3)
-				echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="_blank">CPE</a>';
+				echo '<a href="/results/'.$id_submit.'" onclick="openmodal(3);" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" target="iframemodal">CPE</a>';
 			elseif($status==4)
-				echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="_blank">TLE</a>';
+				echo '<a href="/results/'.$id_submit.'" onclick="openmodal(4);" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" target="iframemodal">TLE</a>';
 			elseif($status==5)
-				echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="_blank">SEG</a>';
+				echo '<a href="/results/'.$id_submit.'" onclick="openmodal(5);" style="color: #2800ad; font-weight: bold; text-decoration: none;" target="iframemodal">SEG</a>';
 
 			echo '</td>
 			<tr></tr>';
