@@ -6,7 +6,7 @@
 		header('Location: /admin');
 		exit();
     }
-    
+
     $id_contest = $_POST["id_contest"];
 
     $header = 'Location: /admin/konsola.php?tool=list_contest&edit_contest='.$id_contest;
@@ -30,7 +30,7 @@
 	$start = $_POST['start_contest'];
 
 	$end = $_POST['end_contest'];
-	
+
 	if(strtotime($end)<strtotime($start))
 	{
 		$DanePoprawne=false;
@@ -71,7 +71,7 @@
 	{
 		$timer = 0;
 	}
-	
+
 	if(isset($_POST['showresults']))
 	{
 		$showresults = 1;
@@ -87,7 +87,7 @@
 	{
 		$submitafterend = 0;
 	}
-    
+
     //echo $title."<br/>".$password."<br/>".$start."<br/>".$end."<br/>".$visibility."<br/>".$timer."<br/>".$id_contest;
 
 	require_once "../../functions/connect.php";
@@ -103,7 +103,7 @@
 			else //połączenie nawiązane!
 			{
 				mysqli_set_charset($polaczenie,"utf8");
-				$polaczenie->query('SET NAMES utf8');									
+				$polaczenie->query('SET NAMES utf8');
 			}
 
 			if ($DanePoprawne) // Wszystkie dane poprawne HURRA!

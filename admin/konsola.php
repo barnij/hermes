@@ -81,7 +81,7 @@
 							{
 								header('Location: /admin');
 							}
-							
+
 							$rezultat = $zapytanie->fetch_assoc();
 							$title_task = $rezultat['title_task'];
 							$difficulty = $rezultat['difficulty'];
@@ -99,7 +99,7 @@
 							{
 								header('Location: /admin');
 							}
-							
+
 							$rezultat = $zapytanie->fetch_assoc();
 							$login_user = $rezultat['login'];
 							$name_user = $rezultat['name'];

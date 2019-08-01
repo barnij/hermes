@@ -18,7 +18,7 @@
     try
     {
         $polaczenie = new mysqli($host, $db_user, $db_password, $db_name);
-    
+
         if($polaczenie->connect_errno!=0) //połączenie z DB nienawiązane
         {
             throw new Exception(mysqli_connect_errno());
@@ -26,21 +26,21 @@
         else //połączenie nawiązane!
         {
             mysqli_set_charset($polaczenie,"utf8");
-            $polaczenie->query('SET NAMES utf8');		
-            
+            $polaczenie->query('SET NAMES utf8');
+
             $zapytanie = $polaczenie->query("SELECT parent FROM admins WHERE id_admin='$toremove'");
             $rezulatat = $zapytanie->fetch_assoc();
             $parent = $rezulatat['parent'];
-            
+
             if(!$polaczenie->query("UPDATE admins SET parent='$parent' WHERE parent='$toremove'"))
                 throw new Exception($polaczenie->error);
-            
-            
+
+
             if(!$polaczenie->query("DELETE FROM admins WHERE id_admin='$toremove'"))
                 throw new Exception($polaczenie->error);
 
             $_SESSION['success_remove_admin'] = 'Pomyślnie usunięto administratora.';
-       
+
 
             $polaczenie->close();
 
@@ -53,8 +53,8 @@
         echo '<br /> Informacja deweloperska: '.$e;
     }
 
-    
-	
+
+
 
 
 

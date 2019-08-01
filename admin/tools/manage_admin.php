@@ -7,14 +7,14 @@
 
 	function foo(&$polaczenie, $i){
 		$zapytanie = $polaczenie->query("SELECT id_admin, login, name, parent FROM admins WHERE parent='$i'");
-		
+
 		while($row = mysqli_fetch_row($zapytanie))
 		{
 			echo '<li style="padding-bottom: 10px;">'.$row[0].' - <b>'.$row[1].'</b> - '.$row[2].' - '.$row[3];
 			echo '<button style="margin-left: 20px;" name="delete_admin" type="submit" value="'.$row[0].'"
 					onclick="'."return confirm('Czy na pewno chcesz usunąć tego administratora?');".'">Usuń</button></li>';
 			foo($polaczenie, $row[0]);
-		}	
+		}
 	}
 
 	if(isset($_POST['a_name']))
@@ -104,7 +104,7 @@ Dodaj administratora:<br/>
 	<form method="post" action="functions/add_admin.php">
 		<label for="na_login">Podaj nazwę nowego administratora: </label>
 		<input type="text" name="na_name" style="width: 150px; margin-left: 10px;" required>
-		<?php 
+		<?php
 			if(isset($_SESSION['e_na_name']))
 			{
 				echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_na_name'].'</span>';
@@ -113,7 +113,7 @@ Dodaj administratora:<br/>
 		?><br/><br/>
 		<label for="na_login">Podaj login nowego administratora: </label>
 		<input type="text" name="na_login" style="width: 150px; margin-left: 10px;"  autocomplete="username"  required>
-		<?php 
+		<?php
 			if(isset($_SESSION['e_na_login']))
 			{
 				echo ' <br/><span class="error">'.$_SESSION['e_na_login'].'</span>';
@@ -122,7 +122,7 @@ Dodaj administratora:<br/>
 		?><br/><br/>
 		<label for="na_pass">Podaj nowe hasło: </label>
 		<input type="password" name="na_pass" style="width: 150px; margin-left: 10px;" autocomplete="new-password" required>
-		<?php 
+		<?php
 			if(isset($_SESSION['e_na_pass']))
 			{
 				echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_na_pass'].'</span>';
@@ -133,7 +133,7 @@ Dodaj administratora:<br/>
 		<input type="password" name="na_pass_repeat" style="width: 150px; margin-left: 10px;" autocomplete="new-password" required>
 		<br/><br/>
 		<input type="hidden" name="parent" value="<?php echo $id_admin; ?>" required>
-		
+
 		<input type="submit" value="Zapisz">
 		<?php
 			if(isset($_SESSION['success_add_admin']))

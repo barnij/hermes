@@ -22,15 +22,15 @@
 			<div style="height: 100px;"></div>
 			<div id="logowanie">
 				<p><a href="/signup">Zarejestruj się już teraz</a></p>
-				
-				<?php  
+
+				<?php
 					if(isset($_SESSION['blad']))
 					{
 						echo $_SESSION['blad'].'<br/><br/>';
 						unset($_SESSION['blad']);
-					}						
+					}
 				?>
-				
+
 				<form action="/functions/login.php" method="post">
 					Login: <input type="text" name="login"><br/><br/>
 					Hasło: <input type="password" name="password"><br/><br/>

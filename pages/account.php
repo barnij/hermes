@@ -7,7 +7,7 @@
 	}
 
 	if(isset($_POST['nazwakonta']) || isset($_POST['email']))
-	{	
+	{
 		$DanePoprawne1 = true;
 
 		$nazwakonta = $_POST['nazwakonta'];
@@ -22,7 +22,7 @@
 
 		$words = explode(" ", $nazwakonta);
 
-		foreach ($words as $w) 
+		foreach ($words as $w)
 		{
 			list($left,, $right) = imagettfbbox( 16, 0, $font, $w);
 
@@ -32,7 +32,7 @@
 				$_SESSION['e_nazwakonta']='<span class="error">Pojedyncze słowa są za długie!</span><br/><br/>';
 	  		}
 		}
-		
+
 		$email = $_POST['email'];
 		$emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
 		if (!(filter_var($emailB, FILTER_VALIDATE_EMAIL)) || ($emailB!=$email)) //czy email poprawny
@@ -40,7 +40,7 @@
 			$DanePoprawne1=false;
 			$_SESSION['e_email']='<span class="error">Podaj poprawny adres email!</span><br/><br/>';
 		}
-		
+
 		if($DanePoprawne1==true)
 		{
 
@@ -130,7 +130,7 @@
 				echo $_SESSION['savedalert'];
 				unset($_SESSION['savedalert']);
 			}
-	
+
 	echo '</form>
 	</div>
 
@@ -159,7 +159,7 @@
 
 	echo	'<input type="submit" value="Zapisz">
 		';
-	
+
 			if(isset($_SESSION['newpasswordalert']))
 			{
 				echo $_SESSION['newpasswordalert'];

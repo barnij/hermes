@@ -21,7 +21,7 @@
 		$DanePoprawne=false;
 		$_SESSION['e_id_task']="Dozwolone znaki: A-Z, 0-9";
     }
-    
+
     if(strlen($id_task)>5 || strlen($id_task)==0) //dlugosc skrotu od 1 do 5 znakow
 	{
 		$DanePoprawne=false;
@@ -36,7 +36,7 @@
 
     $words = explode(" ", $title_task);
 
-    foreach ($words as $w) 
+    foreach ($words as $w)
     {
         list($left,, $right) = imagettfbbox( 16, 0, $font, $w);
 
@@ -52,15 +52,15 @@
     $max_rozmiar = 102400; //max 100kB
 
     if (is_uploaded_file($_FILES['tresc']['tmp_name'])){
-    
-        if ($_FILES['tresc']['size'] > $max_rozmiar) 
+
+        if ($_FILES['tresc']['size'] > $max_rozmiar)
         {
             $DanePoprawne = false;
             $_SESSION['e_text_task']='Plik jest za duży!';
         }
         else
         {
-       
+
             $filename = $_FILES['tresc']['name'];
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
@@ -86,9 +86,9 @@
     if (!is_uploaded_file($_FILES['iny']['tmp_name'][0])) //iny
     {
             $DanePoprawne=false;
-            $_SESSION['e_iny']='Błąd przesyłu plików!';       
+            $_SESSION['e_iny']='Błąd przesyłu plików!';
     }
-    
+
 
     if (is_uploaded_file($_FILES['outy']['tmp_name'][0])) //outy
     {
@@ -103,7 +103,7 @@
         $_SESSION['e_outy']='Błąd przesyłu plików!';
     }
 
-    
+
 
     // Trudnosc
 
@@ -148,7 +148,7 @@
             move_uploaded_file($_FILES['iny']['tmp_name'][$i], $sciezka."/in/".$filenamein.".in");
             move_uploaded_file($_FILES['outy']['tmp_name'][$i], $sciezka."/out/".$filenameout.".out");
         }
-        
+
 
         $conf = fopen($sciezka.'/conf.txt',"w") or die("Nie można utworzyć pliku konfiguracyjnego!"); //pisanie pliku konfiguracyjnego
         fwrite($conf, $iletestow."\n");
