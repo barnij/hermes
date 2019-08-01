@@ -123,6 +123,55 @@
 			</td>
 			</tr>
 		</table>";
+
+		echo '<br/>
+		<div style="border: 1px solid black; width:650px; min-height: 70px; padding: 15px;">
+			<form method="post" action="functions/manage_user.php">
+				<label>Nazwa użytkownika:</label>
+				<input type="text" style="width: 300px; margin-left: 10px;" name="username" value="'.$name_user.'">
+				<input type="hidden" name="id_user" value="'.$id_user.'">
+				<br/><br/>
+				<input type="submit" value="Zapisz">';
+				if(isset($_SESSION['e_username']))
+				{
+					echo $_SESSION['e_username'];
+					unset($_SESSION['e_username']);
+				}elseif(isset($_SESSION['success_change_username']))
+				{
+					echo '<span style="color: green; margin-left: 30px;">'.$_SESSION['success_change_username'].'</span>';
+					unset($_SESSION['success_change_username']);
+				}
+			echo '
+			</form>
+		</div><br/>
+		<div style="border: 1px solid black; width:650px; min-height: 70px; padding: 15px;">
+			<form method="post" action="functions/manage_user.php">
+				<input type="hidden" name="id_user" value="'.$id_user.'">
+				<input type="submit" name="reset" value="Zresetuj hasło">';
+				if(isset($_SESSION['success_change_pass']))
+				{
+					echo '<span style="color: green; margin-left: 20px;">'.$_SESSION['success_change_pass'].'</span>';
+					unset($_SESSION['success_change_pass']);
+				}
+			echo '
+			</form><br/>
+			<input type="text" readonly placeholder="Tutaj pojawi się wygenerowane hasło. Skopiuj je i przekaż użytkownikowi." style="width: 500px;" ';
+				if(isset($_SESSION['reset_pass']))
+				{
+					echo 'value="'.$_SESSION['reset_pass'].'"';
+					unset($_SESSION['reset_pass']);
+				}
+			echo '>
+		</div><br/>
+		<span style="margin-left: 15px; padding-right: 10px; font-weight: bold;">E-mail użytkownika:</span>
+		<input type="text" readonly ';
+		if($email_user!='')
+			echo 'value="'.$email_user.'"';
+		else
+			echo 'placeholder="Nie podano."';
+		echo '>';
+
+
 	}else //wysłania wybranego użytkownika
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'].'/functions/echomodal.php');
@@ -170,7 +219,7 @@
 		echo '</th>
 		<th width="640" style="text-align: center;"></th>
 		<th width="40" style="padding-bottom: 10px; text-align: right;">';
-		
+
 		if($nr_strony<$maxstron)
 			echo '<a href="/admin/konsola.php?tool=list_users&user='.$id_user.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -255,7 +304,7 @@
 		echo '</th>
 		<th width="640" style="text-align: center;"></th>
 		<th width="40" style="padding-top: 5px; text-align: right;">';
-		
+
 		if($nr_strony<$maxstron)
 			echo '<a href="/admin/konsola.php?tool=list_users&user='.$id_user.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
