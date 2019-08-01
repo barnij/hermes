@@ -6,7 +6,6 @@
 ☺ wyświetlanie zadań w conteście
 ☺ funkcja aktualizująca stan sprawdzonego zadania
 ☺ układ plików na serwerze strony
-☺ obsługa testowania rozwiązań w C/C++
 ☺ archiwum contestów
 ☺ historia submitów w conteście
 ☺ historia submitów użytkownika
@@ -22,7 +21,7 @@
 ☺ ranking contestu
 ☺ +ranking contestu po terminie
 ☺ dodawanie zadania [admin]
-☻ edycja zadania [admin]
+☺ edycja zadania [admin]
 ☺ sumowanie punktów w rankingu - co z liczbami po przecinku?
     - wyświetlanie w polu tylko liczby całkowite, a pełne w dymku po najechaniu
 ☺ danie adminowi wybór ilości początkowych punktów do rozdysponowania między testami?
@@ -30,22 +29,24 @@
 ☺ sprawdzanie czy admin nie podał błędnych wartości limitów i punktów startowych
 ☺ trzymanie łącznej sumy za zadanie w bazie
 > NAPISANIE BOTA
-> dodawanie/usuwanie admina
-> zarządzanie użytkownikami [admin]
-> wyswietlanie szczegolow wyslania w ladny sposob
-> zmiana w formatowaniu tekstu w plikach wyjsciowych bota
+☺ dodawanie/usuwanie admina [admin]
+☺ zarządzanie użytkownikami [admin]
+☺ wyswietlanie szczegolow wyslania w ladny sposob
+☺ zmiana w formatowaniu tekstu w plikach wyjsciowych bota
 > poprawne przyjmowanie plikow do sprawdzenia przez wysylanie pliku
 > poprawne przyjmowanie plikow do sprawdzenia przez wklejenie kodu
-> poprawne wyswietlanie kodu uzytkownika, wraz z wcięciami
+☺ poprawne wyswietlanie kodu uzytkownika, wraz z wcięciami
+☺ wyświetlanie w statusie rozwiązania w jakim języku rozwiązano zadanie
+☺ naprawa sumowania wielokrotnego punktów w rankingu
+
+☺ możliwość edycji zadania i edycji pliku conf.txt
+☺ wyświetlanie wyników w modal boxie
 > obsługa testowania rozwiązań w Pythonie
 > obsługa testowania rozwiązań w Maszynie RAM
 > obsługa testowania rozwiązań w BAPie
 > kanał aktualności
 > Moduł "zapomniałem hasła" i możliwość jego odzyskania.
-> wyświetlanie w statusie rozwiązania w jakim języku rozwiązano zadanie
 
-> możliwość edycji zadania i edycji pliku conf.txt
-> wyświetlanie wyników w modal boxie
 
 
 > szablon w Latexie

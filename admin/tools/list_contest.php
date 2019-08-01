@@ -117,10 +117,10 @@
 		$rezultat = $zapytanie->fetch_assoc();
 
 		echo '<script type="text/javascript">
-					function pokazedit() 
+					function pokazedit()
 					{
 						var x = document.getElementById("edytujszczegoly");
-						
+
 						if(x.style.display == "none")
 							x.style.display = "block";
 						else
@@ -186,9 +186,9 @@
 						} else {
 							x.type = "password";
 						}
-					} 
+					}
 				</script>
-				
+
 				<table style="width: 680px;">
 					<td style="text-align: left;">
 						<label for="password_contest">Hasło zawodów: </label>
@@ -201,14 +201,14 @@
 						<label for="showpassword">Pokaż hasło: </label><input type="checkbox" onclick="pokazhaslo()" id="showpassword">
 					</td>
 				</table><br/>
-				
+
 				<table style="width: 680px;">
 					<td style="text-align: left;">
 						<label for="visibility_contest">Widoczność na stronie głównej: </label>
-						<input type="checkbox" name="visibility_contest" id="visibility_contest" ';  
+						<input type="checkbox" name="visibility_contest" id="visibility_contest" ';
 							if($rezultat["visibility"]) echo 'checked';
 						echo '>
-						
+
 					</td>
 					<td style="text-align: left;">
 						<label for="timer_contest">Czy pokazywać licznik czasu?</label>
@@ -223,7 +223,7 @@
 						<label for="showresults">Widoczność wyników:</label>
 						<input type="checkbox" name="showresults" id="showresults" ';
 							if($rezultat['showresults']) echo 'checked';
-						echo '>	
+						echo '>
 					</td>
 					<td style="text-align: left;">
 						<label for="submitafterend">Wysyłanie rozwiązań po zakończeniu:</label>
@@ -232,7 +232,7 @@
 						echo '>
 					</td>
 				</table><br/>
-				
+
 				<input type="hidden" name="id_contest" value="'.$rezultat["id_contest"].'">
 				<table style="width: 680px; margin-top: 0;">
 					<tr>
@@ -252,7 +252,7 @@
 						</form>
 					</td>
 					</tr>
-				</table>	
+				</table>
 		</div>';
 
 		$sz1 = 100;
@@ -293,7 +293,7 @@
 
 		echo '<div class="borderinedit">
 		<form method="post" action="functions/edit_contest_list.php">
-		
+
 		<p style="margin: 0 0 8px 0;">
 		<input type="submit" value="Zapisz zestaw zadań">';
 		if(isset($_SESSION['success_edit_contest_list']))
@@ -318,7 +318,7 @@
 						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=2">Nazwa zadania ↓';
 					else
 						echo '<a class="nolink" href="?tool=list_contest&edit_contest='.$id_contest.'&sort=2">Nazwa zadania';
-				echo'</a>	
+				echo'</a>
 					</th>
 					<th style="width: '.$sz3.'px; '.$tac.'">';
 					if($sort==4)
@@ -364,7 +364,7 @@
 							$row[2]
 						.'</label></td>
 						<td style="width: '.$sz4.'px; '.$tac.'">
-							[ <a href="'; 
+							[ <a href="';
 							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
 							else echo '/admin/functions/view_task.php?task='.$row[0];
 							echo'" target="_blank">Otwórz</a> ]
@@ -407,7 +407,7 @@
 							$row[2]
 						.'</label></td>
 						<td style="width: '.$sz4.'px; '.$tac.'">
-							[ <a href="'; 
+							[ <a href="';
 							if($row[3]==1) echo '/tasks/'.$row[0].'/'.$row[0].'.pdf';
 							else echo '/admin/functions/view_task.php?task='.$row[0];
 							echo'" target="_blank">Otwórz</a> ]
@@ -432,7 +432,7 @@
 			unset($_SESSION['success_edit_contest_list']);
 		}
 		echo '</form></div>';
-	
+
 	}elseif(isset($_GET['submits'])) //lista wysłań
 	{
 		require_once($_SERVER['DOCUMENT_ROOT'].'/functions/echomodal.php');
@@ -473,7 +473,7 @@
 		$wszystkierekordy = mysqli_num_rows($zapytanie);
 
 		$zapytanie=$polaczenie->query("SELECT tasks.id_task,tasks.title_task,submits.time, submits.status,submits.id_submit, submits.id_user, users.name, tasks.pdf FROM tasks, submits, users WHERE tasks.id_task=submits.id_task AND submits.id_contest='$id_contest' AND submits.id_user=users.id_user ORDER BY submits.id_submit DESC LIMIT $pominieterekordy, $rekordownastronie");
-		
+
 		$maxstron = floor($wszystkierekordy/$rekordownastronie)-1;
 
 		if($wszystkierekordy%$rekordownastronie!=0)
@@ -491,7 +491,7 @@
 		echo '</th>
 		<th width="640" style="text-align: center;"></th>
 		<th width="40" style="padding-bottom: 10px; text-align: right;">';
-		
+
 		if($nr_strony<$maxstron)
 			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -577,7 +577,7 @@
 		echo '</th>
 		<th width="640" style="text-align: center;"></th>
 		<th width="40" style="padding-top: 5px; text-align: right;">';
-		
+
 		if($nr_strony<$maxstron)
 			echo '<a href="/admin/konsola.php?tool=list_contest&edit_contest='.$id_contest.'&submits&nr='.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -612,7 +612,7 @@
 			</tr>
 		</table>";
 
-		$zapytanie = $polaczenie->query("SELECT users.name, SUM(submits.points) AS sumapunktow, SUM(CASE submits.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE submits.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(submits.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(submits.time, '$start_time_contest')) END) AS czas FROM submits, users WHERE users.id_user=submits.id_user AND submits.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',submits.time)>0 GROUP BY submits.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+		$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits ON tt.id_user=submits.id_user AND tt.id_contest=submits.id_contest AND tt.id_task=submits.id_task AND tt.points=submits.points) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)>0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
 
 		$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
 		$sz1 = 50;
@@ -635,7 +635,7 @@
 
 		while($row = mysqli_fetch_row($zapytanie))
 		{
-			echo '<tr '; 
+			echo '<tr ';
 			if($lp==1) echo 'style="background-color: #52ea54;"';
 			else if($lp==2) echo 'style="background-color: #93ed94"';
 			else if($lp==3) echo 'style="background-color: #c1f4c1"';
@@ -651,8 +651,8 @@
 		echo '</tr>
 		</table><div style="clear: both;"></div><br/>';
 
-		$zapytanie = $polaczenie->query("SELECT users.name, SUM(submits.points) AS sumapunktow, SUM(CASE submits.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE submits.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(submits.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(submits.time, '$start_time_contest')) END) AS czas FROM submits, users WHERE users.id_user=submits.id_user AND submits.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',submits.time)<=0 GROUP BY submits.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
-		
+		$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits ON tt.id_user=submits.id_user AND tt.id_contest=submits.id_contest AND tt.id_task=submits.id_task AND tt.points=submits.points) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)<=0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+
 		if(mysqli_num_rows($zapytanie)>0)
 		{
 		echo 'Po zakończeniu zawodów:
