@@ -21,7 +21,7 @@
 
 		$dzis = date("U");
 		$expired = date("U", strtotime($end_time_contest));
-		
+
 		if($expired-$dzis <= 0 && !$submitafterend)
 		{
 			echo 'Wysyłanie zadań zostało zakończone.';
@@ -42,9 +42,9 @@
 			Wybierz plik: <span style="font-style: italic;">(Pierwszeństwo przesyłu)</span><br/>
 			<input type="file" name="plik"/><br/><br/>
 			lub wklej kod poniżej:<br/>
-			<textarea name="code" rows="10" cols="48" placeholder="Sprawdzanie kodu poprzez wklejenie jest chwilowo niedostępne."/></textarea><br/><br/>
+			<textarea name="code" rows="10" cols="70" wrap="off"/></textarea><br/><br/>
 			<input type="submit" value="Wyślij rozwiązanie"/>';
-			
+
 			if(isset($_SESSION['e_file']))
 			{
 				echo $_SESSION['e_file'];
