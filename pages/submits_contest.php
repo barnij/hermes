@@ -5,7 +5,7 @@
 		header('Location: /');
 		exit();
 	}
-	
+
 	if(!$AccessToContest)
 	{
 		header('Location: /'.$shortcut_contest);
@@ -20,7 +20,7 @@
 		else
 			$nr_strony=$_GET['nr'];
 
-		$rekordownastronie = 13;
+		$rekordownastronie = 30;
 		$pominieterekordy = $nr_strony*$rekordownastronie;
 
 		if(isset($_GET['my'])) //moje submity
@@ -48,7 +48,7 @@
 			echo '</th>
 			<th width="640" style="text-align: center;"></th>
 			<th width="40" style="padding-bottom: 10px; text-align: right;">';
-			
+
 			if($nr_strony<$maxstron)
 				echo '<a href="/'.$shortcut_contest.'/mysubmits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -115,19 +115,19 @@
 				elseif(!$showresults)
 					echo '<span style="color: grey; font-weight: bold; text-decoration: none;">?</span>';
 				elseif($status==1)
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(1)">OK</a>';
 				elseif($status==2)
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(2)">ERR</a>';
 				elseif($status==3)
-					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(3)">CPE</a>';
 				elseif($status==4)
-					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;"
 					target="iframemodal" onclick="openmodal(4)">TLE</a>';
 				elseif($status==5)
-					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(5)">SEG</a>';
 
 				echo '</td>
@@ -138,7 +138,7 @@
 			</table>';
 
 			//-------------- wybor strony ------------------
-			
+
 			echo '<table width="720"">
 			<tr>
 			<th width="40" style="padding-top: 5px; text-align: left;">';
@@ -149,7 +149,7 @@
 			echo '</th>
 			<th width="640"></th>
 			<th width="40" style="padding-top: 5px; text-align: right;">';
-			
+
 			if($nr_strony<$maxstron)
 				echo '<a href="/'.$shortcut_contest.'/mysubmits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -201,7 +201,7 @@
 			echo '</th>
 			<th width="640" style="text-align: center;"></th>
 			<th width="40" style="padding-bottom: 10px; text-align: right;">';
-			
+
 			if($nr_strony<$maxstron)
 				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 
@@ -257,7 +257,7 @@
 					echo '<a class="nolink" href="/'.$placetask.'/'.$id_task.'">'.$id_task.'</a>';
 				echo '</td>
 				<td width="'.$sz2.'" align="center" >'.$name_task.'</td>
-				<td width="'.$sz3.'" align="center" >'; 
+				<td width="'.$sz3.'" align="center" >';
 				if($id_user==$id_user_submit)
 				{
 					echo '<a class="nolink" href="/submit/'.$id_submit.'" target="_blank">'.$time.'</a>';
@@ -277,19 +277,19 @@
 					}
 				}
 				else if($status==1)
-					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: green; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(1)">OK</a>';
 				elseif($status==2)
-					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: red; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(2)">ERR</a>';
 				elseif($status==3)
-					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #7c0b0b; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(3)">CPE</a>';
 				elseif($status==4)
-					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #ffe900; font-weight: bold; text-decoration: none; text-shadow: 1px 1px black;"
 					target="iframemodal" onclick="openmodal(4)">TLE</a>';
 				elseif($status==5)
-					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;" 
+					echo '<a href="/results/'.$id_submit.'" style="color: #2800ad; font-weight: bold; text-decoration: none;"
 					target="iframemodal" onclick="openmodal(5)">SEG</a>';
 
 
@@ -312,7 +312,7 @@
 			echo '</th>
 			<th width="640" style="text-align: center;"></th>
 			<th width="40" style="padding-top: 5px; text-align: right;">';
-			
+
 			if($nr_strony<$maxstron)
 				echo '<a href="/'.$shortcut_contest.$submitstask.'/submits/'.($nr_strony+1).'" style="text-decoration: none; color: black; font-weight: bold;">→</a>';
 

@@ -34,7 +34,7 @@
 
 		$words = explode(" ", $nazwa);
 
-		foreach ($words as $w) 
+		foreach ($words as $w)
 		{
 			list($left,, $right) = imagettfbbox( 16, 0, $font, $w);
 
@@ -80,23 +80,23 @@
 				$rezultat = $polaczenie->query("SELECT id_user FROM users WHERE login='$login'");  //wybierz z DB rekordy z podanym loginem
 
 				if (!$rezultat) throw new Exception($polaczenie->error);
-					
+
 				if($rezultat->num_rows>0) //BŁĄD - konto z takim loginem już istnieje w bazie!
 				{
 					$DanePoprawne=false;
 					$_SESSION['e_login']="Konto z takim loginem już istnieje!<br/>";
-				}										
+				}
 			}
 
 			if ($DanePoprawne) // Wszystkie dane poprawne HURRA!
 			{
-				
+
 				if ($polaczenie->query("INSERT INTO users VALUES (NULL, '$login', '$nazwa', '$haslo_hash', '')")) //dodawanie rekordu do users
 				{
 
 					$_SESSION['udanarejestracja']=true;
 					header('Location: /welcome');
-					
+
 				}
 				else
 				{
@@ -130,26 +130,26 @@
 			<div style="height: 100px;"></div>
 			<div style="width: 50%; text-align: left; margin: auto;">
 				<form method="post">
-					
+
 					Podaj nazwę: <span style="font-style: italic;">(Zalecamy własne imię i nazwisko)</span><br />
 					<input type="text" name="nazwa" required><br/>
 					<?php //błąd nazwy
-						if (isset($_SESSION['e_nazwa'])) 
+						if (isset($_SESSION['e_nazwa']))
 							{echo '  <span class="error">'.$_SESSION['e_nazwa'].'</span>';
 							unset($_SESSION['e_nazwa']);}
 					?><br/>
 
 					Podaj login: <br /><input type="text" name="login" autocomplete="username" required><br/>
 					<?php //błąd nazwy
-						if (isset($_SESSION['e_login'])) 
+						if (isset($_SESSION['e_login']))
 							{echo '  <span class="error">'.$_SESSION['e_login'].'</span>';
 							unset($_SESSION['e_login']);}
 					?><br/>
-					
+
 					Podaj hasło: <br />
 					<input type="password" name="haslo1" autocomplete="new-password" required><br/>
 					<?php //błąd nazwy
-						if (isset($_SESSION['e_haslo'])) 
+						if (isset($_SESSION['e_haslo']))
 							{echo '  <span class="error">'.$_SESSION['e_haslo'].'</span>';
 							unset($_SESSION['e_haslo']);}
 					?><br/>
@@ -157,7 +157,7 @@
 					Powtórz hasło: <br />
 					<input type="password" name="haslo2" autocomplete="new-password" required><br/>
 					<?php //błąd nazwy
-						if (isset($_SESSION['e_haslo2'])) 
+						if (isset($_SESSION['e_haslo2']))
 							{echo '  <span class="error">'.$_SESSION['e_haslo2'].'</span>';
 							unset($_SESSION['e_haslo2']);}
 					?><br/>
@@ -166,12 +166,12 @@
 						<input type="checkbox" name="regulamin"> Akceptuję regulamin<br/>
 					</label>
 					<?php //błąd nazwy
-						if (isset($_SESSION['e_regulamin'])) 
+						if (isset($_SESSION['e_regulamin']))
 							{echo '  <span class="error">'.$_SESSION['e_regulamin'].'</span>';
 							unset($_SESSION['e_regulamin']);}
 					?><br/>
-				
-				
+
+
 					<input type="submit" value="Zarejestruj się">
 				</form>
 			</div>

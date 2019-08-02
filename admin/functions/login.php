@@ -1,5 +1,5 @@
 <?php
-	
+
 	session_start();
 
 	if ((!isset($_POST['adminlogin'])) || (!isset($_POST['adminpassword'])))
@@ -7,7 +7,7 @@
 		header('Location: /admin');
 		exit();
 	}
-	
+
 	require_once "../../functions/connect.php";
 
 	$polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
@@ -22,7 +22,7 @@
 		$polaczenie->query('SET NAMES utf8');
 		$login = htmlentities($_POST['adminlogin'], ENT_QUOTES, "UTF-8");
 		$haslo = $_POST['adminpassword'];
-		
+
 		if($rezultat = @$polaczenie->query(
 		sprintf("SELECT * FROM admins WHERE login='%s'",
 		mysqli_real_escape_string($polaczenie, $login),mysqli_real_escape_string($polaczenie, $haslo))))
@@ -45,8 +45,8 @@
 				{
 					$_SESSION['blad'] = '<span style="color:red">Nieprawidłowy login lub hasło!</span>';
 					header('Location: /admin');
-				}				
-				
+				}
+
 			}
 			else
 			{
