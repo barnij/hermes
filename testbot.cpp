@@ -83,6 +83,7 @@ int main(int argc, char* argv[])
     }
 
     int nr = atoi(argv[1]);
+    int lang = whatlang(argv[2], nr);
 
     if((pid = fork()) < 0)
     {
@@ -93,7 +94,6 @@ int main(int argc, char* argv[])
 
     if(pid==0) //child
     {
-        int lang = whatlang(argv[2], nr);
         string file = "submits/" + (string)argv[1] + (string)argv[2];
         string compfile = "playground/" + (string)argv[1];
 
@@ -119,9 +119,64 @@ int main(int argc, char* argv[])
                 compilation_error = true;
         }
         else
-            logsomething(CHILD_ERR, "Status:"+status);
+            logsomething(CHILD_ERR, "Status:"+to_string(status));
+
+        fstream conffile, result;
+        string taskpath = "tasks/" + (string)argv[3];
+        string confpath = taskpath + "/conf.txt";
+        string resultpath = "results/"+(string)argv[1]+".txt";
+        string OPTS, command, program, in_test, out_test, tmp;
+        //settings of sio2jail
+        OPTS += " --mount-namespace off";
+        OPTS += " --pid-namespace off";
+        OPTS += " --uts-namespace off";
+        OPTS += " --ipc-namespace off";
+        OPTS += " --net-namespace off";
+        OPTS += " --capability-drop off --user-namespace off";
+        OPTS += " -l oiejq/sio2jail.log";
+        OPTS += " -s";
+        conffile.open(confpath, ios::in);
+        result.open(resultpath, ios::out);
+
+        int n_test, memory_limit, time_limit, max_points, memory, time, points;
+        conffile >> n_test;
+
+        for(int i=0; i<n_test; i++)
+        {
+            conffile >> tmp;
+            result << tmp << endl;
+
+            if(compilation_error)
+            {
+                result << "-" << endl; //points
+                result << "-" << endl; //time
+                result << "-" << endl; //memory
+                result << "3" << endl; //status
+            }else
+            {
+                conffile >> max_points;
+                conffile >> time_limit;
+                conffile >> memory_limit;
+
+                in_test = taskpath + "/in/" + to_string(i) + ".in";
+                out_test = taskpath + "/out/" + to_string(i) + ".out";
+                if(lang==CPP || lang==PYT)
+                {
+                    program = "playground/" + (string)argv[1];
+                    command = "oiejq/sio2jail -f 3 -o oiaug " + OPTS + " -- " + program + " < " + in_test + " > test.tmp";
+                    system(command.c_str());
+                }
+
+            }
+
+        }
+
+        result.close();
+        conffile.close();
 
 
+
+        OPTS += " -m $MEM_LIMIT";
     }
 
     return EXIT_SUCCESS;
