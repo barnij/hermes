@@ -1,6 +1,0 @@
-1.   0.063sek / 1sek                0pkt / 0.2pkt                error
-2.   0.074sek / 1sek                0pkt / 0.2pkt                error
-3.   0.07sek / 1sek                0pkt / 0.2pkt                error
-4.   0.065sek / 1sek                0pkt / 0.2pkt                error
-5.   0.065sek / 1sek                0pkt / 0.2pkt                error
-0
