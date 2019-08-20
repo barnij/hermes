@@ -94,8 +94,8 @@ int main(int argc, char* argv[])
 
     if(pid==0) //child
     {
-        string file = "submits/" + (string)argv[1] + (string)argv[2];
-        string compfile = "playground/" + (string)argv[1];
+        string file = "/var/www/hermes/public_html/submits/" + (string)argv[1] + (string)argv[2];
+        string compfile = "/var/www/hermes/public_html/playground/" + (string)argv[1];
 
         switch (lang)
         {
@@ -122,10 +122,11 @@ int main(int argc, char* argv[])
             logsomething(CHILD_ERR, "Status:"+to_string(status));
 
         fstream conffile, result;
-        string taskpath = "tasks/" + (string)argv[3];
+        string taskpath = "/var/www/hermes/public_html/tasks/" + (string)argv[3];
         string confpath = taskpath + "/conf.txt";
         string resultpath = "results/"+(string)argv[1]+".txt";
-        string OPTS, command, program, in_test, out_test, tmp;
+        string OPTS, command, program, in_test, out_test, tmp, playgroundpath;
+	playgroundpath = "/var/www/hermes/public_html/playground/";
         //settings of sio2jail
         OPTS += " --mount-namespace off";
         OPTS += " --pid-namespace off";
@@ -140,6 +141,7 @@ int main(int argc, char* argv[])
 
         int n_test, memory_limit, time_limit, max_points, memory, time, points;
         conffile >> n_test;
+	cout<<n_test<<endl;
 
         for(int i=0; i<n_test; i++)
         {
@@ -157,13 +159,14 @@ int main(int argc, char* argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
+		//string OPTS1 = OPTS + "-m " + to_string(memory_limit);
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
                 out_test = taskpath + "/out/" + to_string(i) + ".out";
                 if(lang==CPP || lang==PYT)
                 {
-                    program = "playground/" + (string)argv[1];
-                    command = "oiejq/sio2jail -f 3 -o oiaug " + OPTS + " -- " + program + " < " + in_test + " > test.tmp";
+                    program = playgroundpath + (string)argv[1];
+                    command = "oiejq/sio2jail -f 3 -o oiaug " + OPTS + " -- " + program + " < " + in_test + " 3>test.tmp";
                     system(command.c_str());
                 }
 
