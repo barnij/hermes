@@ -187,7 +187,8 @@ int main(int argc, char *argv[])
         conffile.open(newconfpath, ios::in);
         result.open(resultpath, ios::out);
 
-        int n_test, memory_limit, time_limit, max_points, memory, time, points;
+        int n_test;
+        double memory_limit, time_limit, max_points, memory, time, points;
         conffile >> n_test;
 
         for (int i = 0; i < n_test; i++)
@@ -207,7 +208,8 @@ int main(int argc, char *argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
-                string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
+                memory_limit *= 1024;
+                string OPTS1 = OPTS + "-m " + to_string(memory_limit);
                 //OPTS1 += "--rtimelimit " + time_limit;
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
