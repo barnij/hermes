@@ -187,7 +187,8 @@ int main(int argc, char *argv[])
         conffile.open(newconfpath, ios::in);
         result.open(resultpath, ios::out);
 
-        int n_test;
+	int priority_status = 0;
+        long long int n_test, int_time_limit, int_memory_limit;
         double memory_limit, time_limit, max_points, memory, time, points;
         conffile >> n_test;
 
@@ -208,9 +209,13 @@ int main(int argc, char *argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
-                memory_limit *= 1024;
-                string OPTS1 = OPTS + "-m " + to_string(memory_limit);
-                //OPTS1 += "--rtimelimit " + time_limit;
+		time_limit *= 100;
+		int_time_limit = (long long int)time_limit;
+		memory_limit *= 1000;
+		int_memory_limit = (long long int)memory_limit;
+		cout<<to_string(int_memory_limit)<<endl;
+                string OPTS1 = OPTS + " -m 9M"; //+ to_string(int_memory_limit);
+                OPTS1 += " --rtimelimit " + to_string(int_time_limit)+"ms";
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
                 out_test = taskpath + "/out/" + to_string(i) + ".out";
@@ -234,6 +239,7 @@ int main(int argc, char *argv[])
                 sio2jail_file_stream >> sio_sysc;
 
                 sio2jail_file_stream.close();
+
 
 
 
