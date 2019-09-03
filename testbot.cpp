@@ -10,12 +10,19 @@
 #include <cassert>
 using namespace std;
 
+string document_root = "/var/www/hermes/public_html/";
+
 template <std::size_t N>
 int execvp(const char *file, const char *const (&argv)[N])
 {
     assert((N > 0) && (argv[N - 1] == nullptr));
 
     return execvp(file, const_cast<char *const *>(argv));
+}
+
+inline bool exists_test(const std::string &name)
+{
+    return (access(name.c_str(), F_OK) != -1);
 }
 
 //argv[1] - id submita
@@ -34,7 +41,8 @@ enum LOGTYPE
     FORK_ERR,
     LANG_ERR,
     ARGS_ERR,
-    CHILD_ERR
+    CHILD_ERR,
+    COPY_CONF_ERR
 };
 
 const std::string currentDateTime()
@@ -51,7 +59,7 @@ const std::string currentDateTime()
 void logsomething(int what, string rest="")
 {
     fstream log;
-    string logpath = "testbot.log";
+    string logpath = document_root+"testbot.log";
     log.open(logpath, ios::out | ios::app);
     log << currentDateTime() << " ";
 
@@ -66,6 +74,9 @@ void logsomething(int what, string rest="")
             << "-" << rest;
     else if (what == CHILD_ERR)
         log << "ERROR: Child has not terminated correctly"
+            << "-" << rest;
+    else if (what == COPY_CONF_ERR)
+        log << "The conf file hasn't been copied properly"
             << "-" << rest;
 
     log << endl;
@@ -113,9 +124,9 @@ int main(int argc, char *argv[])
     if (pid == 0) //child
     {
         //path to submits
-        string file = "/var/www/hermes/public_html/submits/" + snr + (string)argv[2];
+        string file = document_root+"submits/" + snr + (string)argv[2];
         //path to work directory
-        string compfile = "/var/www/hermes/public_html/playground/" + snr;
+        string compfile = document_root+"playground/" + snr;
 
         switch (lang)
         {
@@ -143,13 +154,13 @@ int main(int argc, char *argv[])
             logsomething(CHILD_ERR, "Status:" + to_string(status));
 
         fstream conffile, result, sio2jail_file_stream;
-        string taskpath = "/var/www/hermes/public_html/tasks/" + (string)argv[3];
+        string taskpath = document_root + "tasks/" + (string)argv[3];
         string confpath = taskpath + "/conf.txt";
-        string resultpath = "results/" + snr + ".txt";
-        string sio2jailpath = "/var/www/hermes/public_html/oiejq/sio2jail";
+        string resultpath = document_root + "results/" + snr + ".txt";
+        string sio2jailpath = document_root + "oiejq/sio2jail";
         string OPTS, command, program, in_test, out_test, tmp, playgroundpath, out_file, sio2jail_file;
         //path to work directory
-        playgroundpath = "/var/www/hermes/public_html/playground/";
+        playgroundpath = document_root + "playground/";
         //settings of sio2jail
         OPTS += " --mount-namespace off";
         OPTS += " --pid-namespace off";
@@ -164,12 +175,20 @@ int main(int argc, char *argv[])
         string copy_conf_command = "cp " + confpath + " " + newconfpath;
         system(copy_conf_command.c_str());
 
+        if(!exists_test(newconfpath))
+        {
+            logsomething(COPY_CONF_ERR, "submit: "+snr+"  task: "+(string)argv[3]);
+            exit(1);
+        }
+
+        if(!exists_test(playgroundpath+snr+(string)argv[2]))
+            compilation_error = true;
+
         conffile.open(newconfpath, ios::in);
         result.open(resultpath, ios::out);
 
         int n_test, memory_limit, time_limit, max_points, memory, time, points;
         conffile >> n_test;
-        cout << n_test << endl;
 
         for (int i = 0; i < n_test; i++)
         {
@@ -188,8 +207,8 @@ int main(int argc, char *argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
-                string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
-                OPTS1 += "--rtimelimit " + time_limit;
+                //string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
+                //OPTS1 += "--rtimelimit " + time_limit;
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
                 out_test = taskpath + "/out/" + to_string(i) + ".out";
@@ -198,7 +217,7 @@ int main(int argc, char *argv[])
                 if (lang == CPP || lang == PYT)
                 {
                     program = playgroundpath + snr;
-                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS1 + " -- " + program
+                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS + " -- " + program
                               + " < " + in_test + " > " + out_file + " 3> "+ sio2jail_file;
                     system(command.c_str());
                 }
