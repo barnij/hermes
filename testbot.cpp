@@ -304,7 +304,7 @@ int main(int argc, char *argv[])
                 }
 
                 if(!compilation_error && sio_status_code>priority_status)
-                        priority_status == sio_status_code;
+                    priority_status = sio_status_code;
 
             }
 
