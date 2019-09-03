@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
             exit(1);
         }
 
-        if(!exists_test(playgroundpath+snr)
+        if(!exists_test(playgroundpath+snr))
             compilation_error = true;
 
         conffile.open(newconfpath, ios::in);
