@@ -1,0 +1,18 @@
+To jest nowa treść zadania.
+
+To zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.
+nie ma długą TREŚĆ.zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.
+zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.
+ie ma długą TREŚĆ.zadanie ma długą TREŚĆ.zadanie ma długą TREŚĆ.
+
+Ciekawe jak to się wyświetli?
+
+:)
+
+<b>Wejście</b>
+1 4
+
+<b>Wyjście</b>
+4
+
+<i>Brak limitów :O</i>
