@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
         OPTS += " -l oiejq/sio2jail.log";
         OPTS += " -s";
 
-        strinf newconfpath = playgroundpath + snr + ".conf";
+        string newconfpath = playgroundpath + snr + ".conf";
         string copy_conf_command = "cp " + confpath + " " + newconfpath;
         system(copy_conf_command.c_str());
 
