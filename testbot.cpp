@@ -42,7 +42,8 @@ enum LOGTYPE
     LANG_ERR,
     ARGS_ERR,
     CHILD_ERR,
-    COPY_CONF_ERR
+    COPY_CONF_ERR,
+    UNDEFINED_STATUS_ERR
 };
 
 const std::string currentDateTime()
@@ -77,6 +78,9 @@ void logsomething(int what, string rest="")
             << "-" << rest;
     else if (what == COPY_CONF_ERR)
         log << "The conf file hasn't been copied properly"
+            << "-" << rest;
+    else if (what == UNDEFINED_STATUS_ERR)
+        log << "Undefined status: "
             << "-" << rest;
 
     log << endl;
@@ -300,7 +304,8 @@ int main(int argc, char *argv[])
                     result << sio_status_code << endl; //status
                 }else
                 {
-
+                    logsomething(UNDEFINED_STATUS_ERR, sio_status+"  submit: "+snr);
+                    exit(1);
                 }
 
                 if(!compilation_error && sio_status_code>priority_status)
@@ -314,6 +319,9 @@ int main(int argc, char *argv[])
 
         result.close();
         conffile.close();
+
+        string delete_work_files = "rm " + playgroundpath + snr + "*";
+        system(delete_work_files.c_str());
     }
 
     return EXIT_SUCCESS;
