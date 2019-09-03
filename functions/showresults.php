@@ -69,12 +69,12 @@
 			<span style="margin-left: 20px;">
 				Łączna liczba uzyskanych punktów: <b>'.$points.'</b>
 			</span>
-			
+
 			<table style="width: 700px; margin-top: 10px;">
 				<tr style="height: 40px;">';
 					for($i=1;$i<=$iletestow;$i+=1)
 					{
-						echo '<td style="width: '.$procent.'%; background-color: '; 
+						echo '<td style="width: '.$procent.'%; background-color: ';
 						$status = intval($result[4*$i+$i-1]);
 						if($status == 1)
 							echo 'green';
@@ -91,7 +91,7 @@
 			echo '</tr>
 			</table><br/>';
 
-			echo 
+			echo
 			'<table style="width: 700px; border-collapse: collapse;">
 				<tr style="text-align: left; border-bottom: black 1px solid;">
 					<th style="width: 40px;">
@@ -110,7 +110,7 @@
 						Status
 					</th>
 				</tr>';
-					
+
 				for($i=0; $i<$iletestow; $i+=1)
 				{
 					$i_r = ($i*5)+1; //liczba pkt
@@ -149,9 +149,9 @@
 								default:
 								break;
 							}
-						echo 
+						echo
 						'</td>';
-					
+
 					echo '</tr>';
 				}
 
