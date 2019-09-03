@@ -213,8 +213,7 @@ int main(int argc, char *argv[])
 		int_time_limit = (long long int)time_limit;
 		memory_limit *= 1000;
 		int_memory_limit = (long long int)memory_limit;
-		cout<<to_string(int_memory_limit)<<endl;
-                string OPTS1 = OPTS + " -m 9M"; //+ to_string(int_memory_limit);
+                string OPTS1 = OPTS + " -m " + to_string(int_memory_limit)+"K";
                 OPTS1 += " --rtimelimit " + to_string(int_time_limit)+"ms";
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
@@ -237,10 +236,21 @@ int main(int argc, char *argv[])
                 sio2jail_file_stream >> sio_nvm;
                 sio2jail_file_stream >> sio_memory;
                 sio2jail_file_stream >> sio_sysc;
-
                 sio2jail_file_stream.close();
 
+		if(sio_status=="OK")
+		{
 
+		}else if(sio_status=="TLE")
+		{
+
+		}else if(sio_status=="MLE")
+		{
+
+		}else
+		{
+
+		}
 
 
             }

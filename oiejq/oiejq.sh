@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-#MEM_LIMIT=""
+MEM_LIMIT="14M"
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <program_to_test> [args...]"

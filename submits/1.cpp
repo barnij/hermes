@@ -3,17 +3,17 @@
 
 using namespace std;
 
+int fib(int n)
+{
+if(n<2) return 1;
+return fib(n-1)+fib(n-2);
+}
+
 int main()
 {
     int a, b;
     cin>>a>>b;
-    for(int i = 0; i < a; i ++)
-    {
-	for(int j=0; j<b; j++)
-	{
-		for(int k=0; k<a; k++);
-	}
-    }
+    cout<<fib(30);
 
 
     return 0;
