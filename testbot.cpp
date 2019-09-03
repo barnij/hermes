@@ -18,8 +18,9 @@ int execvp(const char *file, const char *const (&argv)[N])
     return execvp(file, const_cast<char *const *>(argv));
 }
 
-//argv[1] - id submita + rozszerzenie
-//argv[2] - id (shortcut) zadania
+//argv[1] - id submita
+//argv[2] - rozszerzenie
+//argv[3] - id (shortcut) zadania
 
 enum LANG
 {
@@ -47,7 +48,7 @@ const std::string currentDateTime()
     return buf;
 }
 
-void logsomething(int what, string rest)
+void logsomething(int what, string rest="")
 {
     fstream log;
     string logpath = "testbot.log";
@@ -99,6 +100,7 @@ int main(int argc, char *argv[])
     }
 
     int nr = atoi(argv[1]);
+    string snr = (string)argv[1];
     int lang = whatlang(argv[2], nr);
 
     if ((pid = fork()) < 0)
@@ -110,8 +112,10 @@ int main(int argc, char *argv[])
 
     if (pid == 0) //child
     {
-        string file = "/var/www/hermes/public_html/submits/" + (string)argv[1] + (string)argv[2];
-        string compfile = "/var/www/hermes/public_html/playground/" + (string)argv[1];
+        //path to submits
+        string file = "/var/www/hermes/public_html/submits/" + snr + (string)argv[2];
+        //path to work directory
+        string compfile = "/var/www/hermes/public_html/playground/" + snr;
 
         switch (lang)
         {
@@ -138,11 +142,13 @@ int main(int argc, char *argv[])
         else
             logsomething(CHILD_ERR, "Status:" + to_string(status));
 
-        fstream conffile, result;
+        fstream conffile, result, sio2jail_file_stream;
         string taskpath = "/var/www/hermes/public_html/tasks/" + (string)argv[3];
         string confpath = taskpath + "/conf.txt";
-        string resultpath = "results/" + (string)argv[1] + ".txt";
-        string OPTS, command, program, in_test, out_test, tmp, playgroundpath;
+        string resultpath = "results/" + snr + ".txt";
+        string sio2jailpath = "/var/www/hermes/public_html/oiejq/sio2jail";
+        string OPTS, command, program, in_test, out_test, tmp, playgroundpath, out_file, sio2jail_file;
+        //path to work directory
         playgroundpath = "/var/www/hermes/public_html/playground/";
         //settings of sio2jail
         OPTS += " --mount-namespace off";
@@ -153,7 +159,12 @@ int main(int argc, char *argv[])
         OPTS += " --capability-drop off --user-namespace off";
         OPTS += " -l oiejq/sio2jail.log";
         OPTS += " -s";
-        conffile.open(confpath, ios::in);
+
+        strinf newconfpath = playgroundpath + snr + ".conf";
+        string copy_conf_command = "cp " + confpath + " " + newconfpath;
+        system(copy_conf_command.c_str());
+
+        conffile.open(newconfpath, ios::in);
         result.open(resultpath, ios::out);
 
         int n_test, memory_limit, time_limit, max_points, memory, time, points;
@@ -167,7 +178,7 @@ int main(int argc, char *argv[])
 
             if (compilation_error)
             {
-                result << "-" << endl; //points
+                result << "0" << endl; //points
                 result << "-" << endl; //time
                 result << "-" << endl; //memory
                 result << "3" << endl; //status
@@ -177,23 +188,39 @@ int main(int argc, char *argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
-                //string OPTS1 = OPTS + "-m " + to_string(memory_limit);
+                string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
+                OPTS1 += "--rtimelimit " + time_limit;
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
                 out_test = taskpath + "/out/" + to_string(i) + ".out";
+                out_file = playgroundpath + snr + ".out";
+                sio2jail_file = playgroundpath + snr + ".sio2jail";
                 if (lang == CPP || lang == PYT)
                 {
-                    program = playgroundpath + (string)argv[1];
-                    command = "oiejq/sio2jail -f 3 -o oiaug " + OPTS + " -- " + program + " < " + in_test + " 3>test.tmp";
+                    program = playgroundpath + snr;
+                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS1 + " -- " + program
+                              + " < " + in_test + " > " + out_file + " 3> "+ sio2jail_file;
                     system(command.c_str());
                 }
+
+                sio2jail_file_stream.open(sio2jail_file, ios::in);
+                string sio_status, sio_exitcode, sio_nvm, sio_sysc, sio_time, sio_memory;
+                sio2jail_file_stream >> sio_status;
+                sio2jail_file_stream >> sio_exitcode;
+                sio2jail_file_stream >> sio_time;
+                sio2jail_file_stream >> sio_nvm;
+                sio2jail_file_stream >> sio_memory;
+                sio2jail_file_stream >> sio_sysc;
+
+                sio2jail_file_stream.close();
+
+
+
             }
         }
 
         result.close();
         conffile.close();
-
-        OPTS += " -m $MEM_LIMIT";
     }
 
     return EXIT_SUCCESS;
