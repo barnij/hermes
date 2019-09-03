@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
                 conffile >> max_points;
                 conffile >> time_limit;
                 conffile >> memory_limit;
-                //string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
+                string OPTS1 = OPTS + "-m " + to_string(memory_limit)+"M";
                 //OPTS1 += "--rtimelimit " + time_limit;
 
                 in_test = taskpath + "/in/" + to_string(i) + ".in";
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
                 if (lang == CPP || lang == PYT)
                 {
                     program = playgroundpath + snr;
-                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS + " -- " + program
+                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS1 + " -- " + program
                               + " < " + in_test + " > " + out_file + " 3> "+ sio2jail_file;
                     system(command.c_str());
                 }
