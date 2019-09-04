@@ -172,12 +172,14 @@ int main(int argc, char *argv[])
         OPTS += " --ipc-namespace off";
         OPTS += " --net-namespace off";
         OPTS += " --capability-drop off --user-namespace off";
-        OPTS += " -l oiejq/sio2jail.log";
+        OPTS += " -l /var/www/hermes/public_html/oiejq/sio2jail.log";
         OPTS += " -s";
 
         string newconfpath = playgroundpath + snr + ".conf";
         string copy_conf_command = "cp " + confpath + " " + newconfpath;
         system(copy_conf_command.c_str());
+        string lockfile_command = "touch " + playgroundpath + snr + ".lock";
+        system(lockfile_command.c_str());
 
         if(!exists_test(newconfpath))
         {
@@ -228,6 +230,8 @@ int main(int argc, char *argv[])
                 out_test = taskpath + "/out/" + to_string(i) + ".out";
                 out_file = playgroundpath + snr + ".out";
                 sio2jail_file = playgroundpath + snr + ".sio2jail";
+
+
                 if (lang == CPP || lang == PYT)
                 {
                     program = playgroundpath + snr;
@@ -320,6 +324,8 @@ int main(int argc, char *argv[])
         result.close();
         conffile.close();
 
+        string delete_lockfile = "rm " + playgroundpath + snr + ".lock";
+        system(delete_lockfile.c_str());
         string delete_work_files = "rm " + playgroundpath + snr + "*";
         system(delete_work_files.c_str());
     }
