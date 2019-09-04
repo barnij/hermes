@@ -231,7 +231,6 @@ int main(int argc, char *argv[])
                 out_file = playgroundpath + snr + ".out";
                 sio2jail_file = playgroundpath + snr + ".sio2jail";
 
-
                 if (lang == CPP || lang == PYT)
                 {
                     program = playgroundpath + snr;
@@ -324,8 +323,6 @@ int main(int argc, char *argv[])
         result.close();
         conffile.close();
 
-        string delete_lockfile = "rm " + playgroundpath + snr + ".lock";
-        system(delete_lockfile.c_str());
         string delete_work_files = "rm " + playgroundpath + snr + "*";
         system(delete_work_files.c_str());
     }
