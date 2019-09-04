@@ -8,7 +8,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    string path = "."; //sciezka do testbota
+    string path = "/var/www/hermes/public_html"; //sciezka do testbota
     string command = path + "/testbot";
     command = command + " " + argv[1] + " " + argv[2] + " " + argv[3] + " " + "&";
     system(command.c_str());
