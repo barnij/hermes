@@ -1,9 +1,0 @@
-﻿Zadanie jest proste wypisz sumę dwóch liczb!
-
-<b>Wejście</b>
-3 4
-
-<b>Wyjście</b>
-7
-
-<i>Limity: 1s, 1MB</i>

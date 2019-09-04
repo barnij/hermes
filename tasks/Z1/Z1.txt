@@ -1,0 +1,10 @@
+﻿Zgodnie z tytułem zadania.
+
+
+<b>Przykładowe wejście</b>
+1 4
+
+<b>Przykładowe wyjście</b>
+5
+
+<i>20MB / 10s</i>

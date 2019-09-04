@@ -1,14 +1,11 @@
 #include <iostream>
-#include <string>
-
 using namespace std;
 
-int main()
-{
-    int a, b;
-    cin >> a;
-    for(int i = 0; i < a; i ++)
-        cin >> b;
-    cout << b;
-    return 0;
+int main(){
+int a,b,c, d[3]={1,2,3};
+d[-50] = 90;
+cin>>a>>b;
+c=a+b;
+cout<<a;
+return 0;
 }
