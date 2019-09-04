@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
         OPTS += " --ipc-namespace off";
         OPTS += " --net-namespace off";
         OPTS += " --capability-drop off --user-namespace off";
-        OPTS += " -l /var/www/hermes/public_html/oiejq/sio2jail.log";
+        //OPTS += " -l /var/www/hermes/public_html/oiejq/sio2jail.log";
         OPTS += " -s";
 
         string newconfpath = playgroundpath + snr + ".conf";
