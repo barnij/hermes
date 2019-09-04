@@ -85,9 +85,9 @@
             }
 
             // Sciezka do programu sprawdzajacego
-            $polecenie = '/var/www/html/Start.exe '.$nr.$rozszerzenie.' '.$id_task;
+            $polecenie = '/var/www/hermes/public_html/start '.$nr.' '.$rozszerzenie.' '.$id_task;
 
-            //shell_exec($polecenie);
+            shell_exec($polecenie);
 
             $polaczenie->close();
         }
