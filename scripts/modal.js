@@ -17,7 +17,7 @@ function openmodal(status)
         modalheader.style.color = 'white';
         modalfooter.style.color = 'white';
         break;    
-    case 2:
+    /*case 2:
         modalfooter.innerHTML = "<h3>Rozwiązanie niepoprawne</h3>";
         modalheader.style.backgroundColor = 'red';
         modalfooter.style.backgroundColor = 'red';
@@ -43,9 +43,14 @@ function openmodal(status)
         modalheader.style.backgroundColor = 'blue';
         modalfooter.style.backgroundColor = 'blue';
         modalheader.style.color = 'white';
-        modalfooter.style.color = 'white';
+        modalfooter.style.color = 'white';*/
     default:
-        break;
+        modalfooter.innerHTML = "<h3>Rozwiązanie niepoprawne</h3>";
+        modalheader.style.backgroundColor = '#adadad';
+        modalfooter.style.backgroundColor = '#adadad';
+        modalheader.style.color = 'black';
+        modalfooter.style.color = 'black';
+        break;    
   }
 
   modal.style.display = "block";

@@ -13,7 +13,7 @@
 	{
 		if($showresults)
 		{
-			$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits ON tt.id_user=submits.id_user AND tt.id_contest=submits.id_contest AND tt.id_task=submits.id_task AND tt.points=submits.points) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)>0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+			$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT MIN(id_submit) AS id_submit FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits USING  (id_user, id_contest, id_task, points) ) pt GROUP BY id_task, id_contest, id_user) tr INNER JOIN submits ON tr.id_submit=submits.id_submit) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)>0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
 
 			$atrybutynaglowka = 'align="center" bgcolor="e5e5e5"';
 			$sz1 = 50;
@@ -52,7 +52,7 @@
 			echo '</tr>
 			</table><div style="clear: both;"></div><br/>';
 
-			$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits ON tt.id_user=submits.id_user AND tt.id_contest=submits.id_contest AND tt.id_task=submits.id_task AND tt.points=submits.points) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)<=0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
+			$zapytanie = $polaczenie->query("SELECT users.name, SUM(sub.points) AS sumapunktow, SUM(CASE sub.status WHEN 1 THEN 1 ELSE 0 END) AS sumaok, SUM(CASE sub.points WHEN 0 THEN 0 ELSE HOUR(TIMEDIFF(sub.time, '$start_time_contest'))*60+MINUTE(TIMEDIFF(sub.time, '$start_time_contest')) END) AS czas FROM (SELECT submits.* FROM (SELECT MIN(id_submit) AS id_submit FROM (SELECT submits.* FROM (SELECT id_user, id_contest, id_task, MAX(points) AS points FROM submits GROUP BY id_user, id_contest, id_task) tt INNER JOIN submits USING  (id_user, id_contest, id_task, points) ) pt GROUP BY id_task, id_contest, id_user) tr INNER JOIN submits ON tr.id_submit=submits.id_submit) sub, users WHERE users.id_user=sub.id_user AND sub.id_contest='$id_contest' AND TIMEDIFF('$end_time_contest',sub.time)<=0 GROUP BY sub.id_user ORDER BY sumapunktow DESC, sumaok ASC, czas ASC");
 
 			if(mysqli_num_rows($zapytanie)>0)
 			{

@@ -295,7 +295,7 @@ int main(int argc, char *argv[])
                 {
                     sio_status_code = 4;
                     result << "0" << endl;             //points
-                    result << time_limit << endl;      //time
+                    result << int_time_limit/100 << endl;      //time
                     result << sio_memory << endl;      //memory
                     result << sio_status_code << endl; //status
                 }else if(sio_status=="MLE")
