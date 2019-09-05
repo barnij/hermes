@@ -4,29 +4,29 @@ function updatetaskstatus($polaczenie, $id_submit)
 {
     $lockfile = $_SERVER['DOCUMENT_ROOT'].'/playground/'.$id_submit.'.lock';
     $fileinresults = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
-    
+
     if(!file_exists($lockfile) && file_exists($fileinresults))
     {
         $plik = file($fileinresults);
         $ilewierszy = count($plik)-1;
-            
+
         if(intval($plik[$ilewierszy])==1) //zaktualizuj na poprawna
         {
             if(!($polaczenie->query("UPDATE submits SET status = 1 WHERE id_submit='$id_submit'")))
                 echo "Error: ".$polaczenie->connect_errno;
         }
         elseif(intval($plik[$ilewierszy])==2) //zaktualizuj na bledna
-        {	
+        {
             if(!($polaczenie->query("UPDATE submits SET status = 2 WHERE id_submit='$id_submit'")))
                 echo "Error: ".$polaczenie->connect_errno;
         }
         elseif(intval($plik[$ilewierszy])==3) //zaktualizuj na błąd kompilacji
-        {	
+        {
             if(!($polaczenie->query("UPDATE submits SET status = 3 WHERE id_submit='$id_submit'")))
                 echo "Error: ".$polaczenie->connect_errno;
         }
         elseif(intval($plik[$ilewierszy])==4) //zaktualizuj na przekroczenie czasu
-        {	
+        {
             if(!($polaczenie->query("UPDATE submits SET status = 4 WHERE id_submit='$id_submit'")))
                 echo "Error: ".$polaczenie->connect_errno;
         }
@@ -52,5 +52,5 @@ function updatetaskstatus($polaczenie, $id_submit)
             echo "Error: ".$polaczenie->connect_errno;
     }
 }
-        
+
 ?>

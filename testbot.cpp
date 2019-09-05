@@ -206,7 +206,6 @@ int main(int argc, char *argv[])
         long long int n_test, int_time_limit, int_memory_limit;
         double memory_limit, time_limit, max_points, memory, time, points;
         conffile >> n_test;
-        cout << n_test << endl;
 
         for (int i = 0; i < n_test; i++)
         {
@@ -331,6 +330,7 @@ int main(int argc, char *argv[])
                     priority_status = sio_status_code;
 
             }
+
         }
 
         result << priority_status << endl;
