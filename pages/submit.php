@@ -35,9 +35,9 @@
 			<input type="hidden" name="id_task" value="'.$id_task.'"/>
 			Wybierz język: <select name="lang">
 					<option>C++ (g++ 4.7)</option>
-					<option>Python 3.6</option>
-					<option>RAM Machine</option>
-					<option>BAP</option>
+					<option disabled>Python 3.6</option>
+					<option disabled>RAM Machine</option>
+					<option disabled>BAP</option>
 			</select><br/><br/>
 			Wybierz plik: <span style="font-style: italic;">(Pierwszeństwo przesyłu)</span><br/>
 			<input type="file" name="plik"/><br/><br/>

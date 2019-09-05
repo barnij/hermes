@@ -29,7 +29,7 @@
 <html lang="pl">
 <head>
 	<meta charset="utf-8">
-	<title>HERMES</title>
+	<title>HERMES ADMIN</title>
 	<meta name="author" content="Bartosz Jaśkiewicz">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
