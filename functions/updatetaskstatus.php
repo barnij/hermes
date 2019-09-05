@@ -2,9 +2,10 @@
 
 function updatetaskstatus($polaczenie, $id_submit)
 {
+    $lockfile = $_SERVER['DOCUMENT_ROOT'].'playground'.$id_submit.'.lock';
     $fileinresults = $_SERVER['DOCUMENT_ROOT'].'/results/'.$id_submit.'.txt';
     
-    if(file_exists($fileinresults))
+    if(!file_exists($lockfile) && file_exists($fileinresults))
     {
         $plik = file($fileinresults);
         $ilewierszy = count($plik)-1;

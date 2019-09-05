@@ -1,4 +1,0 @@
-1.   0.025sek / 1sek                0.333333pkt / 0.333333pkt                correct
-2.   0.027sek / 1sek                0pkt / 0.333333pkt                error
-3.   0.025sek / 1sek                0pkt / 0.333333pkt                error
-0
