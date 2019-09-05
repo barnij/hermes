@@ -1,3 +1,7 @@
 testbot
 functions/connect.php
 start
+tasks/*
+results/*
+playground/*
+submits/*
