@@ -125,19 +125,39 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
+    string OPTS, command, program, in_test, out_test, tmp, playgroundpath, out_file, sio2jail_file;
+
+    string resultpath = document_root + "results/" + snr + ".txt";
+    string sio2jailpath = document_root + "oiejq/sio2jail";
+    
+    //path to work directory
+    playgroundpath = document_root + "playground/";
+
+    //path to submits
+    string submitspath = document_root+"submits/";
+    string submit_file = submitspath + snr + (string)argv[2];
+    //path to work directory
+    string compfile = playgroundpath + snr;
+    string taskpath = document_root + "tasks/" + (string)argv[3];
+    string confpath = taskpath + "/conf.txt";
+
+    //for python
+    string buildpath = playgroundpath+"build-py";
+
     if (pid == 0) //child
     {
-        //path to submits
-        string file = document_root+"submits/" + snr + (string)argv[2];
-        //path to work directory
-        string compfile = document_root+"playground/" + snr;
-
         switch (lang)
         {
         case CPP:
         {
-            const char *comp[] = {"g++", "-std=c++11", file.c_str(), "-o", compfile.c_str(), "-O2", nullptr};
+            const char *comp[] = {"g++", "-std=c++11", submit_file.c_str(), "-o", compfile.c_str(), "-O2", nullptr};
             execvp("g++", comp);
+            break;
+        }
+        case PYT:
+        {
+            const char *comp[] = {"pyinstaller", "--specpath", playgroundpath.c_str(), "--workpath", buildpath.c_str(), "--distpath", playgroundpath.c_str(), "-F", submit_file.c_str(), nullptr};
+            execvp("pyinstaller", comp);
             break;
         }
         default:
@@ -148,7 +168,7 @@ int main(int argc, char *argv[])
     else //parent
     {
         bool compilation_error = false;
-        waitpid(pid, &status, 0); //wait for die a child
+        pid_t cpid = waitpid(pid, &status, 0); //wait for die a child
         if (WIFEXITED(status))
         {
             if (WEXITSTATUS(status) != 0)
@@ -158,13 +178,6 @@ int main(int argc, char *argv[])
             logsomething(CHILD_ERR, "Status:" + to_string(status));
 
         fstream conffile, result, sio2jail_file_stream, output, correct_output;
-        string taskpath = document_root + "tasks/" + (string)argv[3];
-        string confpath = taskpath + "/conf.txt";
-        string resultpath = document_root + "results/" + snr + ".txt";
-        string sio2jailpath = document_root + "oiejq/sio2jail";
-        string OPTS, command, program, in_test, out_test, tmp, playgroundpath, out_file, sio2jail_file;
-        //path to work directory
-        playgroundpath = document_root + "playground/";
         //settings of sio2jail
         OPTS += " --mount-namespace off";
         OPTS += " --pid-namespace off";
@@ -189,7 +202,7 @@ int main(int argc, char *argv[])
 
         int priority_status = 0;
 
-        if(!exists_test(playgroundpath+snr))
+        if((lang == CPP || lang == PYT) && !exists_test(playgroundpath+snr))
         {
             priority_status = 3;
             compilation_error = true;
@@ -324,7 +337,7 @@ int main(int argc, char *argv[])
         conffile.close();
 
         string delete_work_files = "rm " + playgroundpath + snr + "*";
-        system(delete_work_files.c_str());
+        //system(delete_work_files.c_str());
     }
 
     return EXIT_SUCCESS;
