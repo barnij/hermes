@@ -62,18 +62,8 @@
             <div style="padding-left: 20px;">
             <div style="font-weight: bold">'.$title.'</div><br/>';
         
-            $plik = file($adres);
-            $ile = count($plik);
-            
-            for($i=0;$i<$ile;$i++)
-            {
-                //$plik[$i] = htmlentities($plik[$i], ENT_QUOTES, "UTF-8");
-                //$plik[$i] = utf8_encode($plik[$i]);
-                $plik[$i] = preg_replace('#\r\n?#', "\n", $plik[$i]);
-                $plik[$i] = str_replace(' ', '&nbsp;', $plik[$i]);
-                echo $plik[$i];
-                echo '<br>';
-            }
+            $plik = implode('<br/>', file($adres));
+            echo '<div style="width: 90%">'.$plik.'</div>';
 
         echo '</div></div></body>';
     }
