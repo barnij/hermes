@@ -52,7 +52,7 @@
             $lang = $_POST['lang'];
             if($lang=="C++ (g++ 4.7)")
                 $rozszerzenie = ".cpp";
-            else if($lang=="Python 3.6")
+            else if($lang=="Python 3.5")
                 $rozszerzenie = ".py";
             else if($lang=="RAM Machine")
                 $rozszerzenie = ".mrram";
@@ -90,6 +90,7 @@
             shell_exec($polecenie);
 
             $polaczenie->close();
+            sleep(2);
         }
     }else {
         header($adres2);

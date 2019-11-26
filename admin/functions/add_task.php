@@ -49,7 +49,7 @@
 
     //---------- Treść zadania ---------------
 
-    $max_rozmiar = 102400; //max 100kB
+    $max_rozmiar = 20971520; //max 20MB
 
     if (is_uploaded_file($_FILES['tresc']['tmp_name'])){
 

@@ -35,7 +35,7 @@
 			<input type="hidden" name="id_task" value="'.$id_task.'"/>
 			Wybierz język: <select name="lang">
 					<option>C++ (g++ 4.7)</option>
-					<option disabled>Python 3.6</option>
+					<option disabled>Python 3.5</option>
 					<option disabled>RAM Machine</option>
 					<option disabled>BAP</option>
 			</select><br/><br/>
