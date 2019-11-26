@@ -116,12 +116,11 @@ int main(int argc, char *argv[])
 
     int nr = atoi(argv[1]);
     string snr = (string)argv[1];
-    string ext = (string)argv[2];
     int lang = whatlang(argv[2], nr);
 
     if ((pid = fork()) < 0)
     {
-        logsomething(FORK_ERR, "id_submit:" + snr);
+        logsomething(FORK_ERR, "id_submit:" + to_string(nr));
         perror("Error fork!");
         exit(1);
     }
@@ -136,11 +135,14 @@ int main(int argc, char *argv[])
 
     //path to submits
     string submitspath = document_root+"submits/";
-    string submit_file = submitspath + snr + ext;
+    string submit_file = submitspath + snr + (string)argv[2];
     //path to work directory
     string compfile = playgroundpath + snr;
     string taskpath = document_root + "tasks/" + (string)argv[3];
     string confpath = taskpath + "/conf.txt";
+
+    //for python
+    string buildpath = playgroundpath+"build-py";
 
     if (pid == 0) //child
     {
@@ -150,6 +152,12 @@ int main(int argc, char *argv[])
         {
             const char *comp[] = {"g++", "-std=c++14", submit_file.c_str(), "-o", compfile.c_str(), "-O2", nullptr};
             execvp("g++", comp);
+            break;
+        }
+        case PYT:
+        {
+            const char *comp[] = {"pyinstaller", "--specpath", playgroundpath.c_str(), "--workpath", buildpath.c_str(), "--distpath", playgroundpath.c_str(), "-F", submit_file.c_str(), nullptr};
+            execvp("pyinstaller", comp);
             break;
         }
         default:
@@ -194,7 +202,7 @@ int main(int argc, char *argv[])
 
         int priority_status = 0;
 
-        if((lang == CPP) && !exists_test(playgroundpath+snr))
+        if((lang == CPP || lang == PYT) && !exists_test(playgroundpath+snr))
         {
             priority_status = 3;
             compilation_error = true;
@@ -226,11 +234,8 @@ int main(int argc, char *argv[])
                 conffile >> memory_limit;
 		        time_limit *= 1000;
 		        int_time_limit = (long long int)time_limit;
-                if(lang == CPP)
-		            memory_limit *= 10;
+		        memory_limit *= 10;
 		        int_memory_limit = (long long int)memory_limit;
-                if(lang == PYT)
-                    int_memory_limit += 50;
                 string OPTS1 = OPTS + " -m " + to_string(int_memory_limit)+"M";
                 OPTS1 += " --rtimelimit " + to_string(int_time_limit)+"ms";
 
@@ -239,14 +244,9 @@ int main(int argc, char *argv[])
                 out_file = playgroundpath + snr + ".out";
                 sio2jail_file = playgroundpath + snr + ".sio2jail";
 
-                if (lang == CPP)
+                if (lang == CPP || lang == PYT)
                 {
                     program = playgroundpath + snr;
-                    command = sio2jailpath + " -f 3 -o oiaug " + OPTS1 + " -- " + program
-                              + " < " + in_test + " > " + out_file + " 3> "+ sio2jail_file;
-                    system(command.c_str());
-                }else if(lang == PYT){
-                    program = "/usr/bin/python3 " + submit_file;
                     command = sio2jailpath + " -f 3 -o oiaug " + OPTS1 + " -- " + program
                               + " < " + in_test + " > " + out_file + " 3> "+ sio2jail_file;
                     system(command.c_str());
@@ -263,10 +263,8 @@ int main(int argc, char *argv[])
                 sio2jail_file_stream >> sio_memory;
                 sio2jail_file_stream >> sio_sysc;
                 sio2jail_file_stream.close();
-                
-                sio_memory/=1000;
-                if(lang==CPP)
-                    sio_memory/=10;
+
+                sio_memory/=10000;
                 sio_time/=1000;
 
                 if(sio_status=="OK")
