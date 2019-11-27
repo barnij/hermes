@@ -10,6 +10,8 @@
     header('Location: /admin/konsola.php?tool=add_task');
 
     $DanePoprawne = true;
+    require_once ('../../functions/connect.php');
+
 
     //---------- Identyfikator zadania ---------------
 
@@ -43,7 +45,7 @@
         if(($right - $left)>160)
         {
             $DanePoprawne=false;
-            $_SESSION['e_title_task']='Pojedyńcze słowa są za długie!';
+            $_SESSION['e_title_task']='Pojedyncze słowa są za długie!';
         }
     }
 
@@ -129,8 +131,32 @@
         $_SESSION['e_startpoints'] = 'Minimalna wartość to 1!';
     }
 
+    $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
+
+    //Czy jest juz takie zadanie?
+    if($polaczenie->connect_errno!=0 || !$DanePoprawne)
+    {
+        echo "Error: ".$polaczenie->connect_errno;
+    }
+    else
+    {
+        mysqli_set_charset($polaczenie,"utf8");
+        $polaczenie->query('SET NAMES utf8');
+
+        $zapytanie = $polaczenie->query("SELECT id_task from tasks WHERE id_task='$id_task'");
+
+        if(mysqli_num_rows($zapytanie) != 0){
+            $DanePoprawne = false;
+            $_SESSION['e_id_task']="Zadanie z takim ID już istnieje";
+            $polaczenie->close();
+        }
+
+    }
+
+
     if($DanePoprawne)
     {
+
 
         $sciezka = $_SERVER['DOCUMENT_ROOT']."/tasks/".$id_task;
         mkdir($sciezka,0777); //glowny folder z zadaniem
@@ -165,29 +191,17 @@
 
         fclose($conf);
 
-        require_once ('../../functions/connect.php');
 
-        $polaczenie = @new mysqli($host, $db_user, $db_password, $db_name);
-
-        if($polaczenie->connect_errno!=0)
+        if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf,sum) VALUES ('$id_task','$title_task','$difficulty','$pdf','$startpoints')"))
+        {
+            $_SESSION['success_add_task'] = '<span style="color: green; padding-left: 10px;">Dodano zadanie.</span>';
+        }else
         {
             echo "Error: ".$polaczenie->connect_errno;
         }
-        else
-        {
-            mysqli_set_charset($polaczenie,"utf8");
-            $polaczenie->query('SET NAMES utf8');
 
-            if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf,sum) VALUES ('$id_task','$title_task','$difficulty','$pdf','$startpoints')"))
-            {
-                $_SESSION['success_add_task'] = '<span style="color: green; padding-left: 10px;">Dodano zadanie.</span>';
-            }else
-            {
-                echo "Error: ".$polaczenie->connect_errno;
-            }
+        $polaczenie->close();
 
-             $polaczenie->close();
-        }
     }
 
 ?>

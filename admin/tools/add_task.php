@@ -7,10 +7,40 @@
 
 ?>
 
+<form method="post" action="functions/add_task_pack.php" enctype="multipart/form-data">
+	<table style="width: 680px; padding: 5px; border: 1px solid black;">
+	<tr>
+	<td>
+		<span>Możesz także dodać zadania przez wysłanie paczek</span><br/>
+		<span style="font-style: italic; ">Tu możesz pobrać szablon paczki:</span><br/><br/>
+		<label for="pack[]">Wybierz paczki do dodania: </label>
+		<input type="file" name="pack[]" multiple="multiple" accept=".zip" required/><br/>
+		<?php
+			if(isset($_SESSION['e_pack']))
+			{
+				echo ' <span class="error">'.$_SESSION['e_pack'].'</span><br/>';
+				unset($_SESSION['e_pack']);
+			}
+		?>
+		<br/>
+		<input type="hidden" name="pack_true" value="1">
+		<input type="submit" value="Dodaj zadanie/a">
+		<?php
+		if(isset($_SESSION['success_pack']))
+		{
+			echo $_SESSION['success_pack'];
+			unset($_SESSION['success_pack']);
+		}
+	?>
+	</td>
+	</tr>
+	</table><br/>
+</form>
+
 <form method="post" action="functions/add_task.php" enctype="multipart/form-data">
 	<label for="id_task">Podaj identyfikator zadania: </label>
 	<input type="text" name="id_task" style="width: 60px; margin-left: 10px;" required>
-	<?php 
+	<?php
 		if(isset($_SESSION['e_id_task']))
 		{
 			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_id_task'].'</span>';
@@ -19,7 +49,7 @@
 	?><br/><br/>
 	<label for="title_task">Podaj nazwę zadania:</label><br/>
 	<input type="text" name="title_task" style="width: 450px;" required>
-	<?php 
+	<?php
 		if(isset($_SESSION['e_title_task']))
 		{
 			echo ' <span class="error" style="padding-left: 15px;">'.$_SESSION['e_title_task'].'</span>';
@@ -61,7 +91,7 @@
 				unset($_SESSION['e_outy']);
 			}
 		?>
-	</td>	
+	</td>
 	</tr>
 	</table><br/>
 	<label for="trudnosc">Wybierz trudność zadania:</label>
