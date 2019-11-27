@@ -29,7 +29,7 @@
         $zip = new ZipArchive;
         if ($zip->open($_FILES['pack']['tmp_name'][$i]) === TRUE) {
             $name = uniqid();
-            $path = sys_get_temp_dir();
+            $path = sys_get_temp_dir().'/';
             $folderpath = $path.$name.'/';
             $zip->extractTo($folderpath);
             $zip->close();
