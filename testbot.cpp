@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 
     string resultpath = document_root + "results/" + snr + ".txt";
     string sio2jailpath = document_root + "oiejq/sio2jail";
-    
+
     //path to work directory
     playgroundpath = document_root + "playground/";
 
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
                 sio2jail_file_stream >> sio_memory;
                 sio2jail_file_stream >> sio_sysc;
                 sio2jail_file_stream.close();
-                
+
                 sio_memory/=1000;
                 if(lang==CPP)
                     sio_memory/=10;
