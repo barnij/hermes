@@ -7,7 +7,7 @@
 		exit();
     }
 
-    //header('Location: /admin/konsola.php?tool=add_task');
+    header('Location: /admin/konsola.php?tool=add_task');
 
     $DanePoprawne = true;
 
