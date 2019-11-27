@@ -7,7 +7,7 @@
 		exit();
     }
 
-    header('Location: /admin/konsola.php?tool=add_task');
+    //header('Location: /admin/konsola.php?tool=add_task');
 
     $DanePoprawne = true;
 
@@ -19,18 +19,28 @@
     }
 
     $ilepaczek = count($_FILES['pack']['tmp_name']);
+    echo $ilepaczek.'<br/>';
 
     for($i=0; $i<$ilepaczek; $i+=1){
+
+        $packname = pathinfo($_FILES['pack']['name'][$i], PATHINFO_FILENAME);
+        $errortemplate = 'Paczka: '.$packname.' - ';
+
         $zip = new ZipArchive;
         if ($zip->open($_FILES['pack']['tmp_name'][$i]) === TRUE) {
-            $packname = pathinfo($_FILES['pack']['name'][$i], PATHINFO_FILENAME);
             $name = uniqid();
             $path = sys_get_temp_dir();
             $folderpath = $path.$name.'/';
             $zip->extractTo($folderpath);
             $zip->close();
 
-            $set = fopen($folderpath.'set.txt',"r") or die("Nie można otworzyć pliku konfiguracyjnego!");
+            $set = fopen($folderpath.'set.txt',"r");
+            if(!$set){
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Błąd odczytu pliku set.txt!<br/>";
+                continue;
+            }
             $id_task = fgets($set);
             $title_task = fgets($set);
             $difficulty = fgets($set);
@@ -39,8 +49,10 @@
             $startpoints = fgets($set);
 
             if($id_task===FALSE || $title_task===FALSE || $difficulty===FALSE || $timelimit===FALSE || $memorylimit===FALSE || $startpoints===FALSE){
-                echo $_SESSION['e_pack']="Błąd odczytu pliku set.txt!";
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Błąd odczytu pliku set.txt!<br/>";
+                continue;
             }
             fclose($set);
 
@@ -54,8 +66,6 @@
             $inpath = $folderpath.'in/';
             $outpath = $folderpath.'out/';
 
-            $errortemplate = 'Paczka: '.$packname.' - ';
-
             //---------- Identyfikator zadania ---------------
 
             $id_task = strtoupper($id_task);
@@ -63,15 +73,19 @@
             if (!ctype_alnum($id_task)) //tylko znaki alfanumeryczne
             {
                 $DanePoprawne=false;
-                echo $_SESSION['e_pack']=$errortemplate."Dozwolone znaki: A-Z, 0-9";
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Dozwolone znaki: A-Z, 0-9<br/>";
+                continue;
             }
 
             if(strlen($id_task)>5 || strlen($id_task)==0) //dlugosc skrotu od 1 do 5 znakow
             {
                 $DanePoprawne=false;
-                echo $_SESSION['e_pack']=$errortemplate."ID powinno mieć od 1 do 5 znaków.";
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."ID powinno mieć od 1 do 5 znaków.<br/>";
+                continue;
             }
 
 
@@ -88,8 +102,10 @@
                 if(($right - $left)>160)
                 {
                     $DanePoprawne=false;
-                    echo $_SESSION['e_pack']=$errortemplate.'Pojedyncze słowa są za długie!';
-                    exit();
+                    if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                    echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Pojedyncze słowa są za długie!<br/>';
+                    continue;
                 }
             }
 
@@ -105,8 +121,10 @@
                 if (filesize($task_text_path_pdf) > $max_rozmiar)
                 {
                     $DanePoprawne = false;
-                    echo $_SESSION['e_pack']=$errortemplate.'Plik z treścią jest za duży!';
-                    exit();
+                    if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                    echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Plik z treścią jest za duży!<br/>';
+                    continue;
                 }
                 else
                 {
@@ -118,8 +136,10 @@
                 if (filesize($task_text_path_txt) > $max_rozmiar)
                 {
                     $DanePoprawne = false;
-                    echo $_SESSION['e_pack']=$errortemplate.'Plik z treścią jest za duży!';
-                    exit();
+                    if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                    echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Plik z treścią jest za duży!.<br/>';
+                    continue;
                 }
                 else
                 {
@@ -130,8 +150,10 @@
             else
             {
                 $DanePoprawne=false;
-                echo $_SESSION['e_pack']=$errortemplate.'Brak treści zadania!';
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Brak treści zadania!.<br/>';
+                continue;
             }
 
             //----------- Wrzucanie testów -----------
@@ -140,8 +162,10 @@
             if (!file_exists($inpath) || !file_exists($outpath))
             {
                 $DanePoprawne=false;
-                echo $_SESSION['e_pack']=$errortemplate.'Błąd przetwarzania folderów z testami!';
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Błąd przetwarzania folderów z testami!<br/>';
+                continue;
             }
 
             $infiles = glob( $inpath.'*' );
@@ -153,8 +177,10 @@
             if(!$countin || !$countout || $countout!=$countin)
             {
                 $DanePoprawne=false;
-                echo $_SESSION['e_pack']=$errortemplate.'Nierówna liczba testów wejściowych i plików wynikowych!';
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Nierówna liczba testów wejściowych i plików wynikowych!<br/>';
+                continue;
             }
 
             // Limity
@@ -165,8 +191,10 @@
             if($timelimit <= 0 || $memorylimit <= 0)
             {
                 $DanePoprawne = false;
-                echo $_SESSION['e_pack']=$errortemplate.'Wartości limitów muszą być dodatnie!';
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate.'Wartości limitów muszą być dodatnie!<br/>';
+                continue;
             }
 
             //Startowa liczba punktów
@@ -176,8 +204,10 @@
             if($startpoints < 1)
             {
                 $DanePoprawne = false;
-                echo $_SESSION['e_pack'] = $errortemplate.'Minimalna wartość punktów za zadanie to 1!';
-                exit();
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                echo $_SESSION['e_pack'] = $_SESSION['e_pack'].$errortemplate.'Minimalna wartość punktów za zadanie to 1!<br/>';
+                continue;
             }
 
             require_once ('../../functions/connect.php');
@@ -186,7 +216,11 @@
             //Czy jest juz takie zadanie?
             if($polaczenie->connect_errno!=0 || !$DanePoprawne)
             {
+                if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Błąd bazy danych lub nieznany błąd.<br/>";
                 echo "Error: ".$polaczenie->connect_errno;
+                continue;
             }
             else
             {
@@ -197,9 +231,11 @@
 
                 if(mysqli_num_rows($zapytanie) != 0){
                     $DanePoprawne = false;
-                    $_SESSION['e_pack']=$errortemplate."Zadanie z takim ID już istnieje";
+                    if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                    $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Zadanie z takim ID już istnieje<br/>";
                     $polaczenie->close();
-                    exit();
+                    continue;
                 }
 
             }
@@ -229,7 +265,7 @@
 
                 $punktynatest = $startpoints/$iletestow;
 
-                for($i=0; $i<$iletestow; $i+=1)
+                for($j=0; $j<$iletestow; $j+=1)
                 {
                     fwrite($conf, "#".$i."\n");
                     fwrite($conf, $punktynatest."\n");
@@ -241,23 +277,25 @@
 
                 if($polaczenie->query("INSERT INTO tasks(id_task,title_task,difficulty,pdf,sum) VALUES ('$id_task','$title_task','$difficulty','$pdf','$startpoints')"))
                 {
-                    $_SESSION['success_pack'] = '<span style="color: green; padding-left: 10px;">Dodano paczki.</span>';
+                    if(!isset($_SESSION['success_pack']))
+                        $_SESSION['success_pack'] = "";
+                    $_SESSION['success_pack'] = $_SESSION['success_pack'].'<span style="color: green; padding-left: 10px;">Dodano paczkę z zadaniem: '.$id_task.'</span><br/>';
                 }else
                 {
+                    if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+                    $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Błąd dodania zadania do bazy danych<br/>";
                     echo "Error: ".$polaczenie->connect_errno;
+                    continue;
                 }
 
                 $polaczenie->close();
-
             }
-
-
         } else {
-            $_SESSION['e_pack']="Błąd w wypakowywaniu paczek!";
-            exit();
+            if(!isset($_SESSION['e_pack']))
+                        $_SESSION['e_pack'] = "";
+            echo $_SESSION['e_pack']=$_SESSION['e_pack'].$errortemplate."Błąd w wypakowywaniu paczki!<br/>";
         }
     }
-
-    exit();
 
 ?>
