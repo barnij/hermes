@@ -12,7 +12,7 @@
 	<tr>
 	<td>
 		<span>Możesz także dodać zadania przez wysłanie paczek</span><br/>
-		<span style="font-style: italic; ">Tu możesz pobrać szablon paczki:</span><br/><br/>
+		Tu możesz pobrać przykładową paczkę z wyjaśnieniem pliku set.txt: <a style="font-style: italic; text-decoration: none;" href="files/ID.zip">Pobierz</a><br/><br/>
 		<label for="pack[]">Wybierz paczki do dodania: </label>
 		<input type="file" name="pack[]" multiple="multiple" accept=".zip" required/><br/>
 		<?php
