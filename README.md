@@ -1,1 +1,3 @@
 # hermes
+
+Projekt nieukończony.
